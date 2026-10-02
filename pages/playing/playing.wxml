@@ -1,0 +1,3 @@
+<!--pages/playing/playing.wxml-->
+<text>梁山上</text>
+<image src="/img/songjiang/sj1.png" mode="aspectFit"/>

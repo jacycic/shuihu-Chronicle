@@ -1,0 +1,14 @@
+<view class="container">
+  <view class="card-item" wx:for="{{heroList}}" wx:key="name">
+    <text class="name">{{item.name}}</text>
+    <text class="nick">{{item.nick}}</text>
+    <text class="star">{{item.star}}</text>
+    <view class="attr">
+      <text>仁:{{item.ren}}</text>
+      <text>义:{{item.yi}}</text>
+      <text>礼:{{item.li}}</text>
+      <text>智:{{item.zhi}}</text>
+      <text>信:{{item.xin}}</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,9 @@
+/* pages/mans/mans.wxss */
+view{
+  padding: 40rpx;
+}
+text{
+  display:block;
+  font-size:34rpx;
+  margin-bottom:20rpx;
+}

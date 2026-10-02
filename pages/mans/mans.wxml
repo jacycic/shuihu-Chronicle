@@ -1,0 +1,11 @@
+<!--pages/mans/mans.wxml-->
+<view>
+  <text>姓名：{{name}}</text>
+  <text>绰号：{{nick}}</text>
+  <text>星位：{{star}}</text>
+  <text>仁：{{ren}}</text>
+  <text>义：{{yi}}</text>
+  <text>礼：{{li}}</text>
+  <text>智：{{zhi}}</text>
+  <text>信：{{xin}}</text>
+</view>

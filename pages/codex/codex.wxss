@@ -1,0 +1,39 @@
+/* pages/codex/codex.wxss */
+.container{
+  padding:30rpx;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 两列，自动均分宽度，保证两个格子一样宽 */
+  gap:30rpx; /* 格子之间的间距，上下左右全部由gap管理 */
+}
+.card-item{
+  border: 2rpx solid #1DACDB;
+  border-radius:16rpx;
+  padding:30rpx;
+  box-sizing: border-box;
+  
+}
+
+.name{
+  display:block;
+  font-size:36rpx;
+  font-weight:bold;
+}
+.nick{
+  display:block;
+  font-size:28rpx;
+  color:#555;
+  margin:10rpx 0;
+}
+.star{
+  display:block;
+  font-size:28rpx;
+  color:#1DACDB;
+  margin-bottom:20rpx;
+}
+.attr{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10rpx;
+  font-size:24rpx;
+  color:#666;
+}

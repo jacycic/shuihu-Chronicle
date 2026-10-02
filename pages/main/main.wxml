@@ -1,0 +1,17 @@
+<!--pages/main/main.wxml-->
+<view class="button-ctrl">
+  <view class="circle">
+    <image class="hero-circle" src="/img/songjiang/sj1.png" mode="aspectFill"/>
+  </view>
+  <text>{{role}}</text>
+  <button class="action" bind:tap="goPlaying">开始</button>
+  <view class="bottom-box">
+    <view class="bottom-item" bind:tap="goMans">好汉</view>
+    <view class="bottom-item" bind:tap="goAchievements">成就</view>
+    <view class="bottom-item" bind:tap="goCodex">图鉴</view>
+  </view>
+  
+  
+</view>
+
+
