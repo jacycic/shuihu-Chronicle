@@ -1,0 +1,8 @@
+<!--好汉解锁提示-->
+<view wx:if="{{showHeroTip}}" class="hero-tip">
+  <text class="hero-text">✅解锁好汉图鉴：{{heroName}}</text>
+</view>
+<!--成就解锁提示-->
+<view wx:if="{{showAchTip}}" class="ach-tip">
+  <text class="ach-text">🏆解锁成就：{{achName}}</text>
+</view>

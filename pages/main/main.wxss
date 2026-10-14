@@ -67,3 +67,49 @@
   
 }
 
+.unlock-tip{
+  position: fixed;
+  top: 40rpx;
+  right:30rpx;
+  z-index:9999;
+  padding:20rpx 30rpx;
+  background:rgba(169, 157, 45, 0.65);
+  color:#fff;
+  border-radius:12rpx;
+  font-size:28rpx;
+  animation: fadeIn 0.3s ease;
+  width: 200rpx;
+  height: 100rpx;
+  border: 2px solid rgba(255, 215, 0, 0.8);
+  background: linear-gradient(135deg, #620404 0%, #c41e09 40%, #ff5722 75%, #ffb040 100%);
+  box-shadow: 0 10px 30px rgba(220,30,10,0.45);
+}
+.unlock-text{
+  color: rgb(222, 244, 52);
+}
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(-20rpx)}
+  to{opacity:1; transform:translateY(0)}
+}
+
+/*成就解锁提示，黄色渐变主题，和unlock-tip布局一致*/
+/*成就解锁提示，黄色渐变，位置下移，不和好汉弹窗重叠*/
+.achievement-tip{
+  position: fixed;
+  top: 160rpx; /* 原来40rpx，改成160rpx，放在好汉弹窗下面 */
+  right:30rpx;
+  z-index:9999;
+  padding:20rpx 30rpx;
+  border-radius:12rpx;
+  font-size:28rpx;
+  animation: fadeIn 0.3s ease;
+  width: 200rpx;
+  height: 100rpx;
+  border: 2rpx solid rgba(255, 215, 0, 0.9);
+  background: linear-gradient(135deg, #b8860b 0%, #daa520 40%, #ffd700 75%, #fff380 100%);
+  box-shadow: 0 10rpx 30rpx rgba(218,165,32,0.45);
+}
+.achievement-text{
+  color: #6b2814;
+  font-weight:bold;
+}

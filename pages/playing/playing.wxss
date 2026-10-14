@@ -1,1 +1,170 @@
-/* pages/playing/playing.wxss */
+/* 场景容器 */
+.scene{
+  display: flex;
+  flex-direction: column;
+  gap: 32rpx;
+  padding: 60rpx 40rpx;
+  align-items: center;
+}
+/* 场景按钮 */
+.scene-item{
+  width: 480rpx;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-sizing:border-box;
+  padding:24rpx 40rpx;
+  text-align: center;
+  font-family: "KaiTi",serif;
+  font-size: 34rpx;
+  color:#553a24;
+  background-color: #fffbf5;
+  border: 2rpx solid #c9b89f;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 8rpx rgba(85,58,36,0.12);
+}
+.scene-item:active{
+  background-color: #f3e9d8;
+  transform: scale(0.97);
+}
+/* 右侧箭头 */
+.arrow{
+  font-size:32rpx;
+  color:#8c5c38;
+}
+/* 未解锁禁用样式 */
+.scene-item-disabled{
+  background:#ece8e2;
+  color:#aaa;
+  border-color:#ddd;
+  box-shadow:none;
+}
+.scene-item-disabled:active{
+  transform:none;
+  background:#ece8e2;
+}
+
+/* 弹窗遮罩 */
+.dialog-mask{
+  position: fixed;
+  top:0;
+  left:0;
+  width:100vw;
+  height:100vh;
+  background:rgba(0,0,0,0.6);
+  z-index:999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.dialog-box{
+  width: 680rpx;
+  height: 1210rpx;
+  background:#fffbf5;
+  border:2rpx solid #c9b89f;
+  border-radius:24rpx;
+  padding:30rpx;
+  box-sizing:border-box;
+  font-family: "KaiTi",serif;
+  display:flex;
+  flex-direction:column;
+  gap:20rpx;
+}
+
+/* 两个内容区通用 */
+.dialog-section{
+  background:#fff;
+  border:2rpx solid #d9ccb4;
+  border-radius:16rpx;
+  padding:20rpx;
+  box-sizing:border-box;
+}
+
+/* 介绍区 缩短，固定高度，不再占多余空间 */
+.dialog-intro{
+  flex: 0 0 auto;
+}
+
+.section-title{
+  font-size:26rpx;
+  color:#8c6b45;
+  margin-bottom:10rpx;
+}
+
+.scene-name{
+  font-size:34rpx;
+  font-weight:bold;
+  color:#553a24;
+  margin-bottom:8rpx;
+}
+
+.scene-desc{
+  font-size:28rpx;
+  color:#443322;
+  line-height:1.6;
+}
+
+/* 聊天区 拉伸占剩余大部分空间 */
+.dialog-chat{
+  flex: 1;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+
+.chat-list{
+  flex:1;
+  height:520rpx;
+  background:#faf6ee;
+  border-radius:12rpx;
+  padding:20rpx;
+  box-sizing:border-box;
+}
+
+.chat-item{
+  display:flex;
+  margin-bottom:20rpx;
+}
+
+.chat-item.user{
+  justify-content:flex-end;
+}
+
+.chat-item.bot{
+  justify-content:flex-start;
+}
+
+.chat-bubble{
+  max-width:75%;
+  padding:16rpx 24rpx;
+  border-radius:20rpx;
+  font-size:28rpx;
+  line-height:1.5;
+  color:#333;
+}
+
+.chat-item.user .chat-bubble{
+  background:#d77253;
+  color:#fff;
+}
+
+.chat-item.bot .chat-bubble{
+  background:#fff;
+  border:2rpx solid #d9ccb4;
+  color:#443322;
+}
+
+/* 底部关闭按钮 */
+.dialog-close{
+  width:100%;
+  text-align:center;
+  background:#b85c3e;
+  color:#fff;
+  padding:24rpx 0;
+  border-radius:99rpx;
+  font-size:30rpx;
+}
+
+.dialog-close:active{
+  opacity:0.8;
+}

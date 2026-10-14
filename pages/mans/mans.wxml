@@ -1,11 +1,43 @@
-<!--pages/mans/mans.wxml-->
-<view>
-  <text>姓名：{{name}}</text>
-  <text>绰号：{{nick}}</text>
-  <text>星位：{{star}}</text>
-  <text>仁：{{ren}}</text>
-  <text>义：{{yi}}</text>
-  <text>礼：{{li}}</text>
-  <text>智：{{zhi}}</text>
-  <text>信：{{xin}}</text>
+<view class="hero-top-area">
+  <view class="hero-info-text">
+    <view class="info-row">
+      <text class="label">姓名：</text>
+      <text>{{name}}</text>
+    </view>
+    <view class="info-row">
+      <text class="label">绰号：</text>
+      <text>{{nick}}</text>
+    </view>
+    <view class="info-row">
+      <text class="label">星号：</text>
+      <text>{{star}}</text>
+    </view>
+  </view>
+
+  <view class="hero-img-frame">
+    <image src="{{heroImg}}" mode="aspectFill"></image>
+  </view>
+</view>
+
+<view class="attr-panel">
+  <view class="info-row">
+    <text class="label">仁：</text>
+    <text>{{ren}}</text>
+  </view>
+  <view class="info-row">
+    <text class="label">义：</text>
+    <text>{{yi}}</text>
+  </view>
+  <view class="info-row">
+    <text class="label">礼：</text>
+    <text>{{li}}</text>
+  </view>
+  <view class="info-row">
+    <text class="label">智：</text>
+    <text>{{zhi}}</text>
+  </view>
+  <view class="info-row">
+    <text class="label">信：</text>
+    <text>{{xin}}</text>
+  </view>
 </view>

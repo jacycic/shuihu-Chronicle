@@ -1,0 +1,233 @@
+/* ========= 重点修改：page背景改为透明，不再盖住视频 ========= */
+page{
+  background: transparent;
+  font-family: "KaiTi",serif;
+  height:100%;
+  overflow: hidden;
+}
+.page-wrap{
+  width:100%;
+  height:100vh;
+  box-sizing: border-box;
+  display:flex;
+  flex-direction:column;
+  z-index: 9;
+  position: relative;
+  /* page-wrap不添加背景，露出底层video */
+  padding-top: calc(env(safe-area-inset-top) + 80rpx);
+  padding-top: calc(constant(safe-area-inset-top) + 80rpx);
+}
+.bg-video{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  object-fit: cover;
+}
+
+/* ========== 新增：右上角悬浮头像样式 ========== */
+.avatar-fixed-btn{
+  position:fixed;
+  top: calc(env(safe-area-inset-top) + 200rpx);
+  right:30rpx;
+  width:100rpx;
+  height:100rpx;
+  border-radius:50%;
+  overflow:hidden;
+  border:2rpx solid #fff;
+  box-shadow:0 2rpx 8rpx rgba(0,0,0,0.15);
+  z-index:10;
+}
+.avatar-img{
+  width:100%;
+  height:100%;
+}
+
+/* 安全区容器 */
+.safe-top{
+  width:100%;
+}
+
+/* === 顶部搜索 === */
+.search-wrap{
+  display:flex;
+  align-items:center;
+  margin:20rpx 30rpx 0 30rpx;
+  gap:20rpx;
+}
+.search-input{
+  max-width:450rpx;
+  min-width: 0rpx;
+  flex: 1;
+  display:flex;
+  align-items:center;
+  background:#fff;
+  border:2rpx solid #d4c9b8;
+  border-radius:99rpx;
+  padding:16rpx 24rpx;
+}
+.search-icon{
+  font-size:32rpx;
+  color:#999;
+  margin-right:12rpx;
+}
+.placeholder{
+  font-size:28rpx;
+  color:#aaa;
+}
+
+/* === 顶部功能图标行 === */
+.func-row{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:30rpx;
+  margin:20rpx 30rpx 0 30rpx;
+}
+.func-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  position:relative;
+}
+.func-icon-box{
+  width:95rpx;
+  height:95rpx;
+  background:#e9e2d5;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  border:2rpx solid #fff;
+}
+.func-img{
+  width:105rpx;
+  height:105rpx;
+}
+.func-item text{
+  font-size:26rpx;
+  color:#554433;
+  margin-top:6rpx;
+}
+.red-dot{
+  position:absolute;
+  top:-4rpx;
+  right:10rpx;
+  width:16rpx;
+  height:16rpx;
+  background:#d93025;
+  border-radius:50%;
+}
+
+/* === 中间区域：仅弹性撑开，无背景色 === */
+.scene{
+  flex: 1;
+  width:100%;
+}
+
+/* === 开始按钮 === */
+.start-btn-wrap{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  margin: 60rpx 0;
+}
+.start-btn{
+  width:320rpx;
+  background:#d77253;
+  color:#fff;
+  text-align:center;
+  font-size:32rpx;
+  padding:20rpx 0;
+  border-radius:99rpx;
+  border:2rpx solid #fff;
+}
+
+/* === 底部Tab栏：保留米色底色，Tab本身是悬浮UI没问题 === */
+.tab-bar{
+  width:100%;
+  height:140rpx;
+  background:#f5efe3;
+  display:flex;
+  border-top:4rpx solid #ddcfbb;
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: constant(safe-area-inset-bottom);
+  position:relative;
+  z-index:10;
+  
+}
+.tab-item{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  
+}
+.tab-icon-box{
+  width:80rpx;
+  height:80rpx;
+  background:#e9e2d5;
+  border-radius:12rpx;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  border:2rpx solid #fff;
+}
+.tab-img{
+  width:100rpx;
+  height:100rpx;
+}
+.tab-text{
+  font-size:26rpx;
+  color:#777;
+  margin-top:6rpx;
+}
+
+/* 弹窗遮罩 */
+.popup-mask{
+  position: fixed;
+  top:0;
+  left:0;
+  width:100vw;
+  height:100vh;
+  background:rgba(0,0,0,0.6);
+  z-index:999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+/* 弹窗盒子 */
+.popup-box{
+  width: 680rpx;
+  background:#fff;
+  border-radius:24rpx;
+  padding:40rpx 30rpx;
+  box-sizing:border-box;
+}
+.popup-title{
+  text-align:center;
+  font-size:34rpx;
+  font-weight:bold;
+  color:#554433;
+  margin-bottom:24rpx;
+}
+.popup-content{
+  font-size:28rpx;
+  color:#444;
+  line-height:1.6;
+  margin-bottom:40rpx;
+}
+.popup-close-btn{
+  width:100%;
+  text-align:center;
+  background:#d77253;
+  color:#fff;
+  padding:20rpx 0;
+  border-radius:99rpx;
+  font-size:30rpx;
+}

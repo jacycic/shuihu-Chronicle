@@ -1,5 +1,5 @@
 {
-  "entryPagePath": "pages/section/section",
+  "entryPagePath": "pages/test01/test01",
   "pages": [
     "pages/index/index",
     "pages/logs/logs",
@@ -9,17 +9,25 @@
     "pages/codex/codex",
     "pages/mans/mans",
     "pages/main/main",
-    "pages/mans-icon/mans-icon"
+    "pages/mans-icon/mans-icon",
+    "pages/test01/test01",
+    "pages/chart/chart",
+    "pages/note/note",
+    "pages/user/user",
+    "comphonets/globaltips/globaltips"
     
   ],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "水浒*我是谁",
+    "navigationBarTitleText": "水浒风云录",
     "navigationBarBackgroundColor": "#E8F4F8"
   },
   
   "style": "v2",
   "componentFramework": "glass-easel",
   "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "usingComponents": {
+    "globaltips": "/comphonets/globaltips/globaltips"
+  }
 }

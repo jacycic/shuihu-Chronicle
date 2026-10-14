@@ -1,1 +1,98 @@
 /* pages/achievements/achievements.wxss */
+.container {
+  padding: 40rpx 30rpx;
+  background-color: #f8f5f0;
+  min-height: 100vh;
+  box-sizing: border-box;
+  display: block;
+}
+
+.page-title {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #6b2814;
+  margin-bottom: 30rpx;
+  text-align: center;
+}
+
+.achievement-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20rpx;
+  align-content: flex-start; /* 核心！从顶部开始排布，空白留在下方，不会把卡片挤下去 */
+}
+
+.achievement-item {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24rpx 16rpx;
+  border-radius: 16rpx;
+  border: 2rpx solid #e2d9cc;
+  background: #fff9e8;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+}
+
+.icon-area {
+  width: 60rpx;
+  height: 60rpx;
+  margin-bottom:16rpx;
+  flex-shrink: 0;
+  background-color: #f3ead8;
+  border-radius: 12rpx;
+  border: 2rpx solid #e2d9cc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-area {
+  font-size:26rpx;
+  font-weight: 600;
+  color: #442211;
+  text-align: center;
+}
+
+/* 已解锁成就 */
+.achievement-item.unlocked {
+  background: #fff8e1;
+  opacity: 1;
+}
+
+
+.achievement-item.locked .text-area {
+  color: #bbb;
+}
+
+/* 顶部标题行 */
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30rpx;
+}
+
+/* 左右统计标签 */
+.stat-tag {
+  font-size: 24rpx;
+  font-weight: 600;
+  padding: 10rpx 20rpx;
+  border-radius: 24rpx;
+  border: 2rpx solid #e2d9cc;
+}
+
+/* 已解锁标签 */
+.unlocked-tag {
+  color: #6b2814;
+  background: #fff8e1;
+  border-color: #e8d5a7;
+}
+
+/* 未解锁标签 */
+.locked-tag {
+  color: #8a7a66;
+  background: #f4f1e9;
+  border-color: #e2d9cc;
+}

@@ -1,0 +1,129 @@
+page{
+  background: transparent;
+  font-family: "KaiTi",serif;
+}
+.page{
+  width:100%;
+  min-height:100vh;
+  position:relative;
+  box-sizing: border-box;
+  padding-top: calc(env(safe-area-inset-top));
+  padding-bottom: calc(env(safe-area-inset-bottom));
+  background-color: fff;
+}
+.bg-img{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100vw;
+  height:100vh;
+  z-index:-1;
+}
+
+.container{
+  padding: 120rpx 30rpx 40rpx;
+}
+/* 用户信息卡片 */
+.user-card{
+  background:rgba(245,239,227,0.92);
+  border-radius:24rpx;
+  padding:40rpx;
+  display:flex;
+  align-items:center;
+  gap:30rpx;
+  border:2rpx solid #ddcfbb;
+}
+.avatar-btn{
+  width:140rpx;
+  height:140rpx; /* 和宽度保持一模一样，正方形！ */
+  border-radius:50%;
+  overflow:hidden;
+  padding:0;
+  margin:0;
+  background:transparent;
+  border:3rpx solid #fff;
+  box-shadow:0 3rpx 10rpx rgba(0,0,0,0.15);
+  /* 重点：清除button自带最小高度 */
+  min-height:0 !important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.avatar-btn::after{
+  border:none;
+}
+.avatar-img{
+  width:100%;
+  height:100%;
+  /* aspectFill 保证图片等比裁剪，不会拉伸变形 */
+  object-fit:cover;
+}
+.user-info .nickname{
+  font-size:36rpx;
+  color:#554433;
+  font-weight:bold;
+}
+.user-info .desc{
+  font-size:26rpx;
+  color:#776655;
+  margin-top:8rpx;
+}
+
+/* 统计卡片 */
+.stat-card{
+  background:rgba(245,239,227,0.92);
+  border-radius:24rpx;
+  margin-top:24rpx;
+  padding:30rpx;
+  display:flex;
+  justify-content:space-around;
+  border:2rpx solid #ddcfbb;
+}
+.stat-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.stat-item .num{
+  font-size:40rpx;
+  color:#b85c3e;
+  font-weight:bold;
+}
+.stat-item .label{
+  font-size:24rpx;
+  color:#665544;
+  margin-top:8rpx;
+}
+
+/* 菜单卡片 */
+.menu-card{
+  background:rgba(245,239,227,0.92);
+  border-radius:24rpx;
+  margin-top:24rpx;
+  border:2rpx solid #ddcfbb;
+  overflow:hidden;
+}
+.menu-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:32rpx 30rpx;
+  font-size:30rpx;
+  color:#554433;
+  border-bottom:1rpx solid #ddcfbb;
+}
+.menu-item:last-child{
+  border-bottom:none;
+}
+.arrow{
+  color:#999;
+}
+.about-card{
+  text-align:center;
+  margin-top:40rpx;
+}
+.about-text{
+  font-size:24rpx;
+  color:#fff;
+  text-shadow:0 0 4rpx rgba(0,0,0,0.5);
+}

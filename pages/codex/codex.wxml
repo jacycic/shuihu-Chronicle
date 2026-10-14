@@ -1,14 +1,31 @@
 <view class="container">
+  <view>已解锁：{{collectCount}}</view>
+  <view>未解锁：{{total-collectCount}}</view>
   <view class="card-item" wx:for="{{heroList}}" wx:key="name">
-    <text class="name">{{item.name}}</text>
-    <text class="nick">{{item.nick}}</text>
-    <text class="star">{{item.star}}</text>
-    <view class="attr">
-      <text>仁:{{item.ren}}</text>
-      <text>义:{{item.yi}}</text>
-      <text>礼:{{item.li}}</text>
-      <text>智:{{item.zhi}}</text>
-      <text>信:{{item.xin}}</text>
+    <!-- 左侧文字信息 -->
+    <view class="hero-info">
+      <text class="name">{{item.unlock ? item.name : '???'}}</text>
+      <text class="nick">{{item.unlock ? item.nick : '???'}}</text>
+      <text class="star">{{item.unlock ? item.star : '???'}}</text>
+
+      <view class="attr">
+        <text>仁:{{item.unlock ? item.ren : '?'}}</text>
+        <text>义:{{item.unlock ? item.yi : '?'}}</text>
+        <text>礼:{{item.unlock ? item.li : '?'}}</text>
+        <text>智:{{item.unlock ? item.zhi : '?'}}</text>
+        <text>信:{{item.unlock ? item.xin : '?'}}</text>
+      </view>
+    </view>
+
+    <!-- 右侧图片：未解锁不渲染图片，空白盒子 -->
+    <view class="hero-img-box">
+      <image 
+        wx:if="{{item.unlock}}"
+        class="hero-img" 
+        src="{{item.imglist.length > 0 ? item.imglist[0].img : ''}}" 
+        mode="aspectFill"
+      ></image>
+      <view wx:else class="empty-placeholder"></view>
     </view>
   </view>
 </view>

@@ -1,0 +1,151 @@
+<video 
+  class="bg-video"
+  src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/background.mp4"
+  autoplay
+  loop
+  muted
+  object-fit="cover"
+  controls="{{false}}"
+  show-center-play-btn="{{false}}"
+  show-progress="{{false}}"
+>
+</video>
+<view class="page-wrap">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-title">好汉排行榜</view>
+    <view class="empty-box"></view>
+  </view>
+
+  <!-- 榜单类型切换：仁义礼智信+总和 -->
+  <view class="tab-switch">
+    <block wx:for="{{tabList}}" wx:key="*this">
+      <view class="tab-item {{activeTab === index ? 'active' : ''}}" bindtap="tabChange" data-index="{{index}}">
+        {{item}}
+      </view>
+    </block>
+  </view>
+
+  <!-- 滚动列表区域 -->
+  <scroll-view scroll-y class="list-scroll">
+    <!-- 仁榜 -->
+    <block wx:if="{{activeTab === 0}}">
+      <block wx:for="{{renRank}}" wx:key="name">
+        <view class="list-item {{item.rank===1?'top-one':item.rank===2?'top-two':item.rank===3?'top-three':item.rank===4?'top-four':''}}">
+          <view class="list-rank {{item.rank===1?'rank-1':item.rank===2?'rank-2':item.rank===3?'rank-3':item.rank===4?'rank-4':''}}">
+            {{item.rank}}
+          </view>
+          <view class="list-avatar">
+            <image src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/user.png" mode="aspectFill"></image>
+          </view>
+          <view class="list-info">
+            <view class="list-name">{{item.name}}</view>
+            <view class="list-desc">{{item.nickname}}</view>
+          </view>
+          <view class="list-score">{{item.ren}}</view>
+        </view>
+      </block>
+      <view wx:if="{{renRank.length === 0}}" class="empty-tip">暂未解锁好汉</view>
+    </block>
+
+    <!-- 义榜 -->
+    <block wx:if="{{activeTab === 1}}">
+      <block wx:for="{{yiRank}}" wx:key="name">
+        <view class="list-item {{item.rank===1?'top-one':item.rank===2?'top-two':item.rank===3?'top-three':item.rank===4?'top-four':''}}">
+          <view class="list-rank {{item.rank===1?'rank-1':item.rank===2?'rank-2':item.rank===3?'rank-3':item.rank===4?'rank-4':''}}">
+            {{item.rank}}
+          </view>
+          <view class="list-avatar">
+            <image src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/user.png" mode="aspectFill"></image>
+          </view>
+          <view class="list-info">
+            <view class="list-name">{{item.name}}</view>
+            <view class="list-desc">{{item.nickname}}</view>
+          </view>
+          <view class="list-score">{{item.yi}}</view>
+        </view>
+      </block>
+      <view wx:if="{{yiRank.length === 0}}" class="empty-tip">暂未解锁好汉</view>
+    </block>
+
+    <!-- 礼榜 -->
+    <block wx:if="{{activeTab === 2}}">
+      <block wx:for="{{liRank}}" wx:key="name">
+        <view class="list-item {{item.rank===1?'top-one':item.rank===2?'top-two':item.rank===3?'top-three':item.rank===4?'top-four':''}}">
+          <view class="list-rank {{item.rank===1?'rank-1':item.rank===2?'rank-2':item.rank===3?'rank-3':item.rank===4?'rank-4':''}}">
+            {{item.rank}}
+          </view>
+          <view class="list-avatar">
+            <image src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/user.png" mode="aspectFill"></image>
+          </view>
+          <view class="list-info">
+            <view class="list-name">{{item.name}}</view>
+            <view class="list-desc">{{item.nickname}}</view>
+          </view>
+          <view class="list-score">{{item.li}}</view>
+        </view>
+      </block>
+      <view wx:if="{{liRank.length === 0}}" class="empty-tip">暂未解锁好汉</view>
+    </block>
+
+    <!-- 智榜 -->
+    <block wx:if="{{activeTab === 3}}">
+      <block wx:for="{{zhiRank}}" wx:key="name">
+        <view class="list-item {{item.rank===1?'top-one':item.rank===2?'top-two':item.rank===3?'top-three':item.rank===4?'top-four':''}}">
+          <view class="list-rank {{item.rank===1?'rank-1':item.rank===2?'rank-2':item.rank===3?'rank-3':item.rank===4?'rank-4':''}}">
+            {{item.rank}}
+          </view>
+          <view class="list-avatar">
+            <image src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/user.png" mode="aspectFill"></image>
+          </view>
+          <view class="list-info">
+            <view class="list-name">{{item.name}}</view>
+            <view class="list-desc">{{item.nickname}}</view>
+          </view>
+          <view class="list-score">{{item.zhi}}</view>
+        </view>
+      </block>
+      <view wx:if="{{zhiRank.length === 0}}" class="empty-tip">暂未解锁好汉</view>
+    </block>
+
+    <!-- 信榜 -->
+    <block wx:if="{{activeTab === 4}}">
+      <block wx:for="{{xinRank}}" wx:key="name">
+        <view class="list-item {{item.rank===1?'top-one':item.rank===2?'top-two':item.rank===3?'top-three':item.rank===4?'top-four':''}}">
+          <view class="list-rank {{item.rank===1?'rank-1':item.rank===2?'rank-2':item.rank===3?'rank-3':item.rank===4?'rank-4':''}}">
+            {{item.rank}}
+          </view>
+          <view class="list-avatar">
+            <image src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/user.png" mode="aspectFill"></image>
+          </view>
+          <view class="list-info">
+            <view class="list-name">{{item.name}}</view>
+            <view class="list-desc">{{item.nickname}}</view>
+          </view>
+          <view class="list-score">{{item.xin}}</view>
+        </view>
+      </block>
+      <view wx:if="{{xinRank.length === 0}}" class="empty-tip">暂未解锁好汉</view>
+    </block>
+
+    <!-- 总和榜 【新增】 -->
+    <block wx:if="{{activeTab === 5}}">
+      <block wx:for="{{totalRank}}" wx:key="name">
+        <view class="list-item {{item.rank===1?'top-one':item.rank===2?'top-two':item.rank===3?'top-three':item.rank===4?'top-four':''}}">
+          <view class="list-rank {{item.rank===1?'rank-1':item.rank===2?'rank-2':item.rank===3?'rank-3':item.rank===4?'rank-4':''}}">
+            {{item.rank}}
+          </view>
+          <view class="list-avatar">
+            <image src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/user.png" mode="aspectFill"></image>
+          </view>
+          <view class="list-info">
+            <view class="list-name">{{item.name}}</view>
+            <view class="list-desc">{{item.nickname}}</view>
+          </view>
+          <view class="list-score">{{item.totalScore}}</view>
+        </view>
+      </block>
+      <view wx:if="{{totalRank.length === 0}}" class="empty-tip">暂未解锁好汉</view>
+    </block>
+  </scroll-view>
+</view>

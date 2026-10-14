@@ -1,0 +1,103 @@
+<globaltips id="unlockTipRef"></globaltips>
+<video 
+  class="bg-video"
+  src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/background.mp4"
+  autoplay
+  loop
+  muted
+  object-fit="cover"
+  controls="false"
+  show-center-play-btn="false"
+  show-progress="false"
+>
+</video>
+<view class="page-wrap">
+  <!-- ========== 新增：右上角悬浮用户头像按钮 ========== -->
+  <view class="avatar-fixed-btn" bindtap="goUser">
+    <image class="avatar-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/user.png" mode="aspectFill"></image>
+  </view>
+  
+
+  <!-- 顶部安全区容器：搜索+排行榜+公告 -->
+  <view class="safe-top">
+    <!-- 顶部搜索栏 -->
+    <view class="search-wrap">
+      <view class="search-input">
+        <text class="search-icon">🔍</text>
+        <input 
+          class="input-real"
+          placeholder="搜索好汉/典故"
+          placeholder-class="placeholder"
+          focus="{{isSearchFocus}}"
+          bindinput="onInput"
+          bindblur="onBlur"
+          confirm-type="search"
+          bindconfirm="onSearchSubmit"
+        />
+      </view>
+    </view>
+
+    <!-- 顶部功能图标行 -->
+    <view class="func-row">
+      <!-- 排行榜 -->
+      <view class="func-item">
+        <view class="func-icon-box">
+          <image class="func-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/row.png" mode="aspectFit" bindtap="goChart" />
+        </view>
+        <text>排行榜</text>
+      </view>
+      <!-- 公告 -->
+      <view class="func-item" bindtap="openNoticePopup">
+        <view class="func-icon-box">
+          <image class="func-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/note.png" mode="aspectFit"  />
+        </view>
+        <view class="red-dot"></view>
+        <text>公告</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 中间空白区域：只做弹性占位，不设置背景 -->
+  <view class="scene"></view>
+
+  <!-- 开始按钮 -->
+  <view class="start-btn-wrap">
+    <view class="start-btn" bindtap="goSection">开始</view>
+  </view>
+
+  <!-- 底部自定义Tab栏 -->
+  <view class="tab-bar">
+    <view class="tab-item">
+      <view class="tab-icon-box">
+        <image class="tab-img" src="" mode="aspectFit" bindtap="goMans" />
+      </view>
+      <text class="tab-text">好汉</text>
+    </view>
+    <view class="tab-item">
+      <view class="tab-icon-box">
+        <image class="tab-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/achievements.png" mode="aspectFit" bindtap="goAchievements" />
+      </view>
+      <text class="tab-text">成就</text>
+    </view>
+    <view class="tab-item">
+      <view class="tab-icon-box">
+        <image class="tab-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/codex.png" mode="aspectFit" bindtap="goCodex" />
+      </view>
+      <text class="tab-text">图鉴</text>
+    </view>
+  </view>
+
+  <!-- 公告弹窗遮罩 -->
+  <view class="popup-mask" wx:if="{{showNoticePopup}}" bindtap="closeNoticePopup">
+    <!-- 弹窗主体，阻止冒泡，点击弹窗内部不会关闭 -->
+    <view class="popup-box" bindtap="catchTap">
+      <view class="popup-title">公告</view>
+      <view class="popup-content">
+
+欢迎来到水浒传好汉图鉴！
+后续会持续更新好汉资料与剧情。
+      </view>
+      <view class="popup-close-btn" bindtap="closeNoticePopup">关闭</view>
+    </view>
+  </view>
+</view>

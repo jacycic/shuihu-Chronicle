@@ -1,2 +1,30 @@
 <!--pages/achievements/achievements.wxml-->
-<text>pages/achievements/achievements.wxml</text>
+<view class="container">
+  
+  <view class="header-row">
+    <view class="stat-tag unlocked-tag">已解锁 {{unlockedCount}}</view>
+    <view class="page-title">梁山之旅</view>
+    <view class="stat-tag locked-tag">未解锁 {{lockedCount}}</view>
+  </view>
+  <view class="achievement-grid">
+    <view
+      class="achievement-item {{item.unlocked ? 'unlocked' : 'locked'}}"
+      wx:for="{{achievementList}}"
+      wx:key="name"
+      bindtap="clickItem"
+      data-index="{{index}}"
+    >
+      <view class="icon-area">
+        <!-- 已解锁：显示 finish 图；未解锁：不显示 -->
+        <image
+          wx:if="{{item.unlocked}}"
+          src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/finish.png"
+          mode="aspectFit"
+        />
+      </view>
+      <view class="text-area">
+        {{item.unlocked ? item.name : "???"}}
+      </view>
+    </view>
+  </view>
+</view>

@@ -9,12 +9,12 @@ Page({
     li:0,
     zhi:0,
     xin:0,
+    heroImg:""
   },
 
   onLoad(options) {
     const app = getApp()
     const hero = app.globalData.heroResult
-    console.log("拿到好汉数据", hero)
     if(hero){
       // 把好汉信息存入data，wxml才能渲染
       this.setData({
@@ -27,6 +27,16 @@ Page({
         zhi: hero.zhi,
         xin: hero.xin,
       })
+      if(hero && hero.imglist && hero.imglist.length>0){
+        console.log('图片地址：', hero.imglist[0].img)
+        this.setData({
+          heroImg: hero.imglist[0].img
+        })
+      }else{
+        this.setData({heroImg:""})
+        console.log("没有找到或者无图片")
+      }
     }
+  
   }
 })

@@ -1,0 +1,41 @@
+/*好汉弹窗 上方*/
+.hero-tip{
+  position: fixed;
+  top: 40rpx;
+  right:30rpx;
+  z-index:9999;
+  padding:20rpx 30rpx;
+  border-radius:12rpx;
+  font-size:28rpx;
+  animation: fadeIn 0.3s ease;
+  border: 2rpx solid rgba(255, 215, 0, 0.8);
+  background: linear-gradient(135deg, #620404 0%, #c41e09 40%, #ff5722 75%, #ffb040 100%);
+  box-shadow: 0 10rpx 30rpx rgba(220,30,10,0.45);
+}
+.hero-text{
+  color: rgb(222, 244, 52);
+}
+
+/*成就弹窗 下面，不和好汉重叠*/
+.ach-tip{
+  position: fixed;
+  top: 160rpx;
+  right:30rpx;
+  z-index:9999;
+  padding:20rpx 30rpx;
+  border-radius:12rpx;
+  font-size:28rpx;
+  animation: fadeIn 0.3s ease;
+  border: 2rpx solid rgba(255, 215, 0, 0.9);
+  background: linear-gradient(135deg, #b8860b 0%, #daa520 40%, #ffd700 75%, #fff380 100%);
+  box-shadow: 0 10rpx 30rpx rgba(218,165,32,0.45);
+}
+.ach-text{
+  color: #6b2814;
+  font-weight:bold;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(-20rpx)}
+  to{opacity:1; transform:translateY(0)}
+}

@@ -1,0 +1,174 @@
+page{
+  background: transparent;
+  font-family: "KaiTi",serif;
+  height:100%;
+  overflow: hidden;
+}
+.bg-video{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  object-fit: cover;
+  pointer-events: none;
+}
+.page-wrap{
+  width:100%;
+  height:100vh;
+  box-sizing: border-box;
+  display:flex;
+  flex-direction:column;
+  z-index: 9;
+  position: relative;
+  padding-top: calc(env(safe-area-inset-top));
+}
+
+/* 顶部导航 */
+.nav-bar{
+  width:100%;
+  height:88rpx;
+  display:flex;
+  align-items:center;
+  padding:0 30rpx;
+  box-sizing:border-box;
+  flex-shrink:0;
+}
+
+.nav-title{
+  flex:1;
+  text-align:center;
+  font-size:34rpx;
+  color:#fff;
+  font-weight:bold;
+}
+.empty-box{
+  width:70rpx;
+}
+
+/* 榜单切换标签 */
+.tab-switch{
+  display:flex;
+  margin:20rpx 30rpx;
+  background:rgba(255,255,255,0.2);
+  border-radius:99rpx;
+  padding:8rpx;
+  flex-shrink:0;
+}
+.tab-item{
+  flex:1;
+  text-align:center;
+  font-size:28rpx;
+  color:#fff;
+  padding:12rpx 0;
+  border-radius:99rpx;
+}
+.tab-item.active{
+  background:#fff;
+  color:#554433;
+}
+
+/* 滚动列表区域 */
+.list-scroll{
+  flex:1;
+  padding:0 30rpx;
+  box-sizing:border-box;
+}
+.list-item{
+  display:flex;
+  align-items:center;
+  background:rgba(255,255,255,0.9);
+  border-radius:16rpx;
+  padding:24rpx 20rpx;
+  margin-bottom:20rpx;
+}
+
+/* 第1名：浅金橙高亮底 */
+.top-one{
+  background: linear-gradient(135deg, #ff9a56, #ff6ec4, #7873f5);
+  border:2rpx solid #f5c55c;
+}
+/* 第2名：浅金底 */
+.top-two{
+  background: linear-gradient(135deg, #fffbea, #f7e7b5);
+  border:2rpx solid #e9b824;
+}
+/* 第3名：浅银底 */
+.top-three{
+  background: linear-gradient(135deg, #ffffff, #e8e8e8);
+  border:2rpx solid #b8b8b8;
+}
+/* 第4名：浅铜底 */
+.top-four{
+  background: linear-gradient(135deg, #fff3e6, #f1d9bc);
+  border:2rpx solid #b56a3c;
+}
+
+/* 名次圆圈基础样式 */
+.list-rank{
+  width:54rpx;
+  height:54rpx;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28rpx;
+  font-weight:bold;
+  color:#fff;
+  border:3rpx solid #fff;
+  box-shadow:0 2rpx 8rpx rgba(0,0,0,0.15);
+}
+/* 第1名数字徽章：彩色渐变 */
+.rank-1{
+  background: linear-gradient(135deg, #ff9a56, #ff6ec4, #7873f5);
+}
+/* 第2名数字徽章：金色 */
+.rank-2{
+  background: linear-gradient(135deg, #ffe58a, #e9b824);
+}
+/* 第3名数字徽章：银色 */
+.rank-3{
+  background: linear-gradient(135deg, #ffffff, #9a9a9a);
+  color:#333;
+}
+/* 第4名数字徽章：铜色 */
+.rank-4{
+  background: linear-gradient(135deg, #f1c27d, #b56a3c);
+}
+
+.list-avatar{
+  width:80rpx;
+  height:80rpx;
+  border-radius:50%;
+  overflow:hidden;
+  margin:0 20rpx;
+}
+.list-avatar image{
+  width:100%;
+  height:100%;
+}
+.list-info{
+  flex:1;
+}
+.list-name{
+  font-size:30rpx;
+  color:#443322;
+}
+.list-desc{
+  font-size:24rpx;
+  color:#888;
+  margin-top:4rpx;
+}
+.list-score{
+  font-size:30rpx;
+  color:#d77253;
+  font-weight:bold;
+}
+/* 空提示 */
+.empty-tip{
+  text-align:center;
+  margin-top:120rpx;
+  color:#fff;
+  font-size:28rpx;
+}
