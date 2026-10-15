@@ -1,4 +1,3 @@
-// section.js
 const app = getApp()
 Page({
   data: {
@@ -11,7 +10,8 @@ Page({
       xin: 0
     },
     currentIndex: 0,
-    currentQuestion: null
+    currentQuestion: null,
+    inputHeroName:"" // ✅新增：输入框绑定数据
   },
 
   shuffle(arr) {
@@ -275,4 +275,36 @@ Page({
       url: `/pages/main/main?role=${encodeURIComponent(heroName)}&isNewUnlock=${isNewUnlock}`,
     })
   },
+
+  // ✅ 【新增】手动输入好汉跳转，逻辑和答题结束跳转完全一致
+  onInputHero(e){
+    this.setData({
+      inputHeroName:e.detail.value
+    })
+  },
+  manualJumpHero(){
+    const inputName = this.data.inputHeroName.trim()
+    if(!inputName){
+      wx.showToast({title:"请输入好汉名字",icon:"none"})
+      return
+    }
+    // 在全局heroList查找
+    const targetHero = app.globalData.heroList.find(item=>item.name === inputName)
+    if(!targetHero){
+      wx.showToast({title:"该好汉不存在",icon:"none"})
+      return
+    }
+    // 存入全局，和答题逻辑保持一致
+    app.globalData.heroResult = targetHero
+    let isNewUnlock = false
+    let unlockList = wx.getStorageSync('unlockHero') || []
+    if (!unlockList.includes(inputName)) {
+      unlockList.push(inputName)
+      wx.setStorageSync('unlockHero', unlockList)
+      isNewUnlock = true
+    }
+    wx.navigateTo({
+      url: `/pages/main/main?role=${encodeURIComponent(inputName)}&isNewUnlock=${isNewUnlock}`
+    })
+  }
 })

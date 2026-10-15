@@ -1,3 +1,5 @@
+const dialogData = require("../../data/semeDialog.js")
+
 Page({
   data: {
     role:"",
@@ -5,37 +7,47 @@ Page({
     showDialog: false,
     currentSceneName: "",
     currentSceneText: "",
-    // 解锁标记：0=赌场，1=柴府，2=客店，3=梁山
-    unlockIndex: 0, // 默认解锁第0个【赌场】
-    sceneList:[
-      {name:"赌场",desc:"此处鱼龙混杂，三教九流汇聚，小心别卷入赌局。"},
-      {name:"柴府",desc:"柴大官人府邸，后周皇室后裔，广纳天下好汉。柴进仗义疏财，庇护各路获罪的江湖豪杰，庄内食客无数。"},
-      {name:"客店",desc:"路边荒村客店，往来行人歇脚之处，常有江湖人在此落脚。店家多是江湖老手，往来过客藏着无数秘闻，酒肆之间暗藏风波。"},
-      {name:"梁山",desc:"水泊梁山，聚义厅在此，一百单八好汉栖身之地。八百里水泊易守难攻，众好汉替天行道，聚义于此，啸聚山林，劫富济贫。"}
-    ],
+    currentSceneIdx: 0, // 当前打开场景索引
+    unlockIndex: 0, // 当前好汉的解锁标记
+    sceneList:[],
     chatList: [],
-    
-    lastChatId: ""
+    lastChatId: "",
+    sceneDialog: [], // 当前场景对话脚本
+    dialogStep: 0 // ✅新增：对话步骤指针，记录当前读到第几条对话
   },
 
   onLoad(options) {
-    
-    if(!options.role) return;
-    const roleName = decodeURIComponent(options.role)
-    this.setData({role: roleName});
-    const app = getApp();
-    const heroList = app.globalData.heroList; 
-    const targetHero = heroList.find(item => item.name === roleName); 
-  
-    if(targetHero && targetHero.imglist && targetHero.imglist.length>0){
-      console.log('图片地址：', targetHero.imglist[0].img)
-      this.setData({
-        heroImg: targetHero.imglist[0].img
-      })
-    }else{
-      this.setData({heroImg:""})
-      console.log("没有找到或者无图片")
+    if (!options.role) {
+      console.log("缺少role参数")
+      return
     }
+    const roleName = decodeURIComponent(options.role).trim()
+    const app = getApp()
+    // 找到当前好汉完整对象（包含它的sceneList）
+    const targetHero = app.globalData.heroList.find(item => item.name === roleName)
+    if(!targetHero){
+      wx.showToast({title:"好汉不存在",icon:"none"})
+      return
+    }
+    // 兜底：场景列表为空数组
+    const heroSceneList = targetHero.sceneList || []
+  
+    // 读取这个好汉的解锁进度，优先缓存，写入全局
+    let unlockObj = wx.getStorageSync('heroSceneUnlock') || {}
+    app.globalData.heroSceneUnlock = unlockObj
+
+    let unlockIndex = unlockObj[roleName] ?? 0
+    // 边界保护，不能超过最大场景索引
+    unlockIndex = Math.min(unlockIndex, heroSceneList.length -1)
+
+    console.log("当前好汉：", roleName, "解锁关卡索引：", unlockIndex)
+  
+    this.setData({
+      role: roleName,
+      heroImg: targetHero.imglist?.[0]?.img || "",
+      sceneList: heroSceneList,
+      unlockIndex: unlockIndex
+    })
   },
 
   onReady() {
@@ -75,48 +87,71 @@ Page({
       return
     }
     const sceneItem = this.data.sceneList[idx]
+    // 拼接key：好汉名|场景名，匹配someDialog.js中的key
+    const dialogKey = `${this.data.role}|${sceneItem.name}`
+    const sceneDialog = dialogData[dialogKey] || []
+    console.log("dialogKey=", dialogKey)
+    console.log("sceneDialog=", sceneDialog)
+    console.log("长度：", sceneDialog.length)
+
     this.setData({
       showDialog:true,
-      currentSceneName: sceneItem.name,
-      currentSceneText: sceneItem.desc
-    })
-  },
-  closeDialog(){
-    const idx = this.data.sceneList.findIndex(item=>item.name === this.data.currentSceneName)
-    // 关闭弹窗时：如果当前是已解锁最后一个，解锁下一个
-    if(idx === this.data.unlockIndex && idx < this.data.sceneList.length -1){
-      this.setData({
-        unlockIndex: idx + 1
-      })
-    }
-    this.setData({
-      showDialog:false
-    })
-  },
-  stopBubble(){
-    //阻止冒泡
-  },
-  // 输入框输入
-  
-
-  
-  
-
-  // 打开弹窗时清空聊天
-  openSceneDialog(e){
-    const idx = e.currentTarget.dataset.index
-    if(idx > this.data.unlockIndex){
-      wx.showToast({title:"需要先完成上一场景",icon:"none"})
-      return
-    }
-    const sceneItem = this.data.sceneList[idx]
-    this.setData({
-      showDialog:true,
+      currentSceneIdx: idx,
       currentSceneName: sceneItem.name,
       currentSceneText: sceneItem.desc,
       chatList: [],
-      chatInput: "",
-      lastChatId: ""
+      lastChatId: "",
+      sceneDialog: sceneDialog,
+      dialogStep: 0 // 打开弹窗重置对话步数
     })
   },
+
+  closeDialog(){
+    const idx = this.data.currentSceneIdx
+    // 关闭弹窗时：如果当前是已解锁最后一个，解锁下一个
+    if(idx === this.data.unlockIndex && idx < this.data.sceneList.length -1){
+      const newUnlock = idx + 1
+      const roleName = this.data.role
+      const app = getApp()
+      // 更新全局对象
+      app.globalData.heroSceneUnlock[roleName] = newUnlock
+      // 持久化存入本地缓存
+      wx.setStorageSync('heroSceneUnlock', app.globalData.heroSceneUnlock)
+      this.setData({
+        unlockIndex: newUnlock,
+        showDialog:false
+      })
+    }else{
+      this.setData({
+        showDialog:false
+      })
+    }
+  },
+  
+  stopBubble(){
+    //阻止冒泡
+  },
+
+  // ✅ 点击聊天区域，推进对话
+  tapChatArea() {
+    const {sceneDialog, dialogStep, chatList} = this.data
+    // 对话全部播放完毕
+    if(dialogStep >= sceneDialog.length){
+      wx.showToast({title:"对话已结束",icon:"none"})
+      return
+    }
+    const currDialog = sceneDialog[dialogStep]
+    const msgId = "msg-" + Date.now()
+    const newChatList = [...chatList, {
+      id: msgId,
+      side: currDialog.type === "npc" ? "bot" : "user",
+      text: currDialog.text
+    }]
+
+    this.setData({
+      chatList: newChatList,
+      lastChatId: msgId,
+      dialogStep: dialogStep + 1
+    })
+  }
 })

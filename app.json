@@ -14,7 +14,8 @@
     "pages/chart/chart",
     "pages/note/note",
     "pages/user/user",
-    "comphonets/globaltips/globaltips"
+    "comphonets/globaltips/globaltips",
+    "pages/test2/test2"
     
   ],
   "window": {

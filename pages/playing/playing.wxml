@@ -1,4 +1,3 @@
-<!--pages/playing/playing.wxml-->
 <view>
   <view class="scene">
     <view wx:for="{{sceneList}}" wx:key="name"
@@ -22,15 +21,17 @@
         <view class="scene-desc">{{currentSceneText}}</view>
       </view>
 
-      <!-- 聊天区（移除输入框，聊天列表占满聊天区域） -->
+      <!-- 聊天区 ✅绑定点击事件 tapChatArea -->
       <view class="dialog-section dialog-chat">
-        <view class="section-title">聊天区</view>
-        <scroll-view class="chat-list" scroll-y scroll-into-view="{{lastChatId}}" scroll-with-animation>
+        <view class="section-title">聊天区（点击区域继续对话）</view>
+        <scroll-view class="chat-list" scroll-y scroll-into-view="{{lastChatId}}" scroll-with-animation bindtap="tapChatArea">
           <view wx:for="{{chatList}}" wx:key="id" class="chat-item {{item.side}}">
             <view class="chat-bubble">{{item.text}}</view>
           </view>
         </scroll-view>
       </view>
+
+      <!-- 👉删掉输入框与发送按钮区域 -->
 
       <!-- 底部关闭按钮，唯一关闭入口 -->
       <view class="dialog-close" bindtap="closeDialog">关闭</view>

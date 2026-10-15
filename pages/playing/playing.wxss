@@ -59,7 +59,7 @@
 }
 .dialog-box{
   width: 680rpx;
-  height: 1210rpx;
+  min-height: 1000rpx; /* 高度微调，去掉输入框减少高度 */
   background:#fffbf5;
   border:2rpx solid #c9b89f;
   border-radius:24rpx;
@@ -114,7 +114,7 @@
 
 .chat-list{
   flex:1;
-  height:520rpx;
+  height:560rpx;
   background:#faf6ee;
   border-radius:12rpx;
   padding:20rpx;
@@ -168,3 +168,4 @@
 .dialog-close:active{
   opacity:0.8;
 }
+/* ===== 删除了chat-input-wrap、chat-input、send-btn全部样式 ===== */
