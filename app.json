@@ -15,7 +15,8 @@
     "pages/note/note",
     "pages/user/user",
     "comphonets/globaltips/globaltips",
-    "pages/test2/test2"
+    "pages/test2/test2",
+    "pages/quizzes/quizzes"
     
   ],
   "window": {

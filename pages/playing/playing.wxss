@@ -15,13 +15,14 @@
   box-sizing:border-box;
   padding:24rpx 40rpx;
   text-align: center;
-  font-family: "KaiTi",serif;
+  font-family: "KaiTi","STKaiti",system-ui, -apple-system, sans-serif;
   font-size: 34rpx;
   color:#553a24;
   background-color: #fffbf5;
   border: 2rpx solid #c9b89f;
   border-radius: 16rpx;
   box-shadow: 0 4rpx 8rpx rgba(85,58,36,0.12);
+  -webkit-font-smoothing: antialiased;
 }
 .scene-item:active{
   background-color: #f3e9d8;
@@ -59,16 +60,18 @@
 }
 .dialog-box{
   width: 680rpx;
-  min-height: 1000rpx; /* 高度微调，去掉输入框减少高度 */
+  max-height: 90vh;
   background:#fffbf5;
   border:2rpx solid #c9b89f;
   border-radius:24rpx;
   padding:30rpx;
   box-sizing:border-box;
-  font-family: "KaiTi",serif;
+  font-family: "KaiTi","STKaiti",system-ui, -apple-system, sans-serif;
   display:flex;
   flex-direction:column;
   gap:20rpx;
+  overflow:hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* 两个内容区通用 */
@@ -80,7 +83,7 @@
   box-sizing:border-box;
 }
 
-/* 介绍区 缩短，固定高度，不再占多余空间 */
+/* 介绍区 */
 .dialog-intro{
   flex: 0 0 auto;
 }
@@ -89,6 +92,7 @@
   font-size:26rpx;
   color:#8c6b45;
   margin-bottom:10rpx;
+  -webkit-font-smoothing: antialiased;
 }
 
 .scene-name{
@@ -96,60 +100,106 @@
   font-weight:bold;
   color:#553a24;
   margin-bottom:8rpx;
+  -webkit-font-smoothing: antialiased;
 }
 
 .scene-desc{
   font-size:28rpx;
   color:#443322;
   line-height:1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* 聊天区 拉伸占剩余大部分空间 */
+/* 聊天区 */
 .dialog-chat{
   flex: 1;
   display:flex;
   flex-direction:column;
   overflow:hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 .chat-list{
-  flex:1;
-  height:560rpx;
+  height: 60vh;
   background:#faf6ee;
   border-radius:12rpx;
   padding:20rpx;
   box-sizing:border-box;
+  -webkit-font-smoothing: antialiased;
 }
 
 .chat-item{
   display:flex;
   margin-bottom:20rpx;
+  width:100%;
 }
 
-.chat-item.user{
+/* ===== 消息行布局【调换左右：user左，npc右】 ===== */
+.msg-row{
+  display:flex;
+  gap:16rpx;
+  align-items:flex-start;
+  width:100%;
+}
+/* NPC 右边 */
+.bot-row{
   justify-content:flex-end;
 }
-
-.chat-item.bot{
+/* 用户消息 左边 */
+.user-row{
   justify-content:flex-start;
 }
 
+/* 头像盒子 默认白色方形 */
+.avatar-box{
+  width:72rpx;
+  height:72rpx;
+  border-radius:8rpx;
+  border:1rpx solid #ccc;
+  flex-shrink:0;
+}
+.msg-content{
+  display:flex;
+  flex-direction:column;
+  max-width: calc(75% - 80rpx);
+}
+.msg-name{
+  font-size:24rpx;
+  color:#666;
+  margin-bottom:6rpx;
+  -webkit-font-smoothing: antialiased;
+}
+/* NPC名字靠右 */
+.user-name{
+  text-align:right;
+}
+/* 旁白样式，居中 */
+.narration-text{
+  width:100%;
+  text-align:center;
+  font-size:26rpx;
+  color:#776448;
+  padding:12rpx 0;
+  -webkit-font-smoothing: antialiased;
+}
 .chat-bubble{
   max-width:75%;
   padding:16rpx 24rpx;
   border-radius:20rpx;
   font-size:28rpx;
   line-height:1.5;
-  color:#333;
+  -webkit-font-smoothing: antialiased;
 }
-
+/* 用户（左侧）气泡：白底棕边框 */
 .chat-item.user .chat-bubble{
   background:#d77253;
-  color:#fff;
+  color:#ffffff;
+  
 }
-
+/* NPC好汉（右侧）气泡：红棕色背景白字 */
 .chat-item.bot .chat-bubble{
   background:#fff;
+  
   border:2rpx solid #d9ccb4;
   color:#443322;
 }
@@ -164,8 +214,24 @@
   border-radius:99rpx;
   font-size:30rpx;
 }
-
 .dialog-close:active{
   opacity:0.8;
 }
-/* ===== 删除了chat-input-wrap、chat-input、send-btn全部样式 ===== */
+
+/* 美化滚动条 */
+.chat-list::-webkit-scrollbar {
+  width: 6rpx;
+}
+.chat-list::-webkit-scrollbar-thumb {
+  background: #c9b89f;
+  border-radius: 6rpx;
+}
+.chat-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.avatar-box image{
+  width:100%;
+  height:100%;
+  border-radius:8rpx;
+}

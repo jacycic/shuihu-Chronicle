@@ -24,14 +24,37 @@
       <!-- 聊天区 ✅绑定点击事件 tapChatArea -->
       <view class="dialog-section dialog-chat">
         <view class="section-title">聊天区（点击区域继续对话）</view>
-        <scroll-view class="chat-list" scroll-y scroll-into-view="{{lastChatId}}" scroll-with-animation bindtap="tapChatArea">
+        <scroll-view class="chat-list" scroll-y bindtap="tapChatArea">
           <view wx:for="{{chatList}}" wx:key="id" class="chat-item {{item.side}}">
-            <view class="chat-bubble">{{item.text}}</view>
+            <!-- 旁白 -->
+            <view wx:if="{{item.side === 'narration'}}" class="narration-text">
+              {{item.text}}
+            </view>
+
+            <!-- NPC / bot消息【换到右侧】 -->
+            <view wx:elif="{{item.side === 'bot'}}" class="msg-row bot-row">
+              <view class="msg-content">
+                <view class="msg-name user-name">{{item.name}}</view>
+                <view class="chat-bubble">{{item.text}}</view>
+              </view>
+              <view class="avatar-box" style="background:#ffffff;">
+                <image wx:if="{{item.avatar}}" src="{{item.avatar}}" mode="aspectFill"></image>
+              </view>
+            </view>
+
+            <!-- User玩家消息【换到左侧】 -->
+            <view wx:else class="msg-row user-row">
+              <view class="avatar-box" style="background:#ffffff;">
+                <image wx:if="{{item.avatar}}" src="{{item.avatar}}" mode="aspectFill"></image>
+              </view>
+              <view class="msg-content">
+                <view class="msg-name">{{item.name}}</view>
+                <view class="chat-bubble">{{item.text}}</view>
+              </view>
+            </view>
           </view>
         </scroll-view>
       </view>
-
-      <!-- 👉删掉输入框与发送按钮区域 -->
 
       <!-- 底部关闭按钮，唯一关闭入口 -->
       <view class="dialog-close" bindtap="closeDialog">关闭</view>

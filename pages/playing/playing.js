@@ -4,6 +4,7 @@ Page({
   data: {
     role:"",
     heroImg:"",
+    heroAvatar:"", // ✅新增
     showDialog: false,
     currentSceneName: "",
     currentSceneText: "",
@@ -13,7 +14,7 @@ Page({
     chatList: [],
     lastChatId: "",
     sceneDialog: [], // 当前场景对话脚本
-    dialogStep: 0 // ✅新增：对话步骤指针，记录当前读到第几条对话
+    dialogStep: 0
   },
 
   onLoad(options) {
@@ -31,7 +32,7 @@ Page({
     }
     // 兜底：场景列表为空数组
     const heroSceneList = targetHero.sceneList || []
-  
+
     // 读取这个好汉的解锁进度，优先缓存，写入全局
     let unlockObj = wx.getStorageSync('heroSceneUnlock') || {}
     app.globalData.heroSceneUnlock = unlockObj
@@ -41,7 +42,7 @@ Page({
     unlockIndex = Math.min(unlockIndex, heroSceneList.length -1)
 
     console.log("当前好汉：", roleName, "解锁关卡索引：", unlockIndex)
-  
+
     this.setData({
       role: roleName,
       heroImg: targetHero.imglist?.[0]?.img || "",
@@ -51,31 +52,18 @@ Page({
   },
 
   onReady() {
-
   },
-
   onShow() {
-
   },
-
   onHide() {
-
   },
-
   onUnload() {
-
   },
-
   onPullDownRefresh() {
-
   },
-
   onReachBottom() {
-
   },
-
   onShareAppMessage() {
-
   },
 
   // 打开场景弹窗
@@ -87,7 +75,7 @@ Page({
       return
     }
     const sceneItem = this.data.sceneList[idx]
-    // 拼接key：好汉名|场景名，匹配someDialog.js中的key
+    // 拼接key：好汉名|场景名，匹配semeDialog.js中的key
     const dialogKey = `${this.data.role}|${sceneItem.name}`
     const sceneDialog = dialogData[dialogKey] || []
     console.log("dialogKey=", dialogKey)
@@ -102,7 +90,8 @@ Page({
       chatList: [],
       lastChatId: "",
       sceneDialog: sceneDialog,
-      dialogStep: 0 // 打开弹窗重置对话步数
+      dialogStep: 0,
+      heroAvatar: this.data.heroImg // ✅新增：把当前好汉图片存入data
     })
   },
 
@@ -127,31 +116,62 @@ Page({
       })
     }
   },
-  
+
   stopBubble(){
     //阻止冒泡
   },
 
-  // ✅ 点击聊天区域，推进对话
+  // 点击聊天区域，推进对话
+    // 点击聊天区域，推进对话
+    // 点击聊天区域，推进对话
   tapChatArea() {
-    const {sceneDialog, dialogStep, chatList} = this.data
-    // 对话全部播放完毕
-    if(dialogStep >= sceneDialog.length){
-      wx.showToast({title:"对话已结束",icon:"none"})
-      return
-    }
-    const currDialog = sceneDialog[dialogStep]
-    const msgId = "msg-" + Date.now()
-    const newChatList = [...chatList, {
-      id: msgId,
-      side: currDialog.type === "npc" ? "bot" : "user",
-      text: currDialog.text
-    }]
+      const {sceneDialog, dialogStep, chatList,heroAvatar} = this.data
+      const app = getApp()
+      // 对话全部播放完毕
+      if(dialogStep >= sceneDialog.length){
+        wx.showToast({title:"对话已结束",icon:"none"})
+        return
+      }
+      const currDialog = sceneDialog[dialogStep]
+      const msgId = "msg-" + Date.now()
 
-    this.setData({
-      chatList: newChatList,
-      lastChatId: msgId,
-      dialogStep: dialogStep + 1
-    })
+      let newMsg = {
+        id: msgId,
+        type: currDialog.type,
+        text: currDialog.text
+      }
+      if(currDialog.type === "narration"){
+        // 旁白，无头像无名字
+        newMsg.side = "narration"
+      }else if(currDialog.type === "npc"){
+        // NPC对话：bot侧，带上名字
+        newMsg.side = "bot"
+        newMsg.name = currDialog.name || this.data.role
+        // 根据NPC名字查找对应好汉
+        const npcHero = app.globalData.heroList.find(h => h.name === newMsg.name)
+        if(npcHero){
+          // 属于好汉，读取好汉头像
+          newMsg.avatar = currDialog.avatar || npcHero.imglist?.[0]?.img
+        }else{
+          // 不是好汉NPC，没有匹配到heroList
+          // 选项A：无头像，avatar为空，wxml不渲染图片
+          newMsg.avatar = currDialog.avatar || "https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/npc/npc.png"
+          // 选项B：启用通用npc头像，把上面一行注释，启用下面这行
+          // newMsg.avatar = currDialog.avatar || "/images/default-npc.png"
+        }
+      }else{
+        // user玩家对话，固定当前好汉头像
+        newMsg.side = "user"
+        newMsg.name = currDialog.name || "我"
+        newMsg.avatar = currDialog.avatar || heroAvatar
+      }
+
+      const newChatList = [...chatList, newMsg]
+
+      this.setData({
+        chatList: newChatList,
+        lastChatId: msgId,
+        dialogStep: dialogStep + 1
+      })
   }
 })

@@ -12,15 +12,9 @@
 >
 </video>
 <view class="page-wrap">
-  <!-- ========== 新增：右上角悬浮用户头像按钮 ========== -->
-  <view class="avatar-fixed-btn" bindtap="goUser">
-    <image class="avatar-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/user.png" mode="aspectFill"></image>
-  </view>
-  
-
-  <!-- 顶部安全区容器：搜索+排行榜+公告 -->
+  <!-- 顶部安全区容器：搜索 + 功能行【左右分栏】 -->
   <view class="safe-top">
-    <!-- 顶部搜索栏 -->
+    <!-- 顶部搜索栏 单独一行 -->
     <view class="search-wrap">
       <view class="search-input">
         <text class="search-icon">🔍</text>
@@ -37,22 +31,39 @@
       </view>
     </view>
 
-    <!-- 顶部功能图标行 -->
-    <view class="func-row">
-      <!-- 排行榜 -->
-      <view class="func-item">
-        <view class="func-icon-box">
-          <image class="func-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/row.png" mode="aspectFit" bindtap="goChart" />
+    <!-- 功能行：左右分栏容器！！核心改动 -->
+    <view class="func-row-container">
+      <!-- 左侧功能：排行榜、公告 -->
+      <view class="func-left">
+        <view class="func-item">
+          <view class="func-icon-box">
+            <image class="func-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/row.png" mode="aspectFit" bindtap="goChart" />
+          </view>
+          <text>排行榜</text>
         </view>
-        <text>排行榜</text>
+        <view class="func-item" bindtap="openNoticePopup">
+          <view class="func-icon-box">
+            <image class="func-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/note.png" mode="aspectFit"  />
+          </view>
+          <view class="red-dot"></view>
+          <text>公告</text>
+        </view>
       </view>
-      <!-- 公告 -->
-      <view class="func-item" bindtap="openNoticePopup">
-        <view class="func-icon-box">
-          <image class="func-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/note.png" mode="aspectFit"  />
+
+      <!-- 右侧功能：用户、趣味问答 -->
+      <view class="func-right">
+        <view class="func-item" bindtap="goUser">
+          <view class="func-icon-box">
+            <image class="func-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/user.png" mode="aspectFill"></image>
+          </view>
+          <text>用户</text>
         </view>
-        <view class="red-dot"></view>
-        <text>公告</text>
+        <view class="func-item" bindtap="goQuizzes">
+          <view class="func-icon-box">
+            <image class="func-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/quizzes.png" mode="aspectFit" />
+          </view>
+          <text>趣味问答</text>
+        </view>
       </view>
     </view>
   </view>
@@ -69,7 +80,7 @@
   <view class="tab-bar">
     <view class="tab-item">
       <view class="tab-icon-box">
-        <image class="tab-img" src="" mode="aspectFit" bindtap="goMans" />
+        <image class="tab-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/mans.png" mode="aspectFit" bindtap="goMans" />
       </view>
       <text class="tab-text">好汉</text>
     </view>
@@ -93,7 +104,6 @@
     <view class="popup-box" bindtap="catchTap">
       <view class="popup-title">公告</view>
       <view class="popup-content">
-
 欢迎来到水浒传好汉图鉴！
 后续会持续更新好汉资料与剧情。
       </view>

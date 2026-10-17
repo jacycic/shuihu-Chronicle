@@ -1,0 +1,127 @@
+.ctrl{
+  height:100vh ;
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items:center;
+  font-family: "KaiTi",serif;
+  font-size: 36rpx;
+  padding: 30rpx;
+  box-sizing: border-box;
+  /* 页面底色：淡蓝渐变背景，解决空白单调 */
+  background: linear-gradient(180deg, #f0f8fb 0%, #d7f6fe 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 大文字背景装饰（水浒大字，虚化水印） */
+.decor{
+  position: absolute;
+  font-size: 220rpx;
+  color: rgba(26, 172, 219, 0.08);
+  z-index: 0;
+  user-select: none;
+}
+.decor-1{
+  top:100rpx;
+  left:-80rpx;
+}
+.decor-2{
+  bottom:120rpx;
+  right:-60rpx;
+}
+.decor-3{
+  top:50%;
+  right:40rpx;
+}
+
+.title-wrap{
+  text-align:center;
+  margin-bottom:30rpx;
+}
+.title{
+  font-size:64rpx;
+  color:#1DACDB;
+  margin-bottom:10rpx;
+}
+.progress{
+  font-size:28rpx;
+  color:#777;
+}
+
+.text{
+  margin-bottom:60rpx;
+  font-size:38rpx;
+  color:#222;
+  padding:0 40rpx;
+  text-align:center;
+  line-height: 1.6;
+}
+
+.answer{
+  display: flex;
+  gap:40rpx;
+  margin-bottom:40rpx;
+}
+
+.answer-item{
+  display: flex;
+  background-image: radial-gradient(circle,#64C2CC,#1DACDB);
+  border-radius: 15rpx;
+  height: 200rpx;
+  width: 320rpx;
+  align-items: center;
+  justify-content:center;
+  color:#fff;
+  box-shadow: 0 6rpx 16rpx rgba(26,172,219,0.35);
+  /* 轻微上浮效果，增加层次感 */
+  transform: translateY(0);
+  transition: all 0.2s;
+}
+.answer-item:active{
+  opacity:0.75;
+  transform: translateY(4rpx);
+  box-shadow: 0 2rpx 8rpx rgba(26,172,219,0.25);
+}
+
+/* 结果页样式 */
+.result-wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  z-index:1;
+}
+.result-title{
+  font-size:44rpx;
+  color:#222;
+  margin-bottom:40rpx;
+}
+.result-text{
+  font-size:40rpx;
+  margin-bottom:20rpx;
+}
+.score{
+  color:#1DACDB;
+  font-weight:bold;
+  font-size:48rpx;
+}
+.tip{
+  font-size:32rpx;
+  color:#666;
+  margin-bottom:20rpx;
+}
+.evaluate{
+  font-size:34rpx;
+  color:#1DACDB;
+  margin-bottom:80rpx;
+}
+.restart-btn{
+  background-image: radial-gradient(circle,#64C2CC,#1DACDB);
+  color:#fff;
+  padding:24rpx 60rpx;
+  border-radius:15rpx;
+  box-shadow: 0 6rpx 16rpx rgba(26,172,219,0.35);
+}
+.restart-btn:active{
+  opacity:0.75;
+}

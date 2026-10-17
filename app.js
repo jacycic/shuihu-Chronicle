@@ -1180,6 +1180,28 @@ App({
         {name:"曾头市",desc:"夺得千里照夜玉狮子马，被曾头市夺走。"},
         {name:"钱塘江",desc:"征方腊乘船，落水淹死。"}
       ]
+    },
+    { name:"丁得孙", nick:"中箭虎", star:"地速星", ren:70, yi:77, li:60, zhi:58, xin:65,
+      imglist:[
+        {name:"丁得孙",img:"https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/dingdesun/dds1.png"},
+        
+      ],
+      sceneList:[
+        {name:"东昌府城下",desc:"东昌府之战"},
+        {name:"梁山大寨",desc:"归降梁山"},
+        {name:"钱塘江歙州山路",desc:"被毒蛇所咬"}
+      ]
+    },
+    { name:"龚旺", nick:"花项虎", star:"地捷星", ren:71, yi:60, li:60, zhi:65, xin:65,
+      imglist:[
+        {name:"龚旺",img:"https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/gongwang/gw1.png"},
+        
+      ],
+      sceneList:[
+        {name:"东昌府城下",desc:"东昌府之战"},
+        {name:"梁山大寨",desc:"归降梁山"},
+        {name:"德清县溪涧",desc:"战死"}
+      ]
     }
     ],
     heroSceneUnlock: {}

@@ -27,3 +27,29 @@
     </view>
   </view>
 </view>
+
+
+<!--pages/section/section.wxml-->
+<view class="ctrl" wx:if="{{currentQuestion}}">
+  <text class="text">{{currentQuestion.title}}</text>
+
+  <!-- 第一行：选项0、1 -->
+  <view class="answer">
+    <view class="answer-item" bindtap="chooseOption" data-idx="0">
+      {{currentQuestion.options[0].text}}
+    </view>
+    <view class="answer-item" bindtap="chooseOption" data-idx="1">
+      {{currentQuestion.options[1].text}}
+    </view>
+  </view>
+
+  <!-- 第二行：选项2、3 -->
+  <view class="answer">
+    <view class="answer-item" bindtap="chooseOption" data-idx="2">
+      {{currentQuestion.options[2].text}}
+    </view>
+    <view class="answer-item" bindtap="chooseOption" data-idx="3">
+      {{currentQuestion.options[3].text}}
+    </view>
+  </view>
+</view>/* pages/section/section.wxss */

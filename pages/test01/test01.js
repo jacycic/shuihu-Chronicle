@@ -35,6 +35,10 @@ Page({
   goUser(){
     wx.navigateTo({url:"/pages/user/user"})
   },
+  goQuizzes(){
+    wx.navigateTo({url:"/pages/quizzes/quizzes"})
+  },
+
 
   //公告弹窗
   openNoticePopup(){

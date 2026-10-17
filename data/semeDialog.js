@@ -12,7 +12,7 @@ const dongpingDialog = require('./dialog/dongping.js')
 const duanjingzhuDialog = require('./dialog/duanjingzhu.js')
 const duqianDialog = require('./dialog/duqian.js')
 const duxingDialog = require('./dialog/duxing.js')
-const enshiDialog = require('./dialog/enshi.js')
+const shienDialog =require('./dialog/shien.js')
 const fanruiDialog = require('./dialog/fanrui.js')
 const gongsunshengDialog = require('./dialog/gongsunsheng.js')
 const gudasaoDialog = require('./dialog/gudasao.js')
@@ -20,7 +20,7 @@ const guoshengDialog = require('./dialog/guosheng.js')
 const hantaoDialog = require('./dialog/hantao.js')
 const haosiwenDialog = require('./dialog/haosiwen.js')
 const houjianDialog = require('./dialog/houjian.js')
-const huangpuduanDialog = require('./dialog/huangpuduan.js')
+const huangfuduanDialog =require('./dialog/huangfuduan.js')
 const huangxinDialog = require('./dialog/huangxin.js')
 const huarongDialog = require('./dialog/huarong.js')
 const husanniangDialog = require('./dialog/husanniang.js')
@@ -42,7 +42,7 @@ const liyunDialog = require('./dialog/liyun.js')
 const lizhongDialog = require('./dialog/lizhong.js')
 const lujunyiDialog = require('./dialog/lujunyi.js')
 const luzhishenDialog = require('./dialog/luzhishen.js')
-const lvfangDialog = require('./dialog/lvfang.js')
+const lvfangDialog =require('./dialog/lvfang.js')
 const malinDialog = require('./dialog/malin.js')
 const mengkangDialog = require('./dialog/mengkang.js')
 const muchunDialog = require('./dialog/muchun.js')
@@ -100,6 +100,15 @@ const zhuwuDialog = require('./dialog/zhuwu.js')
 const zourunDialog = require('./dialog/zourun.js')
 const zouyuanDialog = require('./dialog/zouyuan.js')
 
+const chaijinDialog = require('./dialog/chaijin.js')
+const dingdesunDialog =require('./dialog/dingdesun.js')
+const  gongwangDialog=require('./dialog/gongwang.js')
+const guanshengDialog =require('./dialog/guansheng.js')
+const liyingDialog =require('./dialog/liying.js')
+const peixuanDialog =require('./dialog/peixuan.js')
+const taozhongwangDialog =require('./dialog/taozhongwang.js')
+const yangchunDialog =require('./dialog/yangchun.js')
+
 module.exports = {
   ...andaoquanDialog,
   ...baishengDialog,
@@ -114,7 +123,7 @@ module.exports = {
   ...duanjingzhuDialog,
   ...duqianDialog,
   ...duxingDialog,
-  ...enshiDialog,
+  ...shienDialog,
   ...fanruiDialog,
   ...gongsunshengDialog,
   ...gudasaoDialog,
@@ -122,7 +131,7 @@ module.exports = {
   ...hantaoDialog,
   ...haosiwenDialog,
   ...houjianDialog,
-  ...huangpuduanDialog,
+  ...huangfuduanDialog,
   ...huangxinDialog,
   ...huarongDialog,
   ...husanniangDialog,
@@ -200,5 +209,13 @@ module.exports = {
   ...zhutongDialog,
   ...zhuwuDialog,
   ...zourunDialog,
-  ...zouyuanDialog
+  ...zouyuanDialog,
+  ...chaijinDialog,
+  ...dingdesunDialog,
+  ...gongwangDialog,
+  ...guanshengDialog,
+  ...liyingDialog,
+  ...peixuanDialog,
+  ...taozhongwangDialog,
+  ...yangchunDialog
 }

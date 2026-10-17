@@ -1,4 +1,4 @@
-/* ========= 重点修改：page背景改为透明，不再盖住视频 ========= */
+/* ========= page背景改为透明，不再盖住视频 ========= */
 page{
   background: transparent;
   font-family: "KaiTi",serif;
@@ -13,9 +13,9 @@ page{
   flex-direction:column;
   z-index: 9;
   position: relative;
-  /* page-wrap不添加背景，露出底层video */
-  padding-top: calc(env(safe-area-inset-top) + 80rpx);
-  padding-top: calc(constant(safe-area-inset-top) + 80rpx);
+  /* ✅ 安全区，整体往下放，防止贴状态栏 */
+  padding-top: calc(env(safe-area-inset-top) + 40rpx);
+  padding-top: calc(constant(safe-area-inset-top) + 40rpx);
 }
 .bg-video{
   position: fixed;
@@ -27,46 +27,31 @@ page{
   object-fit: cover;
 }
 
-/* ========== 新增：右上角悬浮头像样式 ========== */
-.avatar-fixed-btn{
-  position:fixed;
-  top: calc(env(safe-area-inset-top) + 200rpx);
-  right:30rpx;
-  width:100rpx;
-  height:100rpx;
-  border-radius:50%;
-  overflow:hidden;
-  border:2rpx solid #fff;
-  box-shadow:0 2rpx 8rpx rgba(0,0,0,0.15);
-  z-index:10;
-}
-.avatar-img{
-  width:100%;
-  height:100%;
-}
-
 /* 安全区容器 */
 .safe-top{
   width:100%;
+  box-sizing: border-box;
+  padding:0 30rpx;
+  margin-top: 90rpx;
 }
 
 /* === 顶部搜索 === */
 .search-wrap{
-  display:flex;
-  align-items:center;
-  margin:20rpx 30rpx 0 30rpx;
-  gap:20rpx;
+  width:100%;
+  margin-bottom:30rpx;
+  max-width: 545rpx;  /* 控制搜索框总长度，数值越小越短 */
+  
+  margin-right:20rpx;
 }
 .search-input{
-  max-width:450rpx;
-  min-width: 0rpx;
-  flex: 1;
+  width:100%;
   display:flex;
   align-items:center;
   background:#fff;
   border:2rpx solid #d4c9b8;
   border-radius:99rpx;
   padding:16rpx 24rpx;
+  box-sizing: border-box;
 }
 .search-icon{
   font-size:32rpx;
@@ -78,14 +63,20 @@ page{
   color:#aaa;
 }
 
-/* === 顶部功能图标行 === */
-.func-row{
+/* =========核心：功能行 左右分栏容器 ========= */
+.func-row-container{
+  display:flex;
+  justify-content: space-between;
+  width:100%;
+  
+}
+.func-left, .func-right{
   display:flex;
   flex-direction:column;
-  align-items:flex-start;
   gap:30rpx;
-  margin:20rpx 30rpx 0 30rpx;
 }
+
+/* === 功能项（排行榜/公告/用户/趣味问答，统一样式） === */
 .func-item{
   display:flex;
   flex-direction:column;
@@ -109,7 +100,8 @@ page{
 }
 .func-item text{
   font-size:26rpx;
-  color:#554433;
+  color:#fff;
+  text-shadow: 0 0 4rpx rgba(0,0,0,0.4);
   margin-top:6rpx;
 }
 .red-dot{
@@ -146,7 +138,7 @@ page{
   border:2rpx solid #fff;
 }
 
-/* === 底部Tab栏：保留米色底色，Tab本身是悬浮UI没问题 === */
+/* === 底部Tab栏：保留米色底色 === */
 .tab-bar{
   width:100%;
   height:140rpx;
@@ -157,7 +149,6 @@ page{
   padding-bottom: constant(safe-area-inset-bottom);
   position:relative;
   z-index:10;
-  
 }
 .tab-item{
   flex:1;
@@ -165,7 +156,6 @@ page{
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  
 }
 .tab-icon-box{
   width:80rpx;

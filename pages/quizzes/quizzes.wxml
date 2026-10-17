@@ -1,0 +1,32 @@
+<view class="ctrl">
+  <!-- 背景装饰元素 -->
+  <view class="decor decor-1">水</view>
+  <view class="decor decor-2">浒</view>
+  <view class="decor decor-3">传</view>
+
+  <view wx:if="{{!isFinish}}">
+    <view class="title-wrap">
+      <view class="title">第{{current + 1}}题 / 共{{total}}题</view>
+      <view class="progress">进度 {{current+1}}/{{total}}</view>
+    </view>
+    <view class="text">{{questionList[current].title}}</view>
+
+    <view class="answer">
+      <view class="answer-item" bindtap="selectAnswer" data-idx="0">
+        {{questionList[current].opt[0]}}
+      </view>
+      <view class="answer-item" bindtap="selectAnswer" data-idx="1">
+        {{questionList[current].opt[1]}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 答题结束 得分页 -->
+  <view wx:else class="result-wrap">
+    <view class="result-title">答题结束！</view>
+    <view class="result-text">你的得分：<text class="score">{{score}}</text> 分</view>
+    <view class="tip">满分：{{fullScore}}分</view>
+    <view class="evaluate">{{evaluateText}}</view>
+    <view class="restart-btn" bindtap="restartQuiz">重新答题</view>
+  </view>
+</view>

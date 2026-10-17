@@ -1,3 +1,43 @@
+.ctrl{
+  height:100vh ;
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items:center;
+  font-family: "KaiTi",serif;
+  font-size: 36rpx;
+}
+
+.text{
+  margin-bottom:60rpx;
+  font-size:38rpx;
+  color:#222;
+  padding:0 40rpx;
+  text-align:center;
+}
+
+.answer{
+  display: flex;
+  gap:40rpx;     /* 两个答案之间的间距 */
+  margin-bottom:40rpx; /* 两行选项之间的间距 */
+}
+
+/* 合并 answer-1 answer-2 公共样式，不用重复写 */
+.answer-item{
+  display: flex;
+  background-image: radial-gradient(circle,#64C2CC,#1DACDB);
+  border-radius: 15rpx;
+  height: 200rpx;
+  width: 320rpx;
+  align-items: center;  /* 垂直居中 */
+  justify-content:center; /* 水平居中 */
+  color:#fff;
+}
+/* 点击按下效果 */
+.answer-item:active{
+  opacity:0.75;
+}
+
 /* 顶部输入区域样式 */
 .input-wrap{
   display:flex;
