@@ -17,6 +17,8 @@ Component({
         showHeroTip:true,
         heroName:name
       })
+      const app = getApp()
+      
       const timer = setTimeout(()=>{
         this.setData({showHeroTip:false})
       },3000)

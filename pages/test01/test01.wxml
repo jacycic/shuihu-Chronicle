@@ -36,13 +36,13 @@
       <!-- 左侧功能：排行榜、公告 -->
       <view class="func-left">
         <view class="func-item">
-          <view class="func-icon-box">
+          <view class="func-icon-box" bind:tap="ClickSound">
             <image class="func-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/row.png" mode="aspectFit" bindtap="goChart" />
           </view>
           <text>排行榜</text>
         </view>
         <view class="func-item" bindtap="openNoticePopup">
-          <view class="func-icon-box">
+          <view class="func-icon-box" bind:tap="ClickSound">
             <image class="func-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/note.png" mode="aspectFit"  />
           </view>
           <view class="red-dot"></view>
@@ -53,16 +53,33 @@
       <!-- 右侧功能：用户、趣味问答 -->
       <view class="func-right">
         <view class="func-item" bindtap="goUser">
-          <view class="func-icon-box">
+          <view class="func-icon-box" bind:tap="ClickSound">
             <image class="func-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/user.png" mode="aspectFill"></image>
           </view>
           <text>用户</text>
         </view>
-        <view class="func-item" bindtap="goQuizzes">
-          <view class="func-icon-box">
+        <view class="func-item" bindtap="goQuizzes" >
+          <view class="func-icon-box" bind:tap="ClickSound">
             <image class="func-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/quizzes.png" mode="aspectFit" />
           </view>
           <text>趣味问答</text>
+        </view>
+        <view class="func-item" bindtap="toggleBgm" >
+          <view class="func-icon-box" bind:tap="ClickSound">
+            <image 
+              class="func-img" 
+              wx:if="{{bgmPlaying}}"
+              src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/offmusic.png" 
+              mode="aspectFit" 
+            />
+            <image 
+              class="func-img" 
+              wx:else
+              src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/onmusic.png" 
+              mode="aspectFit" 
+            />
+          </view>
+          <text>音乐</text>
         </view>
       </view>
     </view>
@@ -72,25 +89,25 @@
   <view class="scene"></view>
 
   <!-- 开始按钮 -->
-  <view class="start-btn-wrap">
-    <view class="start-btn" bindtap="goSection">开始</view>
+  <view class="start-btn-wrap" bind:tap="ClickSound">
+    <view class="start-btn" bindtap="goSection" >开始</view>
   </view>
 
   <!-- 底部自定义Tab栏 -->
   <view class="tab-bar">
-    <view class="tab-item">
+    <view class="tab-item" bind:tap="ClickSound">
       <view class="tab-icon-box">
         <image class="tab-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/mans.png" mode="aspectFit" bindtap="goMans" />
       </view>
       <text class="tab-text">好汉</text>
     </view>
-    <view class="tab-item">
+    <view class="tab-item" bind:tap="ClickSound">
       <view class="tab-icon-box">
         <image class="tab-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/achievements.png" mode="aspectFit" bindtap="goAchievements" />
       </view>
       <text class="tab-text">成就</text>
     </view>
-    <view class="tab-item">
+    <view class="tab-item" bind:tap="ClickSound">
       <view class="tab-icon-box">
         <image class="tab-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/codex.png" mode="aspectFit" bindtap="goCodex" />
       </view>
@@ -104,7 +121,7 @@
     <view class="popup-box" bindtap="catchTap">
       <view class="popup-title">公告</view>
       <view class="popup-content">
-欢迎来到水浒传好汉图鉴！
+欢迎来到水浒风云录----水浒科普小程序！
 后续会持续更新好汉资料与剧情。
       </view>
       <view class="popup-close-btn" bindtap="closeNoticePopup">关闭</view>

@@ -1,8 +1,24 @@
 App({
   globalData: {
+    bgmAudio: null,
     // 本次测试匹配出来的好汉对象
     heroResult: null,
     // 全部好汉静态档案，全局共享
+    bgmPlaying: false, // 记录是否正在播放
+    currentBgmIndex: 0, // 当前播放曲目下标
+    heroSceneUnlock: {},
+    soundList:{
+      click:"https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/bgm/click.mp3",
+      tips:"https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/bgm/tips.mp3",
+      section:"https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/bgm/section.mp3",
+    },
+    // 4首BGM地址
+    bgmList: [
+      "https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/bgm/bgm1.mp3",
+      "https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/bgm/bgm2.mp3",
+      "https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/bgm/bgm3.mp3",
+      "https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/bgm/bgm4.mp3"
+    ],
    
     heroList: [
       { name:"宋江", nick:"呼保义", star:"天魁星", ren:78, yi:85, li:82, zhi:76, xin:72,
@@ -1206,16 +1222,82 @@ App({
     ],
     heroSceneUnlock: {}
   },
+
+  playSound(soundKey) {
+    const src = this.globalData.soundList[soundKey]
+    if(!src) return
+    // 创建独立音效实例
+    const sound = wx.createInnerAudioContext()
+    sound.src = src
+    sound.loop = false
+    sound.play()
+    // 播放完成销毁实例，释放内存
+    sound.onEnded(()=>{
+      sound.destroy()
+    })
+    sound.onError(err=>{
+      console.error("音效播放失败",err)
+      sound.destroy()
+    })
+  },
   onLaunch() {
-    console.log("app.js onLaunch 执行了")
+    const bgmAudio = wx.createInnerAudioContext()
+    this.globalData.bgmAudio = bgmAudio
+    // 设置第一首音源
+    bgmAudio.src = this.globalData.bgmList[this.globalData.currentBgmIndex]
+    // ❗ 关掉loop！！自动切歌不能开启loop，loop会单曲循环不会触发onEnded
+    bgmAudio.loop = false
+
+    // 播放事件：同步状态
+    bgmAudio.onPlay(() => {
+      this.globalData.bgmPlaying = true
+    })
+    bgmAudio.onPause(() => {
+      this.globalData.bgmPlaying = false
+    })
+
+    // ===== 歌曲播放结束回调，自动切下一首 =====
+    bgmAudio.onEnded(() => {
+      const list = this.globalData.bgmList
+      let idx = this.globalData.currentBgmIndex
+      idx++
+      // 到最后一首，重置回第一首
+      if (idx >= list.length) {
+        idx = 0
+      }
+      this.globalData.currentBgmIndex = idx
+      bgmAudio.src = list[idx]
+      bgmAudio.play()
+    })
+
+    bgmAudio.onError((err) => {
+      console.error("BGM播放错误：", err)
+    })
 
     const cache = wx.getStorageSync("heroSceneUnlockStorage")
-
     if (cache) {
       this.globalData.heroSceneUnlock = cache
       console.log("从缓存读取解锁进度", cache)
     } else {
       console.log("没有缓存，使用空对象")
     }
+  },
+
+
+  toggleGlobalBgm() {
+    const bgmAudio = this.globalData.bgmAudio
+    const isPaused = bgmAudio.paused
+    
+    // 取消静音 → 播放音频
+    if (isPaused) {
+      // 当前暂停 → 播放
+      bgmAudio.play()
+    } else {
+      // 当前正在播放 → 暂停
+      bgmAudio.pause()
+    }
+    // 把播放状态存到global，页面用来渲染图片
+    this.globalData.bgmPlaying = !isPaused
+    return this.globalData.bgmPlaying
   }
 })

@@ -1,23 +1,45 @@
+<video class="bg-video" 
+src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/autumn.mp4" 
+autoplay 
+loop 
+muted 
+object-fit="cover" 
+controls="{{false}}" 
+show-center-play-btn="{{false}}" 
+show-progress="{{false}}">
+</video>
+
+<!-- 自定义顶部返回栏 -->
+<view class="custom-nav">
+  <view class="back-btn" bindtap="goBackTest01">
+    <text>⬅</text>
+  </view>
+</view>
 <globaltips id="unlockTipRef"></globaltips>
 <view class="page">
-  <!-- 顶部背景图（和首页梁山雪景保持一致） -->
   <image class="bg-img" src="" mode="aspectFill"></image>
-  
 
   <view class="container">
+
     <!-- 头部用户信息卡片 -->
     <view class="user-card">
-      <!-- 头像：chooseAvatar 更换头像 -->
-      <view class="avatar-btn" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+      <view class="avatar-box">
+        <button class="avatar-btn-inner"
+          open-type="chooseAvatar"
+          bind:chooseavatar="onChooseAvatar"
+          binderror="onAvatarError"
+          disabled="{{isSelectingAvatar}}">
+        </button>
         <image class="avatar-img" src="{{avatarUrl}}" mode="aspectFill"></image>
       </view>
+
       <view class="user-info">
         <view class="nickname">{{nickname}}</view>
         <view class="desc">梁山好汉收集者</view>
       </view>
     </view>
 
-    <!-- 数据统计卡片 -->
+    <!-- 数据统计卡片：改成通栏，和头像卡片一样宽 -->
     <view class="stat-card">
       <view class="stat-item">
         <view class="num">{{collectCount}}</view>
@@ -33,7 +55,7 @@
       </view>
     </view>
 
-    <!-- 功能菜单列表 -->
+    <!-- 功能菜单列表：也改成通栏卡片 -->
     <view class="menu-card">
       <view class="menu-item" bindtap="clearAvatar">
         <text>重置头像</text>
@@ -53,9 +75,9 @@
       </view>
     </view>
 
-    <!-- 关于 -->
     <view class="about-card">
-      <text class="about-text">水浒传好汉图鉴 · 版本1.5.0</text>
+      <text class="about-text">水浒传好汉图鉴 · 版本1.9.0</text>
     </view>
+
   </view>
 </view>

@@ -14,7 +14,8 @@ Page({
     chatList: [],
     lastChatId: "",
     sceneDialog: [], // 当前场景对话脚本
-    dialogStep: 0
+    dialogStep: 0,
+    scrollTopVal:0 // 新增滚动变量
   },
 
   onLoad(options) {
@@ -91,7 +92,8 @@ Page({
       lastChatId: "",
       sceneDialog: sceneDialog,
       dialogStep: 0,
-      heroAvatar: this.data.heroImg // ✅新增：把当前好汉图片存入data
+      heroAvatar: this.data.heroImg, // ✅新增：把当前好汉图片存入data
+      scrollTopVal:0 // 打开弹窗时，滚动条重置到顶部
     })
   },
 
@@ -122,8 +124,6 @@ Page({
   },
 
   // 点击聊天区域，推进对话
-    // 点击聊天区域，推进对话
-    // 点击聊天区域，推进对话
   tapChatArea() {
       const {sceneDialog, dialogStep, chatList,heroAvatar} = this.data
       const app = getApp()
@@ -154,10 +154,7 @@ Page({
           newMsg.avatar = currDialog.avatar || npcHero.imglist?.[0]?.img
         }else{
           // 不是好汉NPC，没有匹配到heroList
-          // 选项A：无头像，avatar为空，wxml不渲染图片
           newMsg.avatar = currDialog.avatar || "https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/npc/npc.png"
-          // 选项B：启用通用npc头像，把上面一行注释，启用下面这行
-          // newMsg.avatar = currDialog.avatar || "/images/default-npc.png"
         }
       }else{
         // user玩家对话，固定当前好汉头像
@@ -173,5 +170,16 @@ Page({
         lastChatId: msgId,
         dialogStep: dialogStep + 1
       })
-  }
+      // 延时执行滚动，等待dom渲染完成，真机关键修复
+      setTimeout(()=>{
+        this.setData({
+          scrollTopVal:99999
+        })
+      },60)
+  },
+  ClicknSound(){
+    const app = getApp()
+    app.playSound("click") // 播放点击音效
+    console.log('播放音效')
+  },
 })

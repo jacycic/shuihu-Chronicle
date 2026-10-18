@@ -1,5 +1,5 @@
-<view>
-  <view class="scene">
+<view class="page-wrap">
+  <view class="scene" bind:tap="ClicknSound">
     <view wx:for="{{sceneList}}" wx:key="name"
           class="scene-item {{index > unlockIndex ? 'scene-item-disabled' : ''}}"
           bindtap="openSceneDialog"
@@ -8,6 +8,7 @@
       <!-- 箭头：不是最后一个，并且当前场景已解锁，显示箭头 -->
       <view class="arrow" wx:if="{{index < sceneList.length-1 && index <= unlockIndex}}">→</view>
     </view>
+    
   </view>
 
   <!-- 场景弹窗 -->
@@ -22,9 +23,11 @@
       </view>
 
       <!-- 聊天区 ✅绑定点击事件 tapChatArea -->
-      <view class="dialog-section dialog-chat">
+      <view class="dialog-section dialog-chat" bind:tap="ClicknSound">
         <view class="section-title">聊天区（点击区域继续对话）</view>
-        <scroll-view class="chat-list" scroll-y bindtap="tapChatArea">
+        <!-- 增加 scroll-y ！！！ -->
+        <scroll-view class="chat-list" scroll-y bindtap="tapChatArea" scroll-top="{{scrollTopVal}}"
+        scroll-with-animation>
           <view wx:for="{{chatList}}" wx:key="id" class="chat-item {{item.side}}">
             <!-- 旁白 -->
             <view wx:if="{{item.side === 'narration'}}" class="narration-text">
@@ -58,7 +61,11 @@
 
       <!-- 底部关闭按钮，唯一关闭入口 -->
       <view class="dialog-close" bindtap="closeDialog">关闭</view>
-
     </view>
+  </view>
+  <view class="bottom-tab-wrap">
+    <view class="bottom-tab-item" bindtap="goMans">好汉</view>
+    <view class="bottom-tab-item" bindtap="goAchievements">成就</view>
+    <view class="bottom-tab-item" bindtap="goCodex">图鉴</view>
   </view>
 </view>

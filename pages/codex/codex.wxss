@@ -1,3 +1,10 @@
+page{
+  background-image: url("https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/background1.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
 .container {
   padding: 30rpx;
   display: grid;

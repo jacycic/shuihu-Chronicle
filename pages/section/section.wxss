@@ -1,3 +1,11 @@
+page{
+  background-image: url("https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/background1.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
 .ctrl{
   height:100vh ;
   display: flex;
@@ -32,6 +40,8 @@
   align-items: center;  /* 垂直居中 */
   justify-content:center; /* 水平居中 */
   color:#fff;
+  border: 2rpx solid gray;
+  
 }
 /* 点击按下效果 */
 .answer-item:active{
@@ -58,6 +68,7 @@
   margin:0;
   border-radius:12rpx;
   padding:20rpx 30rpx;
+  border: 2rpx solid gray;
 }
 .jump-btn::after{
   border:none;

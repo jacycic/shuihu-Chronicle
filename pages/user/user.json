@@ -1,5 +1,6 @@
 {
   "navigationBarTitleText": "个人中心",
   "navigationBarTransparent":true,
-  "navigationBarTextStyle":"white"
+  "navigationBarTextStyle":"white",
+  "navigationStyle": "custom"
 }

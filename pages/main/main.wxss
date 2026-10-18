@@ -1,6 +1,14 @@
+page{
+  background-image: url("https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/background1.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
 .action{
   border-radius: 12rpx;
   background-image: linear-gradient(90deg,#64C2CC,#1DACDB);
+  border: 2rpx solid gray;
 }
 
 .button-ctrl{
@@ -20,6 +28,7 @@
   bottom:0rpx;
   height:120rpx;
   display:flex;
+  border-top: 2rpx solid gray;
   /*只给大盒子 左上、右上圆角*/
   border-top-left-radius:12rpx;
   border-top-right-radius:12rpx;

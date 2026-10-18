@@ -122,4 +122,10 @@ Page({
       url:"/pages/codex/codex"
     })
   },
+  ClicknSound(){
+    const app = getApp()
+    app.playSound("click") // 播放点击音效
+    console.log('播放音效')
+  },
+  
 })

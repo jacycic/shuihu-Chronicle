@@ -1,14 +1,16 @@
 <!-- ✅新增手动输入好汉区域 -->
-<view class="input-wrap">
+<view class="input-wrap" >
   <input class="hero-input" placeholder="输入好汉名称直接跳转" bindinput="onInputHero" value="{{inputHeroName}}"/>
-  <button class="jump-btn" bindtap="manualJumpHero">前往</button>
+  <view bind:tap="ClicknSound">
+    <button class="jump-btn" bindtap="manualJumpHero">前往</button>
+  </view>
 </view>
 
 <view class="ctrl" wx:if="{{currentQuestion}}">
   <text class="text">{{currentQuestion.title}}</text>
 
   <!-- 第一行：选项0、1 -->
-  <view class="answer">
+  <view class="answer" bind:tap="SectionSound">
     <view class="answer-item" bindtap="chooseOption" data-idx="0">
       {{currentQuestion.options[0].text}}
     </view>
@@ -18,7 +20,7 @@
   </view>
 
   <!-- 第二行：选项2、3 -->
-  <view class="answer">
+  <view class="answer" bind:tap="SectionSound">
     <view class="answer-item" bindtap="chooseOption" data-idx="2">
       {{currentQuestion.options[2].text}}
     </view>

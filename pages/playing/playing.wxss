@@ -1,48 +1,127 @@
+page {
+  background-image: url("https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/background1.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: "KaiTi","STKaiti",system-ui, -apple-system, sans-serif;
+}
+
+.page-wrap{
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding-bottom: calc(140rpx + env(safe-area-inset-bottom));
+  position: relative;
+}
+
+/* 四角古风角花 */
+.page-wrap::after,
+.page-wrap .corner-decoration{
+  content:"";
+  position:absolute;
+  width:70rpx;
+  height:70rpx;
+  border-color:rgba(120,90,50,0.35);
+  border-style:solid;
+  pointer-events:none;
+}
+
+.page-wrap::after{
+  top:50rpx;
+  right:50rpx;
+  border-width:4rpx 4rpx 0 0;
+}
+
+.corner-tl{
+  top:50rpx;
+  left:50rpx;
+  border-width:4rpx 0 0 4rpx;
+}
+
+.corner-bl{
+  bottom:calc(140rpx + env(safe-area-inset-bottom) + 60rpx);
+  left:50rpx;
+  border-width:0 0 4rpx 4rpx;
+}
+
+.corner-br{
+  bottom:calc(140rpx + env(safe-area-inset-bottom) + 60rpx);
+  right:50rpx;
+  border-width:0 4rpx 4rpx 0;
+}
+
+/* 顶部标题区微调 */
+.title-bar{
+  position:relative;
+  z-index:2;
+  padding:40rpx 50rpx 20rpx;
+}
+
+.title-text{
+  font-size:32rpx;
+  color:#6b4a22;
+  letter-spacing:4rpx;
+}
+
+.title-underline{
+  width:120rpx;
+  height:4rpx;
+  background:linear-gradient(90deg,#c9a96e,transparent);
+  margin-top:10rpx;
+}
+
 /* 场景容器 */
 .scene{
+  position:relative;
+  z-index:2;
   display: flex;
   flex-direction: column;
-  gap: 32rpx;
-  padding: 60rpx 40rpx;
+  gap: 36rpx;
+  padding: 40rpx 40rpx 60rpx;
   align-items: center;
 }
-/* 场景按钮 */
+
+/* 场景按钮：和背景更统一 */
 .scene-item{
-  width: 480rpx;
+  width: 520rpx;
   display:flex;
   justify-content:space-between;
   align-items:center;
   box-sizing:border-box;
-  padding:24rpx 40rpx;
+  padding:28rpx 40rpx;
   text-align: center;
-  font-family: "KaiTi","STKaiti",system-ui, -apple-system, sans-serif;
   font-size: 34rpx;
-  color:#553a24;
-  background-color: #fffbf5;
-  border: 2rpx solid #c9b89f;
-  border-radius: 16rpx;
-  box-shadow: 0 4rpx 8rpx rgba(85,58,36,0.12);
+  color:#5b4020;
+  background-color: #fbf6e7;
+  border: 2rpx solid #d7c49a;
+  border-radius: 20rpx;
+  box-shadow:
+    0 6rpx 14rpx rgba(120,90,40,0.12),
+    inset 0 0 0 1rpx rgba(255,255,255,0.6);
   -webkit-font-smoothing: antialiased;
+  transition: all 0.18s ease;
 }
+
 .scene-item:active{
-  background-color: #f3e9d8;
+  background-color: #f5e9cb;
   transform: scale(0.97);
+  box-shadow:0 3rpx 8rpx rgba(120,90,40,0.15);
 }
-/* 右侧箭头 */
+
 .arrow{
   font-size:32rpx;
-  color:#8c5c38;
+  color:#a57940;
 }
-/* 未解锁禁用样式 */
+
 .scene-item-disabled{
-  background:#ece8e2;
-  color:#aaa;
-  border-color:#ddd;
+  background:#ece4d2;
+  color:#b4a587;
+  border-color:#d8cdb2;
   box-shadow:none;
 }
+
 .scene-item-disabled:active{
   transform:none;
-  background:#ece8e2;
+  background:#ece4d2;
 }
 
 /* 弹窗遮罩 */
@@ -52,18 +131,21 @@
   left:0;
   width:100vw;
   height:100vh;
-  background:rgba(0,0,0,0.6);
+  background:rgba(40,30,20,0.65);
   z-index:999;
   display:flex;
   align-items:center;
   justify-content:center;
+  box-sizing: border-box;
+  padding: calc(40rpx + env(safe-area-inset-top)) 30rpx calc(40rpx + env(safe-area-inset-bottom));
 }
+
 .dialog-box{
   width: 680rpx;
-  max-height: 90vh;
-  background:#fffbf5;
-  border:2rpx solid #c9b89f;
-  border-radius:24rpx;
+  max-height: 100%;
+  background:#fbf6e7;
+  border:2rpx solid #d7c49a;
+  border-radius:28rpx;
   padding:30rpx;
   box-sizing:border-box;
   font-family: "KaiTi","STKaiti",system-ui, -apple-system, sans-serif;
@@ -72,18 +154,18 @@
   gap:20rpx;
   overflow:hidden;
   -webkit-font-smoothing: antialiased;
+  box-shadow:0 10rpx 30rpx rgba(0,0,0,0.3);
 }
 
 /* 两个内容区通用 */
 .dialog-section{
-  background:#fff;
-  border:2rpx solid #d9ccb4;
-  border-radius:16rpx;
-  padding:20rpx;
+  background:#fffaf0;
+  border:2rpx solid #e2d4b0;
+  border-radius:18rpx;
+  padding:22rpx;
   box-sizing:border-box;
 }
 
-/* 介绍区 */
 .dialog-intro{
   flex: 0 0 auto;
 }
@@ -98,14 +180,14 @@
 .scene-name{
   font-size:34rpx;
   font-weight:bold;
-  color:#553a24;
+  color:#5b4020;
   margin-bottom:8rpx;
   -webkit-font-smoothing: antialiased;
 }
 
 .scene-desc{
   font-size:28rpx;
-  color:#443322;
+  color:#4a3520;
   line-height:1.6;
   -webkit-font-smoothing: antialiased;
 }
@@ -119,10 +201,11 @@
   -webkit-font-smoothing: antialiased;
 }
 
+/* =========重点改这里：恢复固定高度，scroll-y才能生效 =========*/
 .chat-list{
-  height: 60vh;
-  background:#faf6ee;
-  border-radius:12rpx;
+  height: 54vh;
+  background:#f7efdc;
+  border-radius:14rpx;
   padding:20rpx;
   box-sizing:border-box;
   -webkit-font-smoothing: antialiased;
@@ -130,81 +213,82 @@
 
 .chat-item{
   display:flex;
-  margin-bottom:20rpx;
+  margin-bottom:22rpx;
   width:100%;
 }
 
-/* ===== 消息行布局【调换左右：user左，npc右】 ===== */
 .msg-row{
   display:flex;
   gap:16rpx;
   align-items:flex-start;
   width:100%;
 }
-/* NPC 右边 */
+
 .bot-row{
   justify-content:flex-end;
 }
-/* 用户消息 左边 */
+
 .user-row{
   justify-content:flex-start;
 }
 
-/* 头像盒子 默认白色方形 */
 .avatar-box{
   width:72rpx;
   height:72rpx;
-  border-radius:8rpx;
-  border:1rpx solid #ccc;
+  border-radius:10rpx;
+  border:1rpx solid #d9c9a3;
   flex-shrink:0;
+  overflow:hidden;
+  background:#fff;
 }
+
 .msg-content{
   display:flex;
   flex-direction:column;
   max-width: calc(75% - 80rpx);
 }
+
 .msg-name{
   font-size:24rpx;
-  color:#666;
+  color:#7a5a30;
   margin-bottom:6rpx;
   -webkit-font-smoothing: antialiased;
 }
-/* NPC名字靠右 */
+
 .user-name{
   text-align:right;
 }
-/* 旁白样式，居中 */
+
 .narration-text{
   width:100%;
   text-align:center;
   font-size:26rpx;
-  color:#776448;
+  color:#8a6a40;
   padding:12rpx 0;
   -webkit-font-smoothing: antialiased;
 }
+
 .chat-bubble{
   max-width:75%;
   padding:16rpx 24rpx;
-  border-radius:20rpx;
+  border-radius:22rpx;
   font-size:28rpx;
-  line-height:1.5;
+  line-height:1.6;
+  word-break:break-all;
   -webkit-font-smoothing: antialiased;
 }
-/* 用户（左侧）气泡：白底棕边框 */
+
 .chat-item.user .chat-bubble{
-  background:#d77253;
+  background:#c75a3a;
   color:#ffffff;
-  
-}
-/* NPC好汉（右侧）气泡：红棕色背景白字 */
-.chat-item.bot .chat-bubble{
-  background:#fff;
-  
-  border:2rpx solid #d9ccb4;
-  color:#443322;
 }
 
-/* 底部关闭按钮 */
+.chat-item.bot .chat-bubble{
+  background:#fff;
+  border:2rpx solid #e2d4b0;
+  color:#4a3520;
+}
+
 .dialog-close{
   width:100%;
   text-align:center;
@@ -213,19 +297,22 @@
   padding:24rpx 0;
   border-radius:99rpx;
   font-size:30rpx;
+  transition:opacity 0.15s;
 }
+
 .dialog-close:active{
   opacity:0.8;
 }
 
-/* 美化滚动条 */
 .chat-list::-webkit-scrollbar {
   width: 6rpx;
 }
+
 .chat-list::-webkit-scrollbar-thumb {
   background: #c9b89f;
   border-radius: 6rpx;
 }
+
 .chat-list::-webkit-scrollbar-track {
   background: transparent;
 }
@@ -233,5 +320,45 @@
 .avatar-box image{
   width:100%;
   height:100%;
-  border-radius:8rpx;
+  border-radius:10rpx;
+}
+
+/* 底部 Tab */
+.bottom-tab-wrap {
+  position: fixed;
+  left: 0rpx;
+  right: 0rpx;
+  bottom: 0rpx;
+  height:120rpx;
+  display:flex;
+  border-top-left-radius:40rpx;
+  border-top-right-radius:40rpx;
+  overflow:hidden;
+  background-image: linear-gradient(90deg,#64C2CC,#1DACDB);
+  padding-bottom: env(safe-area-inset-bottom);
+  box-sizing: border-box;
+  z-index:99;
+
+  box-shadow:
+    0 -4rpx 16rpx rgba(30,140,170,0.25),
+    inset 0 2rpx 0 rgba(255,255,255,0.25);
+}
+
+.bottom-tab-item {
+  flex: 1;
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size: 36rpx;
+  color:#ffffff;
+  border-right: 2rpx solid rgba(255,255,255,0.35);
+}
+
+.bottom-tab-item:last-child{
+  border-right:none;
+}
+
+.bottom-tab-item:active{
+  background:rgba(255,255,255,0.18);
 }

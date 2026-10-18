@@ -306,5 +306,15 @@ Page({
     wx.navigateTo({
       url: `/pages/main/main?role=${encodeURIComponent(inputName)}&isNewUnlock=${isNewUnlock}`
     })
+  },
+  SectionSound(){
+    const app = getApp()
+    app.playSound("section") // 播放点击音效
+    console.log('播放音效')
+  },
+  ClicknSound(){
+    const app = getApp()
+    app.playSound("click") // 播放点击音效
+    console.log('播放音效')
   }
 })
