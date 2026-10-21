@@ -1299,5 +1299,12 @@ App({
     // 把播放状态存到global，页面用来渲染图片
     this.globalData.bgmPlaying = !isPaused
     return this.globalData.bgmPlaying
+  },
+
+  onLaunch(){
+    wx.cloud.init({
+      env: "cloud1-d5gfygc8z412eb684",
+      traceUser: true
+    })
   }
 })

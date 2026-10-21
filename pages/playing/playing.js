@@ -182,4 +182,19 @@ Page({
     app.playSound("click") // 播放点击音效
     console.log('播放音效')
   },
+  goMans(){
+    wx.navigateTo({
+      url:`/pages/mans/mans`
+    })
+  },
+  goAchievements(){
+    wx.navigateTo({
+      url:`/pages/achievements/achievements`
+    })
+  },
+  goCodex(){
+    wx.navigateTo({
+      url:`/pages/codex/codex`
+    })
+  }
 })

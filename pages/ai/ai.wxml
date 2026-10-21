@@ -1,0 +1,20 @@
+<view class="container">
+  <scroll-view scroll-y class="chat-box">
+    <view wx:for="{{messages}}" wx:key="index" class="msg-item {{item.role === 'user' ? 'user-row' : 'ai-row'}}">
+      <view wx:if="{{item.role === 'assistant'}}" class="avatar ai-avatar">🤖</view>
+      <view class="msg">{{item.content}}</view>
+      <view wx:if="{{item.role === 'user'}}" class="avatar user-avatar">😊</view>
+    </view>
+  </scroll-view>
+
+  <view class="input-bar">
+    <button class="btn-clear" bindtap="clearChat">清空</button>
+    <input
+      class="input-main"
+      value="{{inputText}}"
+      bindinput="inputChange"
+      placeholder="输入消息"
+    />
+    <button class="btn-send" bindtap="send">发送</button>
+  </view>
+</view>

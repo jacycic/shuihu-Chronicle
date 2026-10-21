@@ -41,6 +41,7 @@
           </view>
           <text>排行榜</text>
         </view>
+        
         <view class="func-item" bindtap="openNoticePopup">
           <view class="func-icon-box" bind:tap="ClickSound">
             <image class="func-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/note.png" mode="aspectFit"  />
@@ -48,6 +49,13 @@
           <view class="red-dot"></view>
           <text>公告</text>
         </view>
+        <view class="func-item" bind:tap="goAi">
+            <view class="func-icon-box">
+              <image class="func-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/ai.png" mode=""/>
+            </view>
+            <view>ai</view>
+        </view>
+        
       </view>
 
       <!-- 右侧功能：用户、趣味问答 -->

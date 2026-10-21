@@ -54,6 +54,9 @@ Page({
   goQuizzes(){
     wx.navigateTo({url:"/pages/quizzes/quizzes"})
   },
+  goAi(){
+    wx.navigateTo({url:"/pages/ai/ai"})
+  },
 
 
   //公告弹窗
