@@ -1,4 +1,4 @@
-/* pages/achievements/achievements.wxss */
+/* pages/achievements/achievements.wxss 成就页面样式 */
 .container {
   padding: 40rpx 30rpx;
   background-color: #f8f5f0;
@@ -15,13 +15,15 @@
   text-align: center;
 }
 
+/* 网格容器：4列自适应 */
 .achievement-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20rpx;
-  align-content: flex-start; /* 核心！从顶部开始排布，空白留在下方，不会把卡片挤下去 */
+  align-content: flex-start; /* 从顶部排布，避免内容拉伸 */
 }
 
+/* 成就卡片基础样式 */
 .achievement-item {
   width: 100%;
   display: flex;
@@ -35,6 +37,7 @@
   box-sizing: border-box;
 }
 
+/* 图标容器 */
 .icon-area {
   width: 60rpx;
   height: 60rpx;
@@ -55,18 +58,18 @@
   text-align: center;
 }
 
-/* 已解锁成就 */
+/* 已解锁卡片样式 */
 .achievement-item.unlocked {
   background: #fff8e1;
   opacity: 1;
 }
 
-
+/* 未解锁文字置灰 */
 .achievement-item.locked .text-area {
   color: #bbb;
 }
 
-/* 顶部标题行 */
+/* 顶部标题行弹性布局 */
 .header-row {
   display: flex;
   align-items: center;
@@ -74,7 +77,7 @@
   margin-bottom: 30rpx;
 }
 
-/* 左右统计标签 */
+/* 统计标签通用 */
 .stat-tag {
   font-size: 24rpx;
   font-weight: 600;
@@ -83,14 +86,12 @@
   border: 2rpx solid #e2d9cc;
 }
 
-/* 已解锁标签 */
 .unlocked-tag {
   color: #6b2814;
   background: #fff8e1;
   border-color: #e8d5a7;
 }
 
-/* 未解锁标签 */
 .locked-tag {
   color: #8a7a66;
   background: #f4f1e9;

@@ -50,10 +50,10 @@
           <text>公告</text>
         </view>
         <view class="func-item" bind:tap="goAi">
-            <view class="func-icon-box">
+            <view class="func-icon-box" bind:tap="ClickSound">
               <image class="func-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/ai.png" mode=""/>
             </view>
-            <view>ai</view>
+            <view>ai小浒</view>
         </view>
         
       </view>

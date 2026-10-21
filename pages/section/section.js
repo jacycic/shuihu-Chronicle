@@ -1,5 +1,13 @@
 const app = getApp()
 Page({
+  /**
+   * 人格测试页面数据
+   * questionList：全部题目数组
+   * userScore：用户五项维度得分 仁、义、礼、智、信，初始全0
+   * currentIndex：当前题目下标
+   * currentQuestion：当前展示的题目对象
+   * inputHeroName：好汉手动输入框绑定值，用于直接跳转好汉详情
+   */
   data: {
     questionList: [],
     userScore: {
@@ -11,9 +19,14 @@ Page({
     },
     currentIndex: 0,
     currentQuestion: null,
-    inputHeroName:"" // ✅新增：输入框绑定数据
+    inputHeroName:""
   },
 
+  /**
+   * Fisher-Yates 洗牌算法，打乱数组顺序
+   * @param {Array} arr 待打乱数组
+   * @returns {Array} 打乱后的新数组
+   */
   shuffle(arr) {
     let newArr = [...arr]
     for (let i = newArr.length - 1; i > 0; i--) {
@@ -23,10 +36,16 @@ Page({
     return newArr
   },
 
+  // 页面加载，初始化题目
   onLoad(options) {
     this.initQuestion()
   },
 
+  /**
+   * 初始化题目核心函数
+   * 题库分为：仁/义/礼/智/信单项题、混合维度题、趣味不计分题
+   * 每组题库随机抽取一题，9道计分题打乱顺序，最后固定放趣味题
+   */
   initQuestion() {
     // 题库：每题单项最高+2，5题单项拉满就能拿到单项10分上限
     const questionBank = {
@@ -152,7 +171,7 @@ Page({
       ]
     }
 
-    // 9道计分题 + 1道趣味题（固定最后，不计分）
+    // 每组题库随机抽一题，得到9道计分题 + 1道趣味题（不计分，放最后）
     const q1 = this.shuffle(questionBank.renList)[0]
     const q2 = this.shuffle(questionBank.yiList)[0]
     const q3 = this.shuffle(questionBank.liList)[0]
@@ -164,6 +183,7 @@ Page({
     const q9 = this.shuffle(questionBank.mix4List)[0]
     const q10 = questionBank.funList[0]
 
+    // 打乱9道计分题顺序，趣味题固定放在末尾
     const scoreQuestion = this.shuffle([q1, q2, q3, q4, q5, q6, q7, q8, q9])
     const finalQuestions = [...scoreQuestion, q10]
 
@@ -171,6 +191,7 @@ Page({
       questionList: finalQuestions,
       currentIndex: 0,
       currentQuestion: finalQuestions[0],
+      // 重置五项分数为0
       userScore: {
         ren: 0,
         yi: 0,
@@ -181,17 +202,22 @@ Page({
     })
   },
 
+  /**
+   * 选择选项
+   * 点击事件，携带选项下标idx
+   */
   chooseOption(e) {
     const idx = e.currentTarget.dataset.idx
     const opt = this.data.currentQuestion.options[idx]
     const score = this.data.userScore
+    // 累加该选项对应的五项分值
     score.ren += opt.score.ren
     score.yi += opt.score.yi
     score.li += opt.score.li
     score.zhi += opt.score.zhi
     score.xin += opt.score.xin
 
-    // 限制单项最高10分，防止溢出
+    // 单项上限锁定为10，防止分数溢出
     if(score.ren>10) score.ren=10
     if(score.yi>10) score.yi=10
     if(score.li>10) score.li=10
@@ -204,6 +230,7 @@ Page({
     console.log("当前得分：", this.data.userScore)
 
     const next = this.data.currentIndex + 1
+    // 题目答完，进入匹配好汉逻辑；否则切换下一题
     if (next >= this.data.questionList.length) {
       this.matchHeroByTotalScore()
     } else {
@@ -214,14 +241,15 @@ Page({
     }
   },
 
-  // ========= 新匹配函数：总分区间 + 区间内随机 =========
-   // 新匹配函数：自动读取app.globalData.heroList，计算好汉总分，自动分组
-   matchHeroByTotalScore() {
+  /**
+   * 匹配好汉主逻辑：根据用户总分划分区间，在对应区间池随机抽取好汉
+   */
+  matchHeroByTotalScore() {
     const us = this.data.userScore
     const userTotal = us.ren + us.yi + us.li + us.zhi + us.xin
     console.log("用户五项得分：", us, " 用户总分：", userTotal)
 
-    // 1. 读取全局好汉列表，计算每个好汉自身总分
+    // 1. 读取全局好汉列表，预先计算每个好汉的五项总分
     let heroPool = app.globalData.heroList.map(h => {
       const heroTotal = h.ren + h.yi + h.li + h.zhi + h.xin
       return {
@@ -230,10 +258,10 @@ Page({
       }
     })
 
-    // 2. 按好汉总分从小到大排序
+    // 2. 按照好汉总分从小到大排序
     heroPool.sort((a,b)=> a.heroTotal - b.heroTotal)
 
-    // 3. 把108好汉切成5等分，5个区间池
+    // 3. 将全部好汉平均切分为5个分数区间池子
     const totalHeroCount = heroPool.length
     const partLen = Math.floor(totalHeroCount / 5)
 
@@ -243,7 +271,7 @@ Page({
     const zoneMidHigh = heroPool.slice(partLen*3, partLen*4)     // 中高 60~80%
     const zoneHigh = heroPool.slice(partLen*4)                    // 高分 80~100%
 
-    // 4. 根据用户总分（0~50）选择对应好汉池
+    // 4. 根据用户0~50的总分，选中对应的好汉池
     let targetPool
     if(userTotal <= 9){
       targetPool = zoneLow
@@ -257,12 +285,13 @@ Page({
       targetPool = zoneHigh
     }
 
-    // 5. 在当前池子随机抽一个好汉
+    // 5. 在目标池内随机抽取一名好汉
     const randomHero = targetPool[Math.floor(Math.random() * targetPool.length)]
     const heroName = randomHero.name
+    // 存入全局，供好汉详情页读取
     app.globalData.heroResult = randomHero
 
-    // 解锁存储逻辑不变
+    // 好汉解锁持久化存储
     let isNewUnlock = false
     let unlockList = wx.getStorageSync('unlockHero') || []
     if (!unlockList.includes(heroName)) {
@@ -271,30 +300,36 @@ Page({
       isNewUnlock = true
     }
 
+    // 跳转到好汉详情页，传递好汉名称、是否新解锁标记
     wx.navigateTo({
       url: `/pages/main/main?role=${encodeURIComponent(heroName)}&isNewUnlock=${isNewUnlock}`,
     })
   },
 
-  // ✅ 【新增】手动输入好汉跳转，逻辑和答题结束跳转完全一致
+  /**
+   * 输入框绑定事件，接收用户输入的好汉名字
+   */
   onInputHero(e){
     this.setData({
       inputHeroName:e.detail.value
     })
   },
+  /**
+   * 手动输入好汉直接跳转详情，和测试匹配的解锁逻辑完全一致
+   */
   manualJumpHero(){
     const inputName = this.data.inputHeroName.trim()
     if(!inputName){
       wx.showToast({title:"请输入好汉名字",icon:"none"})
       return
     }
-    // 在全局heroList查找
+    // 在全局好汉列表查找对应好汉
     const targetHero = app.globalData.heroList.find(item=>item.name === inputName)
     if(!targetHero){
       wx.showToast({title:"该好汉不存在",icon:"none"})
       return
     }
-    // 存入全局，和答题逻辑保持一致
+    // 存入全局结果
     app.globalData.heroResult = targetHero
     let isNewUnlock = false
     let unlockList = wx.getStorageSync('unlockHero') || []
@@ -307,14 +342,16 @@ Page({
       url: `/pages/main/main?role=${encodeURIComponent(inputName)}&isNewUnlock=${isNewUnlock}`
     })
   },
+  // 播放section音效
   SectionSound(){
     const app = getApp()
-    app.playSound("section") // 播放点击音效
+    app.playSound("section")
     console.log('播放音效')
   },
+  // 播放click点击音效
   ClicknSound(){
     const app = getApp()
-    app.playSound("click") // 播放点击音效
+    app.playSound("click")
     console.log('播放音效')
   }
 })

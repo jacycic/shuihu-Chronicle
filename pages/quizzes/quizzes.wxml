@@ -11,7 +11,7 @@
     </view>
     <view class="text">{{questionList[current].title}}</view>
 
-    <view class="answer">
+    <view class="answer" bind:tap="SectionSound">
       <view class="answer-item" bindtap="selectAnswer" data-idx="0">
         {{questionList[current].opt[0]}}
       </view>

@@ -4,6 +4,15 @@ page{
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
+  /* 禁止页面滚动！核心 */
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* 外层改成纵向弹性布局，整屏分配空间 */
+page{
+  display: flex;
+  flex-direction: column;
 }
 
 .ctrl{
@@ -54,6 +63,7 @@ page{
   gap:20rpx;
   padding:40rpx 30rpx;
   align-items:center;
+  flex-shrink: 0;
 }
 .hero-input{
   flex:1;
@@ -61,6 +71,7 @@ page{
   border-radius:12rpx;
   padding:20rpx;
   font-size:30rpx;
+  
 }
 .jump-btn{
   background:#1DACDB;
@@ -75,7 +86,8 @@ page{
 }
 
 .ctrl{
-  height:100vh ;
+  /* 不再写 height:100vh！！ */
+  flex: 1; /* 占据输入框剩下的全部剩余空间 */
   display: flex;
   flex-direction: column;
   justify-content:center;

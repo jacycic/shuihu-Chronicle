@@ -1,4 +1,10 @@
 Page({
+  /**
+   * 页面数据
+   * achievementList：成就配置列表，存放所有成就的规则、文案、图标等信息
+   * unlockedCount：已解锁成就数量
+   * lockedCount：未解锁成就数量
+   */
   data:{
     achievementList: [
       {
@@ -7,15 +13,15 @@ Page({
         unlocked: false,
         icon: "https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/finish.png",
         heroes: [],
-        isFirstEnter: true // 标记：首次进入解锁
+        isFirstEnter: true  // 标记：特殊成就，不靠好汉解锁，单独存储标记判断
       },
       {
         name: "私人定制",
         desc: "修改你的梁山昵称，自定义头像",
-        unlocked: !!wx.getStorageSync('ach_privateCustom'),
+        unlocked: false,
         icon: "",
         heroes: [],
-        needEditInfo: true //标记：修改头像昵称解锁
+        needEditInfo: true  // 标记：特殊成就，修改资料触发解锁，单独存储标记
       },
       {
         name: "好奇宝宝",
@@ -23,14 +29,14 @@ Page({
         unlocked: false,
         icon: "",
         heroes: [],
-        total: 5
+        total: 5  // 规则类型：累计解锁好汉数量达到 total 值即解锁
       },
       {
         name: "谁说女子不如男",
         desc: "解锁三名女将：扈三娘、顾大嫂、孙二娘",
         unlocked: false,
         icon: "",
-        heroes: ["扈三娘", "顾大嫂", "孙二娘"]
+        heroes: ["扈三娘", "顾大嫂", "孙二娘"] // 规则类型：列表内所有好汉全部解锁才解锁成就
       },
       {
         name: "三十六天罡",
@@ -113,56 +119,86 @@ Page({
     unlockedCount: 0,
     lockedCount: 0
   },
+
+  // 页面加载时，刷新成就解锁状态
   onLoad(options){
     this.refreshAchievement()
   },
+
+  // 页面每次显示时，重新校验成就（从别的页面回来同步状态）
   onShow(){
     this.refreshAchievement()
   },
-  // 刷新成就解锁状态
+
+  /**
+   * 刷新、校验所有成就解锁状态，核心函数
+   * 读取本地存储的解锁好汉列表，按每条成就规则判断是否解锁
+   */
   refreshAchievement() {
+    // 获取本地已经解锁的好汉数组
     const unlockHero = wx.getStorageSync('unlockHero') || []
     const unlockCount = unlockHero.length
-    // 读取标记：是否已经解锁【以史为镜】成就
+    // “以史为镜”成就单独标记
     const isUnlockYiShi = wx.getStorageSync('ach_yswj') || false
+    // 读取上一次保存的成就状态，用来对比判断本次有没有新解锁
+    const oldList = wx.getStorageSync('achievementList') || []
 
+    // 遍历成就配置，逐条计算解锁状态
     const newList = this.data.achievementList.map(item => {
       let unlocked = false
-
-      // 【移除原来写死的固定解锁】
-      // 以史为镜：看缓存标记
       if(item.isFirstEnter){
+        // 规则1：以史为镜，读取独立标记
         unlocked = isUnlockYiShi
-      }
-      // 私人定制：修改昵称头像后解锁，你后续在user页面修改信息时设置这个缓存标记
-      else if(item.needEditInfo){
+      } else if(item.needEditInfo){
+        // 规则2：私人定制，修改资料独立标记
         unlocked = wx.getStorageSync('ach_privateCustom') || false
-      }
-      // 按总数判断：好奇宝宝、一百单八将
-      else if (item.total) {
+      } else if (item.total) {
+        // 规则3：数量型成就：解锁好汉总数 >= 目标数量
         unlocked = unlockCount >= item.total
-      }
-      // 按指定好汉判断
-      else if (item.heroes && item.heroes.length > 0) {
+      } else if (item.heroes && item.heroes.length > 0) {
+        // 规则4：集合型成就：数组内全部好汉都解锁
         unlocked = item.heroes.every(name => unlockHero.includes(name))
       }
-
+      // 返回新对象，保留原有配置，更新unlocked状态
       return {
         ...item,
         unlocked
       }
     })
+
+    // 筛选【本次刷新刚刚解锁】的成就（旧状态未解锁，新状态解锁）
+    const newUnlockArr = newList.filter(newItem => {
+      const oldItem = oldList.find(o => o.name === newItem.name)
+      return newItem.unlocked && (!oldItem || !oldItem.unlocked)
+    })
+
+    // 统计已解锁、未解锁成就数量
     const unlockedCount = newList.filter(item => item.unlocked).length
     const lockedCount = newList.length - unlockedCount
 
+    // 更新页面渲染数据
     this.setData({
       achievementList: newList,
       unlockedCount,
       lockedCount
     })
+    // 把最新成就状态存入本地缓存持久化
     wx.setStorageSync('achievementList', newList)
+
+    // 触发自定义事件，通知父页面弹出成就解锁提示弹窗
+    newUnlockArr.forEach(item => {
+      this.triggerEvent('showAchievementTip', {
+        achName: item.name,
+        achDesc: item.desc,
+        achIcon: item.icon
+      })
+    })
   },
-  // 点击成就卡片
+
+  /**
+   * 点击成就条目
+   * 已解锁的成就，弹出模态框展示说明；未解锁点击无响应
+   */
   clickItem(e){
     const index = e.currentTarget.dataset.index
     const item = this.data.achievementList[index]

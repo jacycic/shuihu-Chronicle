@@ -10,22 +10,36 @@ Page({
     tabList: ["仁","义","礼","智","信","总和"]
   },
 
+  /**
+   * 页面加载时，构建所有排行榜数据
+   */
   onLoad() {
     this.buildFiveRank()
   },
+  /**
+   * 页面每次显示时重新生成榜单（解锁新好汉后进入页面自动刷新）
+   */
   onShow() {
     this.buildFiveRank()
   },
 
+
+  /**
+   * 核心：生成仁、义、礼、智、信、总分六个排行榜
+   * 只统计已经解锁的好汉
+   */
   buildFiveRank() {
+    // 获取全部好汉原始数据
     const app = getApp()
+    // 从缓存读取已解锁好汉名字数组
     const allHero = app.globalData.heroList
+    // 过滤，只保留已经解锁的好汉
     const unlockHeroNames = wx.getStorageSync('unlockHero') || []
     let unlockHeroList = allHero.filter(item => {
       return unlockHeroNames.includes(item.name)
     })
 
-    // 给每条好汉预先计算总分
+    // 给每个解锁好汉新增 totalScore 总分字段
     unlockHeroList = unlockHeroList.map(hero=>{
       return {
         ...hero,
@@ -42,6 +56,7 @@ Page({
       return this.addRankNumber(arr, field)
     }
 
+    // 分别生成六个榜单
     const renRank = sortByField('ren')
     const yiRank = sortByField('yi')
     const liRank = sortByField('li')
@@ -49,6 +64,7 @@ Page({
     const xinRank = sortByField('xin')
     const totalRank = sortByField('totalScore')
 
+    // 一次性更新页面榜单数据，渲染视图
     this.setData({
       renRank,
       yiRank,
@@ -59,6 +75,7 @@ Page({
     })
   },
 
+  //  计算排名（同分并列逻辑）
   addRankNumber(list, field) {
     if(list.length ===0) return []
     const res = []
@@ -77,8 +94,11 @@ Page({
     return res
   },
 
+  // 切换标签页
   tabChange(e){
+    // 取出当前点击标签的下标
     const index = e.currentTarget.dataset.index
+    // 更新激活标签下标，视图自动切换到对应榜单
     this.setData({activeTab: index})
   }
 })

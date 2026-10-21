@@ -1,11 +1,13 @@
-<!--pages/achievements/achievements.wxml-->
+<!--pages/achievements/achievements.wxml 成就页面模板-->
 <view class="container">
-  
+  <!--顶部统计栏：已解锁/标题/未解锁 -->
   <view class="header-row">
     <view class="stat-tag unlocked-tag">已解锁 {{unlockedCount}}</view>
     <view class="page-title">梁山之旅</view>
     <view class="stat-tag locked-tag">未解锁 {{lockedCount}}</view>
   </view>
+
+  <!--成就网格布局 4列 -->
   <view class="achievement-grid">
     <view
       class="achievement-item {{item.unlocked ? 'unlocked' : 'locked'}}"
@@ -15,7 +17,7 @@
       data-index="{{index}}"
     >
       <view class="icon-area">
-        <!-- 已解锁：显示 finish 图；未解锁：不显示 -->
+        <!--已解锁才展示完成图标，未解锁隐藏-->
         <image
           wx:if="{{item.unlocked}}"
           src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/finish.png"
@@ -23,6 +25,7 @@
         />
       </view>
       <view class="text-area">
+        <!--未解锁名称隐藏为???，已解锁显示成就名-->
         {{item.unlocked ? item.name : "???"}}
       </view>
     </view>

@@ -13,7 +13,7 @@
       class="input-main"
       value="{{inputText}}"
       bindinput="inputChange"
-      placeholder="输入消息"
+      placeholder="你可以问有关水浒的一切"
     />
     <button class="btn-send" bindtap="send">发送</button>
   </view>

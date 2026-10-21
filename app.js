@@ -7,6 +7,7 @@ App({
     bgmPlaying: false, // 记录是否正在播放
     currentBgmIndex: 0, // 当前播放曲目下标
     heroSceneUnlock: {},
+    // 4个音效地址
     soundList:{
       click:"https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/bgm/click.mp3",
       tips:"https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/bgm/tips.mp3",
@@ -20,6 +21,14 @@ App({
       "https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/bgm/bgm4.mp3"
     ],
    
+    // 好汉总数组：存放108好汉基础档案、五维分数、图片、场景数据
+    // 字段说明：
+    // name：好汉姓名
+    // nick：绰号
+    // star：星宿
+    // ren / yi / li / zhi / xin：仁义礼智信五项分值，用于排行榜排序
+    // imglist：图集数组，img为图片阿里云oss链接
+    // sceneList：该好汉对应的可解锁场景，name场景名、desc场景描述
     heroList: [
       { name:"宋江", nick:"呼保义", star:"天魁星", ren:78, yi:85, li:82, zhi:76, xin:72,
         imglist:[
@@ -1222,7 +1231,7 @@ App({
     ],
     heroSceneUnlock: {}
   },
-
+  // 播放短音效（点击、提示音等，一次性音效，播放完销毁实例，避免多音频冲突）
   playSound(soundKey) {
     const src = this.globalData.soundList[soundKey]
     if(!src) return
@@ -1240,12 +1249,15 @@ App({
       sound.destroy()
     })
   },
+
+  // 小程序初始化
   onLaunch() {
+    // 全局BGM音频实例，全程复用这一个，实现自动循环切歌
     const bgmAudio = wx.createInnerAudioContext()
     this.globalData.bgmAudio = bgmAudio
     // 设置第一首音源
     bgmAudio.src = this.globalData.bgmList[this.globalData.currentBgmIndex]
-    // ❗ 关掉loop！！自动切歌不能开启loop，loop会单曲循环不会触发onEnded
+    // 关掉loop,自动切歌不能开启loop，loop会单曲循环不会触发onEnded
     bgmAudio.loop = false
 
     // 播放事件：同步状态
@@ -1271,9 +1283,10 @@ App({
     })
 
     bgmAudio.onError((err) => {
-      console.error("BGM播放错误：", err)
+      console.error("BGM播放错误:", err)
     })
 
+     // 读取本地缓存：好汉场景解锁记录
     const cache = wx.getStorageSync("heroSceneUnlockStorage")
     if (cache) {
       this.globalData.heroSceneUnlock = cache
@@ -1281,9 +1294,15 @@ App({
     } else {
       console.log("没有缓存，使用空对象")
     }
+
+    // 初始化云开发环境
+    wx.cloud.init({
+      env: "cloud1-d5gfygc8z412eb684",
+      traceUser: true
+    })
   },
 
-
+  // 切换全局BGM播放/暂停
   toggleGlobalBgm() {
     const bgmAudio = this.globalData.bgmAudio
     const isPaused = bgmAudio.paused
@@ -1301,10 +1320,5 @@ App({
     return this.globalData.bgmPlaying
   },
 
-  onLaunch(){
-    wx.cloud.init({
-      env: "cloud1-d5gfygc8z412eb684",
-      traceUser: true
-    })
-  }
+  
 })
