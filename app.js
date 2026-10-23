@@ -7,7 +7,7 @@ App({
     bgmPlaying: false, // 记录是否正在播放
     currentBgmIndex: 0, // 当前播放曲目下标
     heroSceneUnlock: {},
-    // 4个音效地址
+    // 4个音效地址 
     soundList:{
       click:"https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/bgm/click.mp3",
       tips:"https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/bgm/tips.mp3",
@@ -1239,8 +1239,12 @@ App({
     const sound = wx.createInnerAudioContext()
     sound.src = src
     sound.loop = false
+    if (soundKey === 'section') {
+      sound.volume = 0.30 // section单独音量
+    } else {
+      sound.volume = 1
+    }
     sound.play()
-    // 播放完成销毁实例，释放内存
     sound.onEnded(()=>{
       sound.destroy()
     })

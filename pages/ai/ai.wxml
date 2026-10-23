@@ -1,4 +1,5 @@
 <view class="container">
+  <text>由于微信有限制导致思考时间最多60s,建议在问题前加“简要”关键字</text>
   <scroll-view scroll-y class="chat-box">
     <view wx:for="{{messages}}" wx:key="index" class="msg-item {{item.role === 'user' ? 'user-row' : 'ai-row'}}">
       <view wx:if="{{item.role === 'assistant'}}" class="avatar ai-avatar">🤖</view>

@@ -91,7 +91,7 @@ Page({
 
   /**
    * 打开场景对话弹窗
-   * @param {Object} e 点击事件，携带场景index下标
+   *  点击事件，携带场景index下标
    */
   openSceneDialog(e){
     const idx = e.currentTarget.dataset.index
