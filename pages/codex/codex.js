@@ -1,76 +1,72 @@
+const config = require('../../config/index.js')
+const heroService = require('../../services/heroService.js')
+const progressService = require('../../services/progressService.js')
+
+const FILTERS = [
+  { mode: 'all', label: '全部' },
+  { mode: 'unlocked', label: '已解锁优先' },
+  { mode: 'locked', label: '未解锁优先' }
+]
+
+/** 把指定解锁状态排到前面，组内保持图鉴原顺序 */
+function sortByUnlock(list, mode) {
+  if (mode === 'all') return list
+  const unlocked = list.filter(hero => hero.unlock)
+  const locked = list.filter(hero => !hero.unlock)
+  return mode === 'unlocked' ? [...unlocked, ...locked] : [...locked, ...unlocked]
+}
+
 Page({
-  /**
-   * 图鉴页面数据
-   * allNameList：全部好汉名字数组
-   * heroList：好汉完整列表，额外附带 unlock 解锁标记，供wxml渲染图鉴卡片
-   * unlockHero：本地缓存读取到的已解锁好汉名字数组
-   * collectCount：已解锁好汉数量，和user页变量名统一
-   * total：好汉总数固定108
-   */
-  data:{
-    allNameList:[],
-    heroList:[],
-    unlockHero: [],
-    collectCount:0,
-    total:108
+  data: {
+    filters: FILTERS,
+    filterMode: 'all',
+    heroList: [],
+    collectCount: 0,
+    total: config.HERO_TOTAL,
+    progress: 0
   },
 
-  onLoad(){
-    // 获取app全局实例，读取全局好汉原始数据
-    const app = getApp()
-    const allHero = app.globalData.heroList
-    // 提取所有好汉的名字，生成名字数组
-    const nameArr = allHero.map(item=>{
-      return item.name
-    })
-    // 从本地缓存读取已经解锁的好汉名单，无数据则为空数组
-    const unlockHero = wx.getStorageSync('unlockHero') || []
-    
-    // 遍历好汉列表，给每个好汉对象加上 unlock 布尔标记，标记是否解锁
-    const newHeroList = allHero.map(hero => {
-      return {
-        ...hero,
-        unlock: unlockHero.includes(hero.name)
-      }
-    })
-
-    // 已解锁好汉数量 = 解锁数组长度
-    const collectCount = unlockHero.length
-
-    // 把处理后的数据更新到页面data
-    this.setData({
-      allNameList: nameArr,
-      heroList: newHeroList,
-      unlockHero,
-      collectCount
-    })
-  },
-
-  // onShow：每次切回图鉴页面自动刷新解锁状态
-  onShow(){
+  onLoad() {
     this.refreshCodexData()
   },
 
-  /**
-   * 图鉴刷新核心方法：重新读取缓存，更新每个好汉的解锁标记和统计数量
-   * 答题、测试解锁好汉之后回到图鉴，会自动同步最新状态
-   */
-  refreshCodexData(){
-    const app = getApp()
-    const allHero = app.globalData.heroList
-    const unlockHero = wx.getStorageSync('unlockHero') || []
-    // 重新生成带解锁标记的好汉列表
-    const newHeroList = allHero.map(hero => {
-      return {
-        ...hero,
-        unlock: unlockHero.includes(hero.name)
-      }
-    })
-    const collectCount = unlockHero.length
+  onShow() {
+    this.refreshCodexData()
+  },
+
+  /** 重新读取解锁进度并按当前筛选排序 */
+  refreshCodexData() {
+    const unlockHero = progressService.getUnlockedHeroes()
+    const count = unlockHero.length
+    const sorted = sortByUnlock(heroService.getCodexList(unlockHero), this.data.filterMode)
     this.setData({
-      heroList: newHeroList,
-      unlockHero,
-      collectCount
+      heroList: sorted.map(hero => ({
+        ...hero,
+        avatar: hero.imglist && hero.imglist.length ? hero.imglist[0].img : ''
+      })),
+      collectCount: count,
+      progress: Math.min(100, Math.round(count / config.HERO_TOTAL * 100))
+    })
+  },
+
+  /** 切换排序：全部 / 已解锁在前 / 未解锁在前 */
+  onFilterChange(e) {
+    const mode = e.currentTarget.dataset.mode
+    if (!mode || mode === this.data.filterMode) return
+    this.setData({ filterMode: mode })
+    this.refreshCodexData()
+  },
+
+  /** 点击卡片进入好汉介绍页，仅已解锁可进入 */
+  goHeroDetail(e) {
+    const index = Number(e.currentTarget.dataset.index)
+    const hero = this.data.heroList[index]
+    if (!hero || !hero.unlock) {
+      wx.showToast({ title: "尚未解锁该好汉", icon: "none" })
+      return
+    }
+    wx.navigateTo({
+      url: `${config.ROUTES.heroDetail}?role=${encodeURIComponent(hero.name)}`
     })
   }
 })

@@ -1,4 +1,5 @@
-const app = getApp()
+const { shuffle } = require('../../utils/util.js')
+const audioService = require('../../services/audioService.js')
 
 // 原始题库，每一题单独包裹成数组
 const questionBank = [
@@ -67,16 +68,9 @@ Page({
     evaluateText:""
   },
 
-  /**
-   * 和你参考页面完全一样的洗牌函数，保证行为一致
-   */
+  /** 复用公共洗牌工具，保证与人格测试页行为一致 */
   shuffle(arr) {
-    let newArr = [...arr]
-    for (let i = newArr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [newArr[i], newArr[j]] = [newArr[j], newArr[i]]
-    }
-    return newArr
+    return shuffle(arr)
   },
 
   onLoad() {
@@ -147,13 +141,9 @@ Page({
     }
   },
 
-  /**
-   * 点击音效，和项目统一
-   */
+  /** 点击音效，统一走音频服务 */
   SectionSound(){
-    const app = getApp()
-    app.playSound("section")
-    console.log('播放音效')
+    audioService.play('section')
   },
 
   /**

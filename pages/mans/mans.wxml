@@ -1,43 +1,43 @@
-<view class="hero-top-area">
-  <view class="hero-info-text">
-    <view class="info-row">
-      <text class="label">姓名：</text>
-      <text>{{name}}</text>
-    </view>
-    <view class="info-row">
-      <text class="label">绰号：</text>
-      <text>{{nick}}</text>
-    </view>
-    <view class="info-row">
-      <text class="label">星号：</text>
-      <text>{{star}}</text>
-    </view>
+<view class="page">
+  <view class="page-header">
+    <view class="header-title">好 汉</view>
+    <view class="header-sub">五 维 属 性</view>
+    <view class="header-ornament"><view class="ornament-line"></view><view class="ornament-dot"></view><view class="ornament-line reverse"></view></view>
   </view>
 
-  <view class="hero-img-frame">
-    <image src="{{heroImg}}" mode="aspectFill"></image>
-  </view>
-</view>
+  <block wx:if="{{!notFound}}">
+    <view class="card profile-card">
+      <view class="portrait-box">
+        <image src="{{heroImg}}" mode="aspectFit" />
+      </view>
+      <view class="profile-info">
+        <view class="hero-name">{{name}}</view>
+        <view class="hero-nick">{{nick}}</view>
+        <view class="hero-star">{{star}}</view>
+      </view>
+    </view>
 
-<view class="attr-panel">
-  <view class="info-row">
-    <text class="label">仁：</text>
-    <text>{{ren}}</text>
-  </view>
-  <view class="info-row">
-    <text class="label">义：</text>
-    <text>{{yi}}</text>
-  </view>
-  <view class="info-row">
-    <text class="label">礼：</text>
-    <text>{{li}}</text>
-  </view>
-  <view class="info-row">
-    <text class="label">智：</text>
-    <text>{{zhi}}</text>
-  </view>
-  <view class="info-row">
-    <text class="label">信：</text>
-    <text>{{xin}}</text>
+    <view class="card">
+      <view class="card-head">
+        <text class="card-title">五 维 属 性</text>
+        <text class="card-sub">综合实力 {{totalScore}}</text>
+      </view>
+      <view class="score-row" wx:for="{{scores}}" wx:key="key">
+        <text class="score-label">{{item.label}}</text>
+        <view class="score-track">
+          <view class="score-fill" style="width: {{item.percent}}%;"></view>
+        </view>
+        <text class="score-value">{{item.value}}</text>
+      </view>
+    </view>
+
+    <view class="primary-btn" bindtap="goHeroDetail" hover-class="primary-btn-hover">查 看 人 物 志</view>
+  </block>
+
+  <view wx:else class="card empty-card">
+    <view class="empty-mark">?</view>
+    <view class="empty-title">尚 未 选 定 好 汉</view>
+    <view class="empty-desc">完成人格测试，或在图鉴中选择一位好汉</view>
+    <view class="primary-btn" bindtap="goCodex" hover-class="primary-btn-hover">前 往 图 鉴</view>
   </view>
 </view>

@@ -1,31 +1,69 @@
-<view class="container">
-  <view>已解锁：{{collectCount}}</view>
-  <view>未解锁：{{total-collectCount}}</view>
-  <view class="card-item" wx:for="{{heroList}}" wx:key="name">
-    <!-- 左侧文字信息 -->
-    <view class="hero-info">
-      <text class="name">{{item.unlock ? item.name : '???'}}</text>
-      <text class="nick">{{item.unlock ? item.nick : '???'}}</text>
-      <text class="star">{{item.unlock ? item.star : '???'}}</text>
+<view class="page">
+  <view class="page-header">
+    <view class="header-title">好 汉 图 鉴</view>
+    <view class="header-sub">一 百 单 八 将</view>
+    <view class="header-ornament"><view class="ornament-line"></view><view class="ornament-dot"></view><view class="ornament-line reverse"></view></view>
+  </view>
 
-      <view class="attr">
-        <text>仁:{{item.unlock ? item.ren : '?'}}</text>
-        <text>义:{{item.unlock ? item.yi : '?'}}</text>
-        <text>礼:{{item.unlock ? item.li : '?'}}</text>
-        <text>智:{{item.unlock ? item.zhi : '?'}}</text>
-        <text>信:{{item.unlock ? item.xin : '?'}}</text>
-      </view>
+  <!-- 收集进度与排序筛选 -->
+  <view class="card summary-card">
+    <view class="summary-row">
+      <view class="summary-main">已收录 <text class="summary-num">{{collectCount}}</text> / {{total}}</view>
+      <text class="summary-percent">{{progress}}%</text>
+    </view>
+    <view class="progress-track">
+      <view class="progress-fill" style="width: {{progress}}%;"></view>
     </view>
 
-    <!-- 右侧图片：未解锁不渲染图片，空白盒子 -->
-    <view class="hero-img-box">
-      <image 
-        wx:if="{{item.unlock}}"
-        class="hero-img" 
-        src="{{item.imglist.length > 0 ? item.imglist[0].img : ''}}" 
-        mode="aspectFill"
-      ></image>
-      <view wx:else class="empty-placeholder"></view>
+    <view class="filter-caption">按解锁状态排序</view>
+    <view class="filter-bar">
+      <view
+        class="filter-btn {{filterMode == item.mode ? 'active' : ''}}"
+        wx:for="{{filters}}"
+        wx:key="mode"
+        data-mode="{{item.mode}}"
+        bindtap="onFilterChange"
+        hover-class="filter-btn-hover"
+      >{{item.label}}</view>
+    </view>
+  </view>
+
+  <!-- 图鉴卡片 -->
+  <view class="grid">
+    <view
+      class="card-item {{item.unlock ? 'unlocked' : 'locked'}}"
+      wx:for="{{heroList}}"
+      wx:key="name"
+      bindtap="goHeroDetail"
+      data-index="{{index}}"
+      hover-class="card-item-hover"
+      hover-stay-time="80"
+    >
+      <view class="status-flag">{{item.unlock ? '已收录' : '未解锁'}}</view>
+
+      <view class="portrait-box">
+        <image
+          wx:if="{{item.unlock}}"
+          class="hero-img"
+          src="{{item.avatar}}"
+          mode="aspectFit"
+        ></image>
+        <text wx:else class="locked-mark">?</text>
+      </view>
+
+      <view class="hero-info">
+        <text class="name">{{item.unlock ? item.name : '???'}}</text>
+        <text class="nick">{{item.unlock ? item.nick : '尚未结识'}}</text>
+        <text class="star">{{item.unlock ? item.star : '???'}}</text>
+
+        <view class="attr">
+          <text class="attr-tag">仁 {{item.unlock ? item.ren : '?'}}</text>
+          <text class="attr-tag">义 {{item.unlock ? item.yi : '?'}}</text>
+          <text class="attr-tag">礼 {{item.unlock ? item.li : '?'}}</text>
+          <text class="attr-tag">智 {{item.unlock ? item.zhi : '?'}}</text>
+          <text class="attr-tag">信 {{item.unlock ? item.xin : '?'}}</text>
+        </view>
+      </view>
     </view>
   </view>
 </view>

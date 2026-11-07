@@ -1,5 +1,8 @@
-// 引入外部对话脚本数据文件
-const dialogData = require("../../data/semeDialog.js")
+const config = require('../../config/index.js')
+const dialogService = require('../../services/dialogService.js')
+const heroService = require('../../services/heroService.js')
+const progressService = require('../../services/progressService.js')
+const audioService = require('../../services/audioService.js')
 
 Page({
   /**
@@ -44,9 +47,7 @@ Page({
     }
     // 解码并去除首尾空格，拿到好汉名称
     const roleName = decodeURIComponent(options.role).trim()
-    const app = getApp()
-    // 在全局好汉列表中找到该好汉对象，包含它的场景配置
-    const targetHero = app.globalData.heroList.find(item => item.name === roleName)
+    const targetHero = heroService.findByName(roleName)
     if(!targetHero){
       wx.showToast({title:"好汉不存在",icon:"none"})
       return
@@ -54,10 +55,8 @@ Page({
     // 兜底，场景列表不存在则赋值空数组
     const heroSceneList = targetHero.sceneList || []
 
-    // 读取本地缓存里所有好汉的场景解锁进度
-    let unlockObj = wx.getStorageSync('heroSceneUnlock') || {}
-    // 同步到全局，方便其它地方读取
-    app.globalData.heroSceneUnlock = unlockObj
+    // 场景解锁进度统一由进度服务读取（含历史缓存键迁移）
+    const unlockObj = progressService.getSceneUnlock()
 
     // 获取当前好汉已解锁场景下标，默认0
     let unlockIndex = unlockObj[roleName] ?? 0
@@ -101,9 +100,8 @@ Page({
       return
     }
     const sceneItem = this.data.sceneList[idx]
-    // 组装key，格式：好汉名|场景名，用来匹配semeDialog里面的对话脚本
-    const dialogKey = `${this.data.role}|${sceneItem.name}`
-    const sceneDialog = dialogData[dialogKey] || []
+    const dialogKey = dialogService.buildKey(this.data.role, sceneItem.name)
+    const sceneDialog = dialogService.getDialog(this.data.role, sceneItem.name)
     console.log("dialogKey=", dialogKey)
     console.log("sceneDialog=", sceneDialog)
     console.log("长度：", sceneDialog.length)
@@ -130,12 +128,8 @@ Page({
     const idx = this.data.currentSceneIdx
     if(idx === this.data.unlockIndex && idx < this.data.sceneList.length -1){
       const newUnlock = idx + 1
-      const roleName = this.data.role
-      const app = getApp()
-      // 更新全局解锁对象
-      app.globalData.heroSceneUnlock[roleName] = newUnlock
-      // 写入本地缓存持久化
-      wx.setStorageSync('heroSceneUnlock', app.globalData.heroSceneUnlock)
+      // 场景进度统一写入进度服务
+      progressService.setSceneUnlock(this.data.role, newUnlock)
       this.setData({
         unlockIndex: newUnlock,
         showDialog:false
@@ -156,7 +150,6 @@ Page({
    */
   tapChatArea() {
       const {sceneDialog, dialogStep, chatList,heroAvatar} = this.data
-      const app = getApp()
       // 全部对话播放完毕，提示
       if(dialogStep >= sceneDialog.length){
         wx.showToast({title:"对话已结束",icon:"none"})
@@ -179,14 +172,9 @@ Page({
         // NPC对话，bot侧气泡
         newMsg.side = "bot"
         newMsg.name = currDialog.name || this.data.role
-        // 根据NPC名字匹配好汉列表拿头像
-        const npcHero = app.globalData.heroList.find(h => h.name === newMsg.name)
-        if(npcHero){
-          newMsg.avatar = currDialog.avatar || npcHero.imglist?.[0]?.img
-        }else{
-          // 普通NPC，使用默认NPC占位图
-          newMsg.avatar = currDialog.avatar || "https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/npc/npc.png"
-        }
+        // 从好汉服务取 NPC 头像，普通 NPC 回退到配置中的占位图
+        const npcAvatar = heroService.getAvatar(newMsg.name)
+        newMsg.avatar = currDialog.avatar || npcAvatar || config.asset(config.ASSETS.npcAvatar)
       }else{
         // user玩家侧对话，使用当前好汉头像
         newMsg.side = "user"
@@ -212,27 +200,19 @@ Page({
 
   // 播放点击音效
   ClicknSound(){
-    const app = getApp()
-    app.playSound("click")
-    console.log('播放音效')
+    audioService.play('click')
   },
 
   // 跳转到五维属性页
   goMans(){
-    wx.navigateTo({
-      url:`/pages/mans/mans`
-    })
+    wx.navigateTo({ url: config.ROUTES.mans })
   },
   // 跳转成就页
   goAchievements(){
-    wx.navigateTo({
-      url:`/pages/achievements/achievements`
-    })
+    wx.navigateTo({ url: config.ROUTES.achievements })
   },
   // 跳转图鉴页
   goCodex(){
-    wx.navigateTo({
-      url:`/pages/codex/codex`
-    })
+    wx.navigateTo({ url: config.ROUTES.codex })
   }
 })

@@ -1,4 +1,9 @@
-const app = getApp()
+const config = require('../../config/index.js')
+const { shuffle } = require('../../utils/util.js')
+const heroService = require('../../services/heroService.js')
+const progressService = require('../../services/progressService.js')
+const audioService = require('../../services/audioService.js')
+
 Page({
   /**
    * 人格测试页面数据
@@ -27,13 +32,9 @@ Page({
    * @param {Array} arr 待打乱数组
    * @returns {Array} 打乱后的新数组
    */
+  /** 复用公共洗牌工具，避免与答题页重复实现 */
   shuffle(arr) {
-    let newArr = [...arr]
-    for (let i = newArr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [newArr[i], newArr[j]] = [newArr[j], newArr[i]]
-    }
-    return newArr
+    return shuffle(arr)
   },
 
   // 页面加载，初始化题目
@@ -249,60 +250,17 @@ Page({
     const userTotal = us.ren + us.yi + us.li + us.zhi + us.xin
     console.log("用户五项得分：", us, " 用户总分：", userTotal)
 
-    // 1. 读取全局好汉列表，预先计算每个好汉的五项总分
-    let heroPool = app.globalData.heroList.map(h => {
-      const heroTotal = h.ren + h.yi + h.li + h.zhi + h.xin
-      return {
-        ...h,
-        heroTotal
-      }
-    })
-
-    // 2. 按照好汉总分从小到大排序
-    heroPool.sort((a,b)=> a.heroTotal - b.heroTotal)
-
-    // 3. 将全部好汉平均切分为5个分数区间池子
-    const totalHeroCount = heroPool.length
-    const partLen = Math.floor(totalHeroCount / 5)
-
-    const zoneLow = heroPool.slice(0, partLen)                    // 低分池 0~20%
-    const zoneLowMid = heroPool.slice(partLen, partLen*2)         // 中低 20~40%
-    const zoneMid = heroPool.slice(partLen*2, partLen*3)          // 中等 40~60%
-    const zoneMidHigh = heroPool.slice(partLen*3, partLen*4)     // 中高 60~80%
-    const zoneHigh = heroPool.slice(partLen*4)                    // 高分 80~100%
-
-    // 4. 根据用户0~50的总分，选中对应的好汉池
-    let targetPool
-    if(userTotal <= 9){
-      targetPool = zoneLow
-    }else if(userTotal <= 19){
-      targetPool = zoneLowMid
-    }else if(userTotal <=29){
-      targetPool = zoneMid
-    }else if(userTotal <=39){
-      targetPool = zoneMidHigh
-    }else{
-      targetPool = zoneHigh
-    }
-
-    // 5. 在目标池内随机抽取一名好汉
-    const randomHero = targetPool[Math.floor(Math.random() * targetPool.length)]
+    // 分池与随机抽取规则由领域服务负责
+    const randomHero = heroService.matchByScore(userTotal)
     const heroName = randomHero.name
-    // 存入全局，供好汉详情页读取
-    app.globalData.heroResult = randomHero
+    // 结果存入服务层，供好汉详情页读取
+    heroService.setResult(randomHero)
 
-    // 好汉解锁持久化存储
-    let isNewUnlock = false
-    let unlockList = wx.getStorageSync('unlockHero') || []
-    if (!unlockList.includes(heroName)) {
-      unlockList.push(heroName)
-      wx.setStorageSync('unlockHero', unlockList)
-      isNewUnlock = true
-    }
+    // 解锁持久化由进度服务负责，返回是否为本次新解锁
+    const isNewUnlock = progressService.unlockHero(heroName)
 
-    // 跳转到好汉详情页，传递好汉名称、是否新解锁标记
     wx.navigateTo({
-      url: `/pages/main/main?role=${encodeURIComponent(heroName)}&isNewUnlock=${isNewUnlock}`,
+      url: `${config.ROUTES.main}?role=${encodeURIComponent(heroName)}&isNewUnlock=${isNewUnlock}`,
     })
   },
 
@@ -323,35 +281,24 @@ Page({
       wx.showToast({title:"请输入好汉名字",icon:"none"})
       return
     }
-    // 在全局好汉列表查找对应好汉
-    const targetHero = app.globalData.heroList.find(item=>item.name === inputName)
+    // 好汉查询、结果保存与解锁逻辑与测试匹配保持一致
+    const targetHero = heroService.findByName(inputName)
     if(!targetHero){
       wx.showToast({title:"该好汉不存在",icon:"none"})
       return
     }
-    // 存入全局结果
-    app.globalData.heroResult = targetHero
-    let isNewUnlock = false
-    let unlockList = wx.getStorageSync('unlockHero') || []
-    if (!unlockList.includes(inputName)) {
-      unlockList.push(inputName)
-      wx.setStorageSync('unlockHero', unlockList)
-      isNewUnlock = true
-    }
+    heroService.setResult(targetHero)
+    const isNewUnlock = progressService.unlockHero(inputName)
     wx.navigateTo({
-      url: `/pages/main/main?role=${encodeURIComponent(inputName)}&isNewUnlock=${isNewUnlock}`
+      url: `${config.ROUTES.main}?role=${encodeURIComponent(inputName)}&isNewUnlock=${isNewUnlock}`
     })
   },
   // 播放section音效
   SectionSound(){
-    const app = getApp()
-    app.playSound("section")
-    console.log('播放音效')
+    audioService.play('section')
   },
   // 播放click点击音效
   ClicknSound(){
-    const app = getApp()
-    app.playSound("click")
-    console.log('播放音效')
+    audioService.play('click')
   }
 })

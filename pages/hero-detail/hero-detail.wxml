@@ -1,0 +1,94 @@
+<view class="page">
+  <!-- 顶部沉浸式人物区 -->
+  <view class="hero-panel">
+    <view class="halo"></view>
+
+    <!-- 自定义导航 -->
+    <view class="nav-bar" style="padding-top: {{statusBarHeight}}px;">
+      <view class="nav-inner">
+        <view class="nav-back" bindtap="goBack" hover-class="nav-back-hover">
+          <text class="back-arrow">←</text>
+        </view>
+        <text class="nav-title">好 汉 图 鉴</text>
+        <!-- 占位避开右上角原生胶囊按钮 -->
+        <view class="nav-placeholder"></view>
+      </view>
+    </view>
+
+    <block wx:if="{{!notFound}}">
+      <!-- 画像 -->
+      <view class="portrait-wrap">
+        <view class="portrait-corner corner-tl"></view>
+        <view class="portrait-corner corner-br"></view>
+        <image class="portrait" src="{{profile.avatar}}" mode="aspectFit" />
+      </view>
+
+      <!-- 姓名与徽标 -->
+      <view class="identity">
+        <view class="hero-name">{{profile.name}}</view>
+        <view class="name-divider">
+          <view class="divider-line"></view>
+          <view class="divider-diamond"></view>
+          <view class="divider-line reverse"></view>
+        </view>
+        <view class="hero-nick">{{profile.nick}}</view>
+        <view class="badges">
+          <view class="badge badge-primary">{{profile.category}}</view>
+          <view class="badge badge-ghost">{{profile.star}}</view>
+          <view class="badge badge-outline">No.{{profile.seatText}}</view>
+        </view>
+      </view>
+    </block>
+
+    <view wx:else class="not-found">未找到这位好汉</view>
+  </view>
+
+  <!-- 下方宣纸内容区 -->
+  <view class="content" wx:if="{{!notFound}}">
+    <!-- 五维属性 -->
+    <view class="card">
+      <view class="card-head">
+        <text class="card-title">五 维 属 性</text>
+        <text class="card-sub">综合实力 {{profile.totalScore}}</text>
+      </view>
+
+      <view class="score-row" wx:for="{{profile.scores}}" wx:key="key">
+        <text class="score-label">{{item.label}}</text>
+        <view class="score-track">
+          <view class="score-fill" style="width: {{item.percent}}%;"></view>
+        </view>
+        <text class="score-value">{{item.value}}</text>
+      </view>
+
+      <view class="rank-line">
+        <view class="rank-mark">榜</view>
+        <text>梁山实力榜 第 {{profile.rank}} / {{total}} 名</text>
+      </view>
+    </view>
+
+    <!-- 生平轨迹 -->
+    <view class="card">
+      <view class="card-head">
+        <text class="card-title">生 平 轨 迹</text>
+        <text class="card-sub">三段关键际遇</text>
+      </view>
+
+      <view class="timeline">
+        <view class="timeline-item" wx:for="{{profile.scenes}}" wx:key="index">
+          <view class="timeline-rail">
+            <view class="timeline-dot">{{item.index}}</view>
+            <view wx:if="{{item.hasLine}}" class="timeline-line"></view>
+          </view>
+          <view class="timeline-body">
+            <view class="scene-name">{{item.name}}</view>
+            <view class="scene-desc">{{item.desc}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="seal">水 浒</view>
+    <view class="primary-btn" bindtap="goPlaying" hover-class="primary-btn-hover">进 入 剧 情</view>
+    <view class="footnote">— 水浒风云录 · 人物志 —</view>
+  </view>
+</view>

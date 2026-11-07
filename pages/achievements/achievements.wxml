@@ -1,33 +1,51 @@
-<!--pages/achievements/achievements.wxml 成就页面模板-->
-<view class="container">
-  <!--顶部统计栏：已解锁/标题/未解锁 -->
-  <view class="header-row">
-    <view class="stat-tag unlocked-tag">已解锁 {{unlockedCount}}</view>
-    <view class="page-title">梁山之旅</view>
-    <view class="stat-tag locked-tag">未解锁 {{lockedCount}}</view>
+<globaltips id="unlockTipRef"></globaltips>
+<view class="page">
+  <view class="page-header">
+    <view class="header-title">梁 山 之 旅</view>
+    <view class="header-sub">成 就 图 鉴</view>
+    <view class="header-ornament"><view class="ornament-line"></view><view class="ornament-dot"></view><view class="ornament-line reverse"></view></view>
   </view>
 
-  <!--成就网格布局 4列 -->
-  <view class="achievement-grid">
+  <!-- 解锁进度概览 -->
+  <view class="card summary-card">
+    <view class="summary-row">
+      <view class="summary-item">
+        <text class="summary-num highlight">{{unlockedCount}}</text>
+        <text class="summary-label">已解锁</text>
+      </view>
+      <view class="summary-divider"></view>
+      <view class="summary-item">
+        <text class="summary-num">{{total}}</text>
+        <text class="summary-label">成就总数</text>
+      </view>
+      <view class="summary-divider"></view>
+      <view class="summary-item">
+        <text class="summary-num dim">{{lockedCount}}</text>
+        <text class="summary-label">待解锁</text>
+      </view>
+    </view>
+    <view class="progress-track">
+      <view class="progress-fill" style="width: {{progress}}%;"></view>
+    </view>
+    <view class="progress-caption">已达 {{progress}}% · 点击已解锁成就查看说明</view>
+  </view>
+
+  <!-- 成就网格 -->
+  <view class="grid">
     <view
       class="achievement-item {{item.unlocked ? 'unlocked' : 'locked'}}"
       wx:for="{{achievementList}}"
       wx:key="name"
       bindtap="clickItem"
       data-index="{{index}}"
+      hover-class="achievement-item-hover"
     >
       <view class="icon-area">
-        <!--已解锁才展示完成图标，未解锁隐藏-->
-        <image
-          wx:if="{{item.unlocked}}"
-          src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/finish.png"
-          mode="aspectFit"
-        />
+        <image wx:if="{{item.unlocked}}" src="{{item.icon}}" mode="aspectFit" />
+        <text wx:else class="lock-mark">?</text>
       </view>
-      <view class="text-area">
-        <!--未解锁名称隐藏为???，已解锁显示成就名-->
-        {{item.unlocked ? item.name : "???"}}
-      </view>
+      <view class="text-area">{{item.unlocked ? item.name : '???'}}</view>
+      <view wx:if="{{item.unlocked}}" class="unlocked-flag">✓</view>
     </view>
   </view>
 </view>

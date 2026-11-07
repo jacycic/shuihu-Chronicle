@@ -1,0 +1,418 @@
+page {
+  background: #f7f2e6;
+}
+
+.page {
+  min-height: 100vh;
+  background: #f7f2e6;
+}
+
+/* ===== 顶部沉浸式人物区：墨色 + 描金 ===== */
+.hero-panel {
+  position: relative;
+  overflow: hidden;
+  padding: 0 40rpx 96rpx;
+  background: linear-gradient(165deg, #221e19 0%, #3b3125 52%, #5b472e 100%);
+  border-bottom-left-radius: 48rpx;
+  border-bottom-right-radius: 48rpx;
+  box-shadow: 0 14rpx 44rpx rgba(50, 38, 20, 0.28);
+}
+
+.halo {
+  position: absolute;
+  z-index: 0;
+  top: 60rpx;
+  left: 50%;
+  width: 700rpx;
+  height: 700rpx;
+  margin-left: -350rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(217, 185, 108, 0.2) 0%, rgba(217, 185, 108, 0) 68%);
+}
+
+/* 自定义导航 */
+.nav-bar {
+  position: relative;
+  z-index: 3;
+}
+
+.nav-inner {
+  position: relative;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-placeholder {
+  width: 200rpx;
+  flex-shrink: 0;
+}
+
+.nav-back {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1rpx solid rgba(217, 185, 108, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-back-hover {
+  background: rgba(217, 185, 108, 0.25);
+}
+
+.back-arrow {
+  color: #f0dcae;
+  font-size: 36rpx;
+  line-height: 1;
+}
+
+.nav-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #f0dcae;
+  font-size: 28rpx;
+  letter-spacing: 4rpx;
+  white-space: nowrap;
+}
+
+/* 画像框：保留人物立绘完整比例 */
+.portrait-wrap {
+  position: relative;
+  z-index: 2;
+  width: 300rpx;
+  height: 340rpx;
+  margin: 36rpx auto 0;
+  border-radius: 24rpx;
+  border: 2rpx solid rgba(217, 185, 108, 0.55);
+  background: linear-gradient(180deg, rgba(255, 240, 200, 0.12), rgba(0, 0, 0, 0.24));
+  box-shadow:
+    0 0 0 10rpx rgba(217, 185, 108, 0.06),
+    0 22rpx 50rpx rgba(0, 0, 0, 0.42);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.portrait {
+  width: 100%;
+  height: 100%;
+}
+
+.portrait-corner {
+  position: absolute;
+  z-index: 2;
+  width: 28rpx;
+  height: 28rpx;
+  border-color: #e6c880;
+  border-style: solid;
+}
+
+.corner-tl {
+  top: 12rpx;
+  left: 12rpx;
+  border-width: 3rpx 0 0 3rpx;
+}
+
+.corner-br {
+  right: 12rpx;
+  bottom: 12rpx;
+  border-width: 0 3rpx 3rpx 0;
+}
+
+/* 姓名区 */
+.identity {
+  position: relative;
+  z-index: 2;
+  margin-top: 34rpx;
+  text-align: center;
+}
+
+.hero-name {
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 78rpx;
+  font-weight: bold;
+  letter-spacing: 14rpx;
+  color: #f7ecd2;
+  text-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.5);
+}
+
+.name-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16rpx;
+  margin: 10rpx 0 12rpx;
+}
+
+.divider-line {
+  width: 96rpx;
+  height: 1rpx;
+  background: linear-gradient(90deg, rgba(217, 185, 108, 0), rgba(217, 185, 108, 0.85));
+}
+
+.divider-line.reverse {
+  transform: rotate(180deg);
+}
+
+.divider-diamond {
+  width: 12rpx;
+  height: 12rpx;
+  background: #d9b96c;
+  transform: rotate(45deg);
+}
+
+.hero-nick {
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 34rpx;
+  letter-spacing: 10rpx;
+  color: #d9b96c;
+}
+
+.badges {
+  display: flex;
+  justify-content: center;
+  gap: 18rpx;
+  margin-top: 26rpx;
+}
+
+.badge {
+  padding: 6rpx 24rpx;
+  border-radius: 999rpx;
+  font-size: 24rpx;
+  letter-spacing: 2rpx;
+}
+
+.badge-primary {
+  background: #a8322a;
+  color: #fff5e0;
+  border: 1rpx solid rgba(255, 220, 160, 0.45);
+}
+
+.badge-ghost {
+  color: #e8d3a0;
+  background: rgba(217, 185, 108, 0.08);
+  border: 1rpx solid rgba(217, 185, 108, 0.5);
+}
+
+.badge-outline {
+  color: #cfae6b;
+  border: 1rpx dashed rgba(217, 185, 108, 0.55);
+}
+
+.not-found {
+  position: relative;
+  z-index: 2;
+  padding: 220rpx 0 140rpx;
+  text-align: center;
+  color: #e8d3a0;
+  font-size: 30rpx;
+}
+
+/* ===== 宣纸内容区 ===== */
+.content {
+  position: relative;
+  z-index: 2;
+  margin-top: -48rpx;
+  padding: 0 32rpx 80rpx;
+}
+
+.card {
+  margin-bottom: 28rpx;
+  padding: 32rpx;
+  border-radius: 28rpx;
+  border: 1rpx solid rgba(184, 134, 11, 0.22);
+  background: #fffdf7;
+  box-shadow: 0 10rpx 30rpx rgba(90, 70, 40, 0.1);
+}
+
+.card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 22rpx;
+  margin-bottom: 26rpx;
+  border-bottom: 1rpx solid rgba(184, 134, 11, 0.18);
+}
+
+.card-title {
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 36rpx;
+  font-weight: bold;
+  letter-spacing: 4rpx;
+  color: #3b2f22;
+}
+
+.card-sub {
+  font-size: 24rpx;
+  color: #9a8258;
+}
+
+/* 五维进度条 */
+.score-row {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  margin-bottom: 22rpx;
+}
+
+.score-label {
+  width: 36rpx;
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #7a3b2a;
+}
+
+.score-track {
+  flex: 1;
+  height: 18rpx;
+  border-radius: 999rpx;
+  background: #ede4cf;
+  overflow: hidden;
+}
+
+.score-fill {
+  height: 100%;
+  border-radius: 999rpx;
+  background: linear-gradient(90deg, #a8322a, #d9a441);
+  box-shadow: 0 0 10rpx rgba(168, 50, 42, 0.25);
+  transition: width 0.5s ease;
+}
+
+.score-value {
+  width: 58rpx;
+  text-align: right;
+  font-size: 26rpx;
+  color: #5a4a33;
+}
+
+.rank-line {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  margin-top: 26rpx;
+  padding-top: 22rpx;
+  border-top: 1rpx dashed rgba(184, 134, 11, 0.3);
+  font-size: 26rpx;
+  color: #6b5738;
+}
+
+.rank-mark {
+  width: 42rpx;
+  height: 42rpx;
+  border-radius: 8rpx;
+  background: #a8322a;
+  color: #fff5e0;
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 生平时间线 */
+.timeline-item {
+  display: flex;
+  gap: 24rpx;
+}
+
+.timeline-rail {
+  width: 48rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timeline-dot {
+  width: 44rpx;
+  height: 44rpx;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8f2c22, #b8860b);
+  color: #fff5e0;
+  font-size: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 12rpx rgba(143, 44, 34, 0.25);
+}
+
+.timeline-line {
+  flex: 1;
+  width: 2rpx;
+  margin: 8rpx 0;
+  background: linear-gradient(180deg, rgba(184, 134, 11, 0.5), rgba(184, 134, 11, 0.12));
+}
+
+.timeline-body {
+  flex: 1;
+  padding-bottom: 36rpx;
+}
+
+.timeline-item:last-child .timeline-body {
+  padding-bottom: 6rpx;
+}
+
+.scene-name {
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #3b2f22;
+  margin-bottom: 8rpx;
+}
+
+.scene-desc {
+  font-size: 26rpx;
+  line-height: 1.75;
+  color: #6b5b45;
+}
+
+/* 印章与主按钮 */
+.seal {
+  width: 96rpx;
+  height: 96rpx;
+  margin: 12rpx auto 34rpx;
+  border: 4rpx solid #a8322a;
+  border-radius: 12rpx;
+  color: #a8322a;
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 30rpx;
+  font-weight: bold;
+  letter-spacing: 2rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-6deg);
+  opacity: 0.75;
+}
+
+.primary-btn {
+  height: 92rpx;
+  line-height: 92rpx;
+  text-align: center;
+  border-radius: 999rpx;
+  background: linear-gradient(90deg, #8f2c22, #b8860b);
+  color: #fff6e2;
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 34rpx;
+  letter-spacing: 8rpx;
+  box-shadow: 0 12rpx 28rpx rgba(143, 44, 34, 0.28);
+}
+
+.primary-btn-hover {
+  opacity: 0.88;
+}
+
+.footnote {
+  margin-top: 32rpx;
+  text-align: center;
+  font-size: 22rpx;
+  letter-spacing: 2rpx;
+  color: #a08d6c;
+}

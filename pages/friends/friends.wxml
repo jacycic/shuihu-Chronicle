@@ -1,0 +1,92 @@
+<view class="page">
+  <view class="page-header">
+    <view class="header-title">梁 山 交 友</view>
+    <view class="header-sub">以 武 会 友 · 共 聚 梁 山</view>
+    <view class="header-ornament"><view class="ornament-line"></view><view class="ornament-dot"></view><view class="ornament-line reverse"></view></view>
+  </view>
+
+  <!-- 云开发未启用时的开通引导 -->
+  <view wx:if="{{!available}}" class="card guide-card">
+    <view class="guide-mark">友</view>
+    <view class="guide-title">好友功能尚未开通</view>
+    <view class="guide-desc">好友关系需要云端数据库，本地缓存无法跨设备共享。按 README「好友功能部署」操作：</view>
+    <view class="guide-step"><text class="step-no">1</text><text>开发者工具开通「云开发」，创建环境</text></view>
+    <view class="guide-step"><text class="step-no">2</text><text>创建集合 sh_users / sh_friend_requests / sh_friendships</text></view>
+    <view class="guide-step"><text class="step-no">3</text><text>上传部署 cloudfunction/friend 云函数</text></view>
+    <view class="guide-step"><text class="step-no">4</text><text>在 config/index.js 填 env 并开启 CLOUD.enabled</text></view>
+  </view>
+
+  <block wx:else>
+    <view wx:if="{{error}}" class="error-bar" bindtap="onRefresh">{{error}} · 点击重试</view>
+
+    <view class="card code-card">
+      <view class="card-label">我 的 邀 请 码</view>
+      <view class="code-value">{{profile.inviteCode || '------'}}</view>
+      <view class="code-hint">把邀请码发给朋友，对方即可向你发送好友申请</view>
+      <view class="copy-btn" bindtap="onCopyCode" hover-class="btn-hover">复 制 邀 请 码</view>
+    </view>
+
+    <view class="card">
+      <view class="card-head">
+        <text class="card-title">添 加 好 友</text>
+        <text class="card-sub">输入对方邀请码</text>
+      </view>
+      <view class="input-row">
+        <input class="code-input" maxlength="6" placeholder="6 位邀请码" placeholder-class="input-placeholder" value="{{codeInput}}" bindinput="onCodeInput" />
+        <view class="search-btn" bindtap="onSearch" hover-class="btn-hover">查 找</view>
+      </view>
+
+      <view wx:if="{{searchResult}}" class="result-card">
+        <view class="avatar-circle">
+          <image wx:if="{{searchResult.avatarUrl}}" src="{{searchResult.avatarUrl}}" mode="aspectFill" />
+          <text wx:else>{{searchResult.initial}}</text>
+        </view>
+        <view class="result-info">
+          <view class="result-name">{{searchResult.nickName}}</view>
+          <view class="result-sub">已收集 {{searchResult.unlockCount}} 位好汉</view>
+        </view>
+        <view wx:if="{{!searchResult.canAdd}}" class="state-tag">{{searchResult.alreadyFriend ? '已是好友' : '申请中'}}</view>
+        <view wx:else class="add-btn" bindtap="onAddFriend" hover-class="btn-hover">加好友</view>
+      </view>
+    </view>
+
+    <view wx:if="{{requests.length > 0}}" class="card">
+      <view class="card-head">
+        <text class="card-title">好 友 申 请</text>
+        <text class="card-sub">{{requests.length}} 条待处理</text>
+      </view>
+      <view class="friend-row" wx:for="{{requests}}" wx:key="requestId">
+        <view class="avatar-circle small">
+          <image wx:if="{{item.avatarUrl}}" src="{{item.avatarUrl}}" mode="aspectFill" />
+          <text wx:else>{{item.initial}}</text>
+        </view>
+        <view class="friend-info">
+          <view class="friend-name">{{item.nickName}}</view>
+          <view class="friend-sub">想与你结为好友</view>
+        </view>
+        <view class="reject-btn" data-id="{{item.requestId}}" data-accept="{{false}}" bindtap="onHandleRequest">忽略</view>
+        <view class="accept-btn" data-id="{{item.requestId}}" data-accept="{{true}}" bindtap="onHandleRequest">同意</view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-head">
+        <text class="card-title">我 的 好 友</text>
+        <text class="card-sub">{{friends.length}} 位</text>
+      </view>
+      <view wx:if="{{friends.length == 0 && !loading}}" class="empty-state">还没有好友，快把邀请码分享给朋友吧</view>
+      <view class="friend-row" wx:for="{{friends}}" wx:key="inviteCode">
+        <view class="rank-badge">{{index + 1}}</view>
+        <view class="avatar-circle small">
+          <image wx:if="{{item.avatarUrl}}" src="{{item.avatarUrl}}" mode="aspectFill" />
+          <text wx:else>{{item.initial}}</text>
+        </view>
+        <view class="friend-info">
+          <view class="friend-name">{{item.nickName}}</view>
+          <view class="friend-sub">已收集 {{item.unlockCount}} 位好汉</view>
+        </view>
+        <view class="remove-btn" data-code="{{item.inviteCode}}" bindtap="onRemoveFriend">删除</view>
+      </view>
+    </view>
+  </block>
+</view>

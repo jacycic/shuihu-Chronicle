@@ -1,48 +1,56 @@
-// pages/mans/mans.js
-// 好汉结果展示页：接收测试匹配出来的好汉数据，渲染好汉信息、五维属性、头像图片
+const config = require('../../config/index.js')
+const heroService = require('../../services/heroService.js')
+
+const SCORE_LABELS = { ren: '仁', yi: '义', li: '礼', zhi: '智', xin: '信' }
+const SCORE_MAX = 100
+
 Page({
   data: {
-    name:"",        // 好汉本名
-    nick:"",        // 好汉绰号
-    star:"",        // 好汉星级
-    ren:0,          // 仁 分值
-    yi:0,           // 义 分值
-    li:0,           // 礼 分值
-    zhi:0,          // 智 分值
-    xin:0,          // 信 分值
-    heroImg:""      // 好汉展示图片地址
+    notFound: true,
+    name: '',
+    nick: '',
+    star: '',
+    heroImg: '',
+    totalScore: 0,
+    scores: []
   },
 
-  onLoad(options) {
-    // 获取全局app实例
-    const app = getApp()
-    // 取出上一页（人格测试页）存入全局的匹配好汉结果
-    const hero = app.globalData.heroResult
-    if(hero){
-      // 将好汉基础信息赋值到页面data，供wxml页面渲染
-      this.setData({
-        name: hero.name,
-        nick: hero.nick,
-        star: hero.star,
-        ren: hero.ren,
-        yi: hero.yi,
-        li: hero.li,
-        zhi: hero.zhi,
-        xin: hero.xin,
-      })
-      // 判断好汉是否存在图片数组，且数组不为空
-      if(hero && hero.imglist && hero.imglist.length>0){
-        console.log('图片地址：', hero.imglist[0].img)
-        // 取第一张图片地址赋值给heroImg用于展示
-        this.setData({
-          heroImg: hero.imglist[0].img
-        })
-      }else{
-        // 没有图片时清空图片地址
-        this.setData({heroImg:""})
-        console.log("没有找到或者无图片")
-      }
+  onLoad() {
+    const hero = heroService.getResult()
+    if (!hero) {
+      this.setData({ notFound: true })
+      return
     }
-  
+
+    const scores = config.SCORE_FIELDS.map(key => {
+      const value = Number(hero[key]) || 0
+      return {
+        key,
+        label: SCORE_LABELS[key],
+        value,
+        percent: Math.min(100, Math.round(value / SCORE_MAX * 100))
+      }
+    })
+
+    this.setData({
+      notFound: false,
+      name: hero.name,
+      nick: hero.nick,
+      star: hero.star,
+      heroImg: heroService.getAvatar(hero.name),
+      totalScore: heroService.getTotalScore(hero),
+      scores
+    })
+  },
+
+  goHeroDetail() {
+    if (!this.data.name) return
+    wx.navigateTo({
+      url: `${config.ROUTES.heroDetail}?role=${encodeURIComponent(this.data.name)}`
+    })
+  },
+
+  goCodex() {
+    wx.navigateTo({ url: config.ROUTES.codex })
   }
 })

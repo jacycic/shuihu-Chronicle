@@ -1,11 +1,9 @@
+<globaltips id="unlockTipRef"></globaltips>
 
 <!--pages/main/main.wxml-->
-<!-- 右上角解锁提示 -->
+<!-- 右上角好汉解锁提示 -->
 <view wx:if="{{showUnlockTip}}" class="unlock-tip">
   <text class="unlock-text">✅ 解锁好汉图鉴：{{unlockHeroName}}</text>
-</view>
-<view wx:if="{{showAchievementTip}}" class="achievement-tip">
-  <text class="achievement-text">🏆解锁成就：{{unlockAchievementName}}</text>
 </view>
 <view class="button-ctrl">
   <view class="circle">
@@ -22,5 +20,3 @@
     <view class="bottom-item" bind:tap="goCodex">图鉴</view>
   </view>
 </view>
-
-

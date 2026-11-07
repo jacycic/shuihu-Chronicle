@@ -1,99 +1,234 @@
-/* pages/achievements/achievements.wxss 成就页面样式 */
-.container {
-  padding: 40rpx 30rpx;
-  background-color: #f8f5f0;
+page {
+  background-color: #f7f2e6;
+  background-image:
+    linear-gradient(rgba(247, 242, 230, 0.88), rgba(247, 242, 230, 0.88)),
+    url("https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/background1.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.page {
   min-height: 100vh;
+  padding: 36rpx 28rpx 80rpx;
   box-sizing: border-box;
-  display: block;
 }
 
-.page-title {
-  font-size: 40rpx;
-  font-weight: bold;
-  color: #6b2814;
-  margin-bottom: 30rpx;
+.page-header {
   text-align: center;
+  margin-bottom: 32rpx;
 }
 
-/* 网格容器：4列自适应 */
-.achievement-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20rpx;
-  align-content: flex-start; /* 从顶部排布，避免内容拉伸 */
+.header-title {
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 52rpx;
+  font-weight: bold;
+  letter-spacing: 10rpx;
+  color: #3b2f22;
 }
 
-/* 成就卡片基础样式 */
-.achievement-item {
-  width: 100%;
+.header-sub {
+  margin-top: 6rpx;
+  font-size: 24rpx;
+  letter-spacing: 6rpx;
+  color: #9a8258;
+}
+
+.header-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14rpx;
+  margin-top: 18rpx;
+}
+
+.ornament-line {
+  width: 110rpx;
+  height: 1rpx;
+  background: linear-gradient(90deg, rgba(184, 134, 11, 0), rgba(184, 134, 11, 0.75));
+}
+
+.ornament-line.reverse {
+  transform: rotate(180deg);
+}
+
+.ornament-dot {
+  width: 10rpx;
+  height: 10rpx;
+  background: #b8860b;
+  transform: rotate(45deg);
+}
+
+.card {
+  border-radius: 28rpx;
+  border: 1rpx solid rgba(184, 134, 11, 0.22);
+  background: #fffdf7;
+  box-shadow: 0 10rpx 30rpx rgba(90, 70, 40, 0.1);
+}
+
+/* 解锁概览 */
+.summary-card {
+  padding: 30rpx 28rpx;
+  margin-bottom: 32rpx;
+}
+
+.summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 26rpx;
+}
+
+.summary-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24rpx 16rpx;
-  border-radius: 16rpx;
-  border: 2rpx solid #e2d9cc;
-  background: #fff9e8;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
-  box-sizing: border-box;
+  gap: 6rpx;
 }
 
-/* 图标容器 */
-.icon-area {
-  width: 60rpx;
-  height: 60rpx;
-  margin-bottom:16rpx;
-  flex-shrink: 0;
-  background-color: #f3ead8;
-  border-radius: 12rpx;
-  border: 2rpx solid #e2d9cc;
+.summary-num {
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 46rpx;
+  font-weight: bold;
+  color: #3b2f22;
+  line-height: 1.1;
+}
+
+.summary-num.highlight {
+  color: #a8322a;
+}
+
+.summary-num.dim {
+  color: #a08d6c;
+}
+
+.summary-label {
+  font-size: 22rpx;
+  color: #8a7658;
+}
+
+.summary-divider {
+  width: 1rpx;
+  height: 56rpx;
+  background: rgba(184, 134, 11, 0.25);
+}
+
+.progress-track {
+  height: 14rpx;
+  border-radius: 999rpx;
+  background: #ede4cf;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 999rpx;
+  background: linear-gradient(90deg, #a8322a, #d9a441);
+  transition: width 0.5s ease;
+}
+
+.progress-caption {
+  margin-top: 14rpx;
+  text-align: center;
+  font-size: 22rpx;
+  color: #9a8258;
+}
+
+/* 成就网格 */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16rpx;
+  align-content: flex-start;
+}
+
+.achievement-item {
+  position: relative;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  padding: 22rpx 8rpx 18rpx;
+  border-radius: 20rpx;
+  box-sizing: border-box;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.achievement-item-hover {
+  opacity: 0.85;
+  transform: scale(0.97);
+}
+
+.achievement-item.unlocked {
+  border: 1rpx solid rgba(184, 134, 11, 0.5);
+  background: linear-gradient(180deg, #fffdf5, #fbf1d8);
+  box-shadow: 0 6rpx 18rpx rgba(168, 50, 42, 0.12);
+}
+
+.achievement-item.locked {
+  border: 1rpx dashed rgba(138, 118, 88, 0.4);
+  background: rgba(255, 253, 247, 0.65);
+}
+
+.icon-area {
+  width: 72rpx;
+  height: 72rpx;
+  margin-bottom: 14rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon-area image {
+  width: 100%;
+  height: 100%;
+}
+
+.unlocked .icon-area {
+  border: 1rpx solid rgba(184, 134, 11, 0.45);
+  background: #fff8e1;
+}
+
+.locked .icon-area {
+  border: 1rpx dashed rgba(138, 118, 88, 0.45);
+  background: #f1ece0;
+}
+
+.lock-mark {
+  font-size: 38rpx;
+  font-family: "kaiTi", "STKaiti", serif;
+  color: #b7a98e;
 }
 
 .text-area {
-  font-size:26rpx;
-  font-weight: 600;
-  color: #442211;
+  font-size: 22rpx;
+  line-height: 1.35;
   text-align: center;
+  word-break: break-all;
 }
 
-/* 已解锁卡片样式 */
-.achievement-item.unlocked {
-  background: #fff8e1;
-  opacity: 1;
-}
-
-/* 未解锁文字置灰 */
-.achievement-item.locked .text-area {
-  color: #bbb;
-}
-
-/* 顶部标题行弹性布局 */
-.header-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 30rpx;
-}
-
-/* 统计标签通用 */
-.stat-tag {
-  font-size: 24rpx;
+.unlocked .text-area {
   font-weight: 600;
-  padding: 10rpx 20rpx;
-  border-radius: 24rpx;
-  border: 2rpx solid #e2d9cc;
+  color: #3b2f22;
 }
 
-.unlocked-tag {
-  color: #6b2814;
-  background: #fff8e1;
-  border-color: #e8d5a7;
+.locked .text-area {
+  color: #b0a48f;
+  letter-spacing: 2rpx;
 }
 
-.locked-tag {
-  color: #8a7a66;
-  background: #f4f1e9;
-  border-color: #e2d9cc;
+.unlocked-flag {
+  position: absolute;
+  top: -8rpx;
+  right: -6rpx;
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 50%;
+  background: #a8322a;
+  color: #fff5e0;
+  font-size: 20rpx;
+  line-height: 32rpx;
+  text-align: center;
+  box-shadow: 0 4rpx 10rpx rgba(168, 50, 42, 0.3);
 }

@@ -1,6 +1,5 @@
 {
   "entryPagePath": "pages/test01/test01",
-  "cloud": true,
   "pages": [
     
     "pages/logs/logs",
@@ -8,13 +7,14 @@
     "pages/playing/playing",
     "pages/achievements/achievements",
     "pages/codex/codex",
+    "pages/hero-detail/hero-detail",
     "pages/mans/mans",
     "pages/main/main",
     "pages/test01/test01",
     "pages/chart/chart",
     "pages/user/user",
     "comphonets/globaltips/globaltips",
-    "pages/ai/ai",
+    "pages/friends/friends",
     "pages/quizzes/quizzes"
     
   ],

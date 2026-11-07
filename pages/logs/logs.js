@@ -1,5 +1,5 @@
-// logs.js
 const util = require('../../utils/util.js')
+const progressService = require('../../services/progressService.js')
 
 Page({
   data: {
@@ -7,12 +7,10 @@ Page({
   },
   onLoad() {
     this.setData({
-      logs: (wx.getStorageSync('logs') || []).map(log => {
-        return {
-          date: util.formatTime(new Date(log)),
-          timeStamp: log
-        }
-      })
+      logs: progressService.getLogs().map(log => ({
+        date: util.formatTime(new Date(log)),
+        timeStamp: log
+      }))
     })
   }
 })
