@@ -1,7 +1,7 @@
 {
-  "entryPagePath": "pages/test01/test01",
+  "entryPagePath": "pages/login/login",
   "pages": [
-    
+    "pages/login/login",
     "pages/logs/logs",
     "pages/section/section",
     "pages/playing/playing",
@@ -15,6 +15,7 @@
     "pages/user/user",
     "comphonets/globaltips/globaltips",
     "pages/friends/friends",
+    "pages/chat/chat",
     "pages/quizzes/quizzes"
     
   ],

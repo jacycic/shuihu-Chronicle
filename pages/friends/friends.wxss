@@ -173,9 +173,27 @@ page {
 }
 
 .code-hint {
+  margin-top: 12rpx;
   font-size: 23rpx;
   line-height: 1.6;
   color: #8a7658;
+}
+
+.identity-bar {
+  margin: 4rpx 0 0;
+  padding: 14rpx 20rpx;
+  border-radius: 14rpx;
+  background: #eef1e2;
+  color: #5b6b3a;
+  font-size: 22rpx;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.identity-warn {
+  background: #fbe9e4;
+  border: 1rpx solid rgba(168, 50, 42, 0.25);
+  color: #a8322a;
 }
 
 .copy-btn {
@@ -348,4 +366,29 @@ page {
   text-align: center;
   font-size: 25rpx;
   color: #9a8258;
+}
+
+/* 私信入口与未读红点 */
+.chat-btn {
+  flex-shrink: 0;
+  padding: 10rpx 20rpx;
+  border-radius: 999rpx;
+  background: #3b2f22;
+  color: #f7ecd2;
+  font-size: 23rpx;
+}
+
+.unread-badge {
+  flex-shrink: 0;
+  min-width: 34rpx;
+  height: 34rpx;
+  padding: 0 8rpx;
+  box-sizing: border-box;
+  border-radius: 999rpx;
+  background: #c0392b;
+  color: #fff;
+  font-size: 20rpx;
+  line-height: 34rpx;
+  text-align: center;
+  box-shadow: 0 2rpx 8rpx rgba(192, 57, 43, 0.35);
 }

@@ -12,8 +12,8 @@ App({
   globalData: {},
 
   onLaunch() {
-    // 云开发按需启用：未部署云函数时不初始化、不发请求，其余功能零影响
-    if (config.CLOUD.enabled && config.CLOUD.env && wx.cloud) {
+    // 云开发按需启用：好友功能或账号云同步打开时才初始化，否则零网络请求
+    if ((config.CLOUD.enabled || config.AUTH.cloudEnabled) && config.CLOUD.env && wx.cloud) {
       try {
         wx.cloud.init({ env: config.CLOUD.env, traceUser: true })
       } catch (e) {
@@ -24,6 +24,8 @@ App({
     audioService.init()
     // 迁移历史缓存键（旧版本场景进度写在另一个 key 上）
     progressService.init()
+    // 恢复上次登录账号的进度作用域，必须在任何进度读写之前
+    progressService.restoreAccountScope()
     // 默认使用本地数据、不发请求；config.API.enabled 打开后自动从后端预热
     heroService.refreshFromRemote()
   },

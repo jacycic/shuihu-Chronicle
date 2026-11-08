@@ -526,7 +526,7 @@ module.exports = [
         sceneList:[
           {name:"饮马川",desc:"饮马川寨主，铁面孔目，掌管梁山军法。"},
           {name:"山寨公堂",desc:"梁山断案量刑，赏罚分明。"},
-          {name:"饮马川",desc:"平定方腊后回饮马川隐居。"}
+          {name:"饮马川归隐",desc:"平定方腊后回饮马川隐居。"}
         ]
       },
       { name:"欧鹏", nick:"摩云金翅", star:"地阔星", ren:70, yi:79, li:77, zhi:75, xin:84,
@@ -823,7 +823,7 @@ module.exports = [
       ],
       sceneList:[
         {name:"清风山",desc:"清风山三寨主，白面郎君，银枪好手。"},
-        {name:"清风山",desc:"清风山聚义，随宋江投奔梁山。"},
+        {name:"清风山聚义",desc:"清风山聚义，随宋江投奔梁山。"},
         {name:"宣州",desc:"征方腊攻打宣州，被城上磨盘砸死。"}
       ]
     },
@@ -868,7 +868,7 @@ module.exports = [
       sceneList:[
         {name:"揭阳镇",desc:"小遮拦，穆弘弟弟，揭阳当地豪强。"},
         {name:"揭阳镇街头",desc:"街头欺压外乡人，后跟随兄长上梁山。"},
-        {name:"揭阳镇",desc:"征方腊生还，回乡做百姓。"}
+        {name:"揭阳镇归乡",desc:"征方腊生还，回乡做百姓。"}
       ]
     },
     { name:"曹正", nick:"操刀鬼", star:"地羁星", ren:64, yi:79, li:61, zhi:74, xin:81,
@@ -989,7 +989,7 @@ module.exports = [
       sceneList:[
         {name:"登云山",desc:"独角龙，邹渊侄子，头上生肉瘤，擅长撞人。"},
         {name:"登州劫牢",desc:"跟随孙立一伙反出登州投奔梁山。"},
-        {name:"登云山",desc:"平定方腊，返回登云山隐居。"}
+        {name:"登云山归隐",desc:"平定方腊，返回登云山隐居。"}
       ]
     },
     { name:"朱贵", nick:"旱地忽律", star:"地囚星", ren:63, yi:80, li:58, zhi:82, xin:84,

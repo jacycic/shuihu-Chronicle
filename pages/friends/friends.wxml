@@ -9,10 +9,10 @@
   <view wx:if="{{!available}}" class="card guide-card">
     <view class="guide-mark">友</view>
     <view class="guide-title">好友功能尚未开通</view>
-    <view class="guide-desc">好友关系需要云端数据库，本地缓存无法跨设备共享。按 README「好友功能部署」操作：</view>
+    <view class="guide-desc">好友关系与私信需要云端数据库，本地缓存无法跨设备共享。按 README「好友功能部署」操作：</view>
     <view class="guide-step"><text class="step-no">1</text><text>开发者工具开通「云开发」，创建环境</text></view>
-    <view class="guide-step"><text class="step-no">2</text><text>创建集合 sh_users / sh_friend_requests / sh_friendships</text></view>
-    <view class="guide-step"><text class="step-no">3</text><text>上传部署 cloudfunction/friend 云函数</text></view>
+    <view class="guide-step"><text class="step-no">2</text><text>创建集合 sh_users / sh_friend_requests / sh_friendships / sh_messages</text></view>
+    <view class="guide-step"><text class="step-no">3</text><text>上传部署 cloudfunction/friend 与 cloudfunction/auth 云函数</text></view>
     <view class="guide-step"><text class="step-no">4</text><text>在 config/index.js 填 env 并开启 CLOUD.enabled</text></view>
   </view>
 
@@ -22,7 +22,8 @@
     <view class="card code-card">
       <view class="card-label">我 的 邀 请 码</view>
       <view class="code-value">{{profile.inviteCode || '------'}}</view>
-      <view class="code-hint">把邀请码发给朋友，对方即可向你发送好友申请</view>
+      <view wx:if="{{identityTip}}" class="identity-bar {{identityLevel == 'warn' ? 'identity-warn' : ''}}">{{identityTip}}</view>
+      <view class="code-hint">邀请码按当前登录账号生成，不同账号互不相通</view>
       <view class="copy-btn" bindtap="onCopyCode" hover-class="btn-hover">复 制 邀 请 码</view>
     </view>
 
@@ -72,7 +73,7 @@
     <view class="card">
       <view class="card-head">
         <text class="card-title">我 的 好 友</text>
-        <text class="card-sub">{{friends.length}} 位</text>
+        <text class="card-sub">{{friends.length}} 位{{unreadTotal > 0 ? ' · ' + unreadTotal + ' 条未读' : ''}}</text>
       </view>
       <view wx:if="{{friends.length == 0 && !loading}}" class="empty-state">还没有好友，快把邀请码分享给朋友吧</view>
       <view class="friend-row" wx:for="{{friends}}" wx:key="inviteCode">
@@ -85,6 +86,8 @@
           <view class="friend-name">{{item.nickName}}</view>
           <view class="friend-sub">已收集 {{item.unlockCount}} 位好汉</view>
         </view>
+        <view wx:if="{{item.unread > 0}}" class="unread-badge">{{item.unread > 99 ? '99+' : item.unread}}</view>
+        <view class="chat-btn" data-code="{{item.inviteCode}}" bindtap="goChat" hover-class="btn-hover">聊天</view>
         <view class="remove-btn" data-code="{{item.inviteCode}}" bindtap="onRemoveFriend">删除</view>
       </view>
     </view>

@@ -173,9 +173,32 @@ page {
   background-color: rgba(221, 207, 187, 0.4);
 }
 
+.menu-label {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+}
+
+.menu-badge {
+  min-width: 34rpx;
+  height: 34rpx;
+  padding: 0 8rpx;
+  box-sizing: border-box;
+  border-radius: 999rpx;
+  background: #c0392b;
+  color: #fff;
+  font-size: 20rpx;
+  line-height: 34rpx;
+  text-align: center;
+}
+
 .arrow {
   color: #999;
   font-size: 34rpx;
+}
+
+.logout-text {
+  color: #b85c3e;
 }
 
 .about-card {

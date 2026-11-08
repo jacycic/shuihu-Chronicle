@@ -35,10 +35,29 @@ const STORAGE_KEYS = {
   customProfile: 'ach_privateCustom',
   avatar: 'userAvatar',
   nickname: 'userNickname',
-  logs: 'logs'
+  logs: 'logs',
+  loginState: 'loginState', // 本地登录态：模式、账号、登录时间
+  accounts: 'sh_accounts_local' // 本地账号表（云同步关闭时使用）
+}
+
+/**
+ * 账号密码登录与进度同步。
+ * cloudEnabled=false：账号、密码与进度只存本机，零网络请求；
+ * cloudEnabled=true：走 cloudfunction/auth + sh_accounts 集合，进度可跨设备保存。
+ * 打开前需按 README 部署云函数，并确保 CLOUD.enabled=true 且已填 env。
+ */
+const AUTH = {
+  cloudEnabled: true,
+  functionName: 'auth',
+  collection: 'sh_accounts',
+  accountMin: 2,
+  accountMax: 16,
+  passwordMin: 6,
+  passwordMax: 20
 }
 
 const ROUTES = {
+  login: '/pages/login/login',
   home: '/pages/test01/test01',
   section: '/pages/section/section',
   main: '/pages/main/main',
@@ -50,6 +69,7 @@ const ROUTES = {
   chart: '/pages/chart/chart',
   user: '/pages/user/user',
   friends: '/pages/friends/friends',
+  chat: '/pages/chat/chat',
   quizzes: '/pages/quizzes/quizzes',
   logs: '/pages/logs/logs'
 }
@@ -96,6 +116,7 @@ module.exports = {
   ROUTES,
   API,
   CLOUD,
+  AUTH,
   HERO_TOTAL,
   SCORE_FIELDS,
   asset

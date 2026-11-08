@@ -1,0 +1,226 @@
+page {
+  height: 100vh;
+  background-color: #f7f2e6;
+  background-image:
+    linear-gradient(rgba(247, 242, 230, 0.9), rgba(247, 242, 230, 0.9)),
+    url("https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/background1.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.chat-page {
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-hover {
+  opacity: 0.85;
+}
+
+/* 顶部好友信息 */
+.chat-head {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+  padding: 20rpx 28rpx;
+  border-bottom: 1rpx solid rgba(184, 134, 11, 0.22);
+  background: rgba(255, 253, 247, 0.94);
+}
+
+.avatar-circle {
+  width: 76rpx;
+  height: 76rpx;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #8f2c22, #b8860b);
+  color: #fff6e2;
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 26rpx;
+}
+
+.avatar-circle image {
+  width: 100%;
+  height: 100%;
+}
+
+.head-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.head-name {
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #3b2f22;
+}
+
+.head-sub {
+  margin-top: 4rpx;
+  font-size: 22rpx;
+  letter-spacing: 1rpx;
+  color: #9a8258;
+}
+
+.head-refresh {
+  flex-shrink: 0;
+  padding: 10rpx 24rpx;
+  border-radius: 999rpx;
+  border: 1rpx solid rgba(184, 134, 11, 0.35);
+  color: #8a7658;
+  font-size: 24rpx;
+}
+
+.error-bar {
+  flex-shrink: 0;
+  margin: 16rpx 28rpx 0;
+  padding: 16rpx 24rpx;
+  border-radius: 16rpx;
+  background: #fbe9e4;
+  color: #a8322a;
+  font-size: 24rpx;
+  text-align: center;
+}
+
+/* 消息列表 */
+.msg-list {
+  flex: 1;
+  height: 0;
+  min-height: 0;
+  padding: 24rpx 28rpx 10rpx;
+  box-sizing: border-box;
+}
+
+.list-tip,
+.empty-state {
+  padding: 60rpx 0;
+  text-align: center;
+}
+
+.list-tip {
+  font-size: 25rpx;
+  color: #9a8258;
+}
+
+.empty-mark {
+  width: 96rpx;
+  height: 96rpx;
+  margin: 0 auto 22rpx;
+  border-radius: 50%;
+  border: 2rpx solid rgba(184, 134, 11, 0.45);
+  color: #a8322a;
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 44rpx;
+  line-height: 96rpx;
+}
+
+.empty-title {
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #3b2f22;
+}
+
+.empty-desc {
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  color: #9a8258;
+}
+
+.msg-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 26rpx;
+}
+
+.msg-row.mine {
+  align-items: flex-end;
+}
+
+.msg-time {
+  align-self: center;
+  margin-bottom: 16rpx;
+  font-size: 21rpx;
+  color: #a89678;
+}
+
+.bubble {
+  max-width: 74%;
+  padding: 20rpx 26rpx;
+  box-sizing: border-box;
+  border-radius: 8rpx 24rpx 24rpx 24rpx;
+  border: 1rpx solid rgba(184, 134, 11, 0.2);
+  background: #fffdf7;
+  box-shadow: 0 4rpx 14rpx rgba(90, 70, 40, 0.08);
+  font-size: 28rpx;
+  line-height: 1.6;
+  word-break: break-all;
+  color: #3b2f22;
+}
+
+.bubble-mine {
+  border-radius: 24rpx 8rpx 24rpx 24rpx;
+  border-color: rgba(143, 44, 34, 0.3);
+  background: linear-gradient(135deg, #8f2c22, #a8322a);
+  color: #fff6e2;
+}
+
+.list-anchor {
+  height: 2rpx;
+}
+
+/* 底部输入栏 */
+.input-bar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 18rpx 28rpx;
+  padding-bottom: calc(18rpx + env(safe-area-inset-bottom));
+  border-top: 1rpx solid rgba(184, 134, 11, 0.22);
+  background: rgba(255, 253, 247, 0.98);
+}
+
+.msg-input {
+  flex: 1;
+  height: 76rpx;
+  padding: 0 24rpx;
+  box-sizing: border-box;
+  border-radius: 999rpx;
+  border: 1rpx solid rgba(184, 134, 11, 0.32);
+  background: #fbf6e9;
+  font-size: 27rpx;
+  color: #3b2f22;
+}
+
+.input-placeholder {
+  color: #b3a487;
+  font-size: 25rpx;
+}
+
+.send-btn {
+  flex-shrink: 0;
+  width: 140rpx;
+  height: 76rpx;
+  line-height: 76rpx;
+  text-align: center;
+  border-radius: 999rpx;
+  background: linear-gradient(90deg, #8f2c22, #b8860b);
+  color: #fff6e2;
+  font-size: 27rpx;
+  letter-spacing: 2rpx;
+}
+
+.send-btn.disabled {
+  background: #e6dcc6;
+  color: #a89b80;
+}

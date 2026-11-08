@@ -1,0 +1,46 @@
+<view class="chat-page">
+  <view class="chat-head">
+    <view class="avatar-circle">
+      <image wx:if="{{peer.avatarUrl}}" src="{{peer.avatarUrl}}" mode="aspectFill" />
+      <text wx:else>{{peer.initial}}</text>
+    </view>
+    <view class="head-info">
+      <view class="head-name">{{peer.nickName}}</view>
+      <view class="head-sub">{{peer.code ? '邀请码 ' + peer.code : '梁 山 交 友'}}</view>
+    </view>
+    <view class="head-refresh" bindtap="onRefresh" hover-class="btn-hover">刷新</view>
+  </view>
+
+  <view wx:if="{{error}}" class="error-bar" bindtap="onRefresh">{{error}} · 点击重试</view>
+
+  <scroll-view class="msg-list" scroll-y scroll-with-animation scroll-into-view="{{scrollIntoView}}">
+    <view wx:if="{{loading && messages.length == 0}}" class="list-tip">正在读取消息…</view>
+
+    <view wx:if="{{!loading && messages.length == 0 && !error}}" class="empty-state">
+      <view class="empty-mark">信</view>
+      <view class="empty-title">还没有消息</view>
+      <view class="empty-desc">发一句话给 {{peer.nickName}}，打个招呼吧</view>
+    </view>
+
+    <view wx:for="{{messages}}" wx:key="id" id="msg-{{item.id}}" class="msg-row {{item.mine ? 'mine' : ''}}">
+      <view wx:if="{{item.showTime}}" class="msg-time">{{item.timeText}}</view>
+      <view class="bubble {{item.mine ? 'bubble-mine' : ''}}">{{item.text}}</view>
+    </view>
+
+    <view id="chat-bottom" class="list-anchor"></view>
+  </scroll-view>
+
+  <view class="input-bar">
+    <input
+      class="msg-input"
+      maxlength="200"
+      confirm-type="send"
+      value="{{inputText}}"
+      placeholder="说点什么…"
+      placeholder-class="input-placeholder"
+      bindinput="onInput"
+      bindconfirm="onSend"
+    />
+    <view class="send-btn {{canSend && !sending ? '' : 'disabled'}}" bindtap="onSend" hover-class="btn-hover">{{sending ? '发送中' : '发送'}}</view>
+  </view>
+</view>

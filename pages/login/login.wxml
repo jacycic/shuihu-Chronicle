@@ -1,0 +1,102 @@
+<view class="page {{skipLogin ? 'page-skip' : ''}}">
+  <view wx:if="{{!skipLogin}}" class="bg-glow"></view>
+  <view wx:if="{{!skipLogin}}" class="bg-ring"></view>
+  <view class="status-seat" style="height: {{statusBarHeight}}px;"></view>
+
+  <view wx:if="{{!skipLogin}}" class="content">
+    <view class="brand">
+      <view class="seal">
+        <text class="seal-char">水</text>
+        <text class="seal-char">浒</text>
+      </view>
+      <view class="brand-title">水浒风云录</view>
+      <view class="brand-sub">一百零八将 · 江湖人物志</view>
+      <view class="divider">
+        <view class="divider-line"></view>
+        <text class="divider-dot">◆</text>
+        <view class="divider-line"></view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-head">
+        <text class="card-title">初入江湖</text>
+        <text class="card-sub">登录账号，续写你的梁山进度</text>
+      </view>
+
+      <view class="tabs">
+        <view class="tab {{isRegister ? '' : 'tab-active'}}" data-mode="login" bindtap="onSwitchMode">登录</view>
+        <view class="tab {{isRegister ? 'tab-active' : ''}}" data-mode="register" bindtap="onSwitchMode">注册</view>
+      </view>
+
+      <view class="field">
+        <text class="field-label">账号</text>
+        <view class="field-box">
+          <input class="field-input"
+            value="{{account}}"
+            placeholder="中文 / 字母 / 数字 / 下划线"
+            placeholder-class="field-placeholder"
+            maxlength="16"
+            confirm-type="next"
+            bindinput="onAccountInput" />
+        </view>
+      </view>
+
+      <view class="field">
+        <text class="field-label">密码</text>
+        <view class="field-box">
+          <input class="field-input field-input-flex"
+            value="{{password}}"
+            password="{{!showPassword}}"
+            placeholder="6-20 位密码"
+            placeholder-class="field-placeholder"
+            maxlength="20"
+            confirm-type="done"
+            bindinput="onPasswordInput" />
+          <text class="eye" bindtap="togglePassword">{{showPassword ? '隐藏' : '显示'}}</text>
+        </view>
+      </view>
+
+      <view wx:if="{{isRegister}}" class="field">
+        <text class="field-label">确认密码</text>
+        <view class="field-box">
+          <input class="field-input"
+            value="{{confirm}}"
+            password="{{!showPassword}}"
+            placeholder="再次输入密码"
+            placeholder-class="field-placeholder"
+            maxlength="20"
+            confirm-type="done"
+            bindinput="onConfirmInput" />
+        </view>
+      </view>
+
+      <view wx:if="{{errorMsg}}" class="error-msg">{{errorMsg}}</view>
+
+      <button class="primary-btn"
+        hover-class="primary-btn-hover"
+        loading="{{submitting}}"
+        disabled="{{submitting}}"
+        bindtap="onSubmit">{{isRegister ? '注册并进入' : '登录'}}</button>
+
+      <view class="switch-tip"
+        data-mode="{{isRegister ? 'login' : 'register'}}"
+        bindtap="onSwitchMode">{{isRegister ? '已有账号？去登录' : '还没有账号？注册一个'}}</view>
+
+      <view class="or-line">
+        <view class="or-line-inner"></view>
+        <text class="or-text">或</text>
+        <view class="or-line-inner"></view>
+      </view>
+
+      <view class="guest-btn" hover-class="guest-btn-hover" bindtap="onGuestLogin">以游客身份先逛逛</view>
+
+      <view class="notice">
+        <text class="notice-mark">※</text>
+        <text>{{syncHint}}</text>
+      </view>
+    </view>
+
+    <view class="footer">忠 义 为 本 · 聚 义 梁 山</view>
+  </view>
+</view>
