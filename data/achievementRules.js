@@ -7,6 +7,7 @@
  * 规则不再写在页面 data 里，任何页面都可通过 achievementService 复用。
  */
 const config = require('../config/index.js')
+const lore = require('./achievementLore.js')
 
 const FINISH_ICON = config.asset(config.ASSETS.finishIcon)
 
@@ -92,4 +93,8 @@ const rules = [
   }
 ]
 
-module.exports = rules.map(rule => ({ ...rule, icon: FINISH_ICON }))
+module.exports = rules.map(rule => ({
+  ...rule,
+  icon: FINISH_ICON,
+  lore: lore[rule.name] || { intro: '', fact: '', source: '' }
+}))

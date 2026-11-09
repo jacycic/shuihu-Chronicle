@@ -1,0 +1,72 @@
+<view class="page">
+  <view class="page-header">
+    <view class="header-title">梁 山 论 剑</view>
+    <view class="header-sub">联 机 对 战 · 十 题 定 胜 负</view>
+    <view class="header-ornament"><view class="ornament-line"></view><view class="ornament-dot"></view><view class="ornament-line reverse"></view></view>
+  </view>
+
+  <!-- 云端未就绪时的部署引导 -->
+  <view wx:if="{{checking || !available || !cloudReady}}" class="card guide-card">
+    <view class="guide-mark">战</view>
+    <view class="guide-title">{{checking ? '正在连接云端…' : '对战服务尚未就绪'}}</view>
+    <view wx:if="{{error}}" class="guide-error">{{error}}</view>
+    <view class="guide-desc">按 README「联机对战部署」操作：</view>
+    <view class="guide-step"><text class="step-no">1</text><text>开通云开发，核对 config.CLOUD.env 环境 ID</text></view>
+    <view class="guide-step"><text class="step-no">2</text><text>新建集合 sh_battle_rooms，权限选「所有用户不可读写」</text></view>
+    <view class="guide-step"><text class="step-no">3</text><text>上传部署 cloudfunction/battle 与 cloudfunction/auth</text></view>
+    <view class="guide-step"><text class="step-no">4</text><text>用账号登录后回到本页，点下方重试</text></view>
+    <view class="retry-btn" bindtap="checkCloud" hover-class="btn-hover">重 试 连 接</view>
+  </view>
+
+  <block wx:else>
+    <view class="card bank-card">
+      <view class="bank-row">
+        <view>
+          <view class="bank-label">题 库 总 览</view>
+          <view class="bank-tags">{{tagsText}}</view>
+        </view>
+        <view class="bank-num">{{bankSize}}<text class="bank-unit"> 题</text></view>
+      </view>
+      <view class="identity-text">{{identityText}}</view>
+    </view>
+
+    <view class="card mode-card" bindtap="onMatch" hover-class="card-hover">
+      <view class="mode-mark">⚔</view>
+      <view class="mode-info">
+        <view class="mode-title">随 机 匹 配</view>
+        <view class="mode-sub">与在线好汉自动配对，同场比拼十道趣味题</view>
+      </view>
+      <view class="mode-arrow">›</view>
+    </view>
+
+    <view class="card mode-card" bindtap="toggleFriend" hover-class="card-hover">
+      <view class="mode-mark friend-mark">友</view>
+      <view class="mode-info">
+        <view class="mode-title">好 友 对 战</view>
+        <view class="mode-sub">创建房间或输入房间号，与好友单独论剑</view>
+      </view>
+      <view class="mode-arrow">{{showFriend ? '⌃' : '›'}}</view>
+    </view>
+
+    <view wx:if="{{showFriend}}" class="card friend-panel">
+      <view class="panel-label">创 建 房 间</view>
+      <view class="create-btn" bindtap="onCreateRoom" hover-class="btn-hover">{{busy ? '处理中…' : '开 房 等 待 好 友'}}</view>
+      <view class="panel-split"><text>或</text></view>
+      <view class="panel-label">输 入 房 间 号</view>
+      <view class="room-row">
+        <input class="room-input" maxlength="6" value="{{roomInput}}" bindinput="onRoomInput"
+               placeholder="6 位房间号" placeholder-class="input-placeholder" />
+        <view class="join-btn" bindtap="onJoinRoom" hover-class="btn-hover">加 入</view>
+      </view>
+    </view>
+
+    <view wx:if="{{error}}" class="error-bar" bindtap="checkCloud">{{error}} · 点击重试</view>
+
+    <view class="rule-card">
+      <view class="rule-title">对 战 规 则</view>
+      <view class="rule-line">· 每局 10 题，每题 5 分，满分 50 分</view>
+      <view class="rule-line">· 双方各自作答，进度实时同步，互不看到对方答案</view>
+      <view class="rule-line">· 双方答完后比总分，同分为平局</view>
+    </view>
+  </block>
+</view>

@@ -59,6 +59,12 @@
           </view>
           <text>用户</text>
         </view>
+        <view class="func-item" bindtap="goBattle">
+          <view class="func-icon-box" bind:tap="ClickSound">
+            <view class="battle-icon">⚔</view>
+          </view>
+          <text>联机对战</text>
+        </view>
         <view class="func-item" bindtap="goQuizzes" >
           <view class="func-icon-box" bind:tap="ClickSound">
             <image class="func-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/quizzes.png" mode="aspectFit" />

@@ -1,0 +1,290 @@
+page {
+  background-color: #f7f2e6;
+  background-image:
+    linear-gradient(rgba(247, 242, 230, 0.88), rgba(247, 242, 230, 0.88)),
+    url("https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/background1.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.page {
+  min-height: 100vh;
+  padding: 24rpx 28rpx 80rpx;
+  box-sizing: border-box;
+}
+
+.btn-hover { opacity: 0.85; }
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 26rpx;
+}
+
+.top-back {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: rgba(255, 253, 247, 0.9);
+  border: 1rpx solid rgba(184, 134, 11, 0.3);
+  color: #3b2f22;
+  font-size: 34rpx;
+  line-height: 60rpx;
+  text-align: center;
+}
+
+.top-title {
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 34rpx;
+  font-weight: bold;
+  letter-spacing: 5rpx;
+  color: #3b2f22;
+}
+
+.room-chip {
+  padding: 10rpx 22rpx;
+  border-radius: 999rpx;
+  background: #3b2f22;
+  color: #f7ecd2;
+  font-size: 24rpx;
+  letter-spacing: 3rpx;
+}
+
+.error-bar {
+  margin-bottom: 22rpx;
+  padding: 18rpx 24rpx;
+  border-radius: 16rpx;
+  background: #fbe9e4;
+  color: #a8322a;
+  font-size: 24rpx;
+  text-align: center;
+}
+
+.loading-tip {
+  padding: 40rpx 0;
+  text-align: center;
+  font-size: 25rpx;
+  color: #9a8258;
+}
+
+.card {
+  margin-bottom: 26rpx;
+  padding: 30rpx;
+  border-radius: 28rpx;
+  border: 1rpx solid rgba(184, 134, 11, 0.22);
+  background: #fffdf7;
+  box-shadow: 0 10rpx 30rpx rgba(90, 70, 40, 0.1);
+}
+
+/* 等待 / 对手离开 */
+.waiting-card { text-align: center; padding: 56rpx 32rpx; }
+
+.waiting-mark {
+  width: 110rpx;
+  height: 110rpx;
+  margin: 0 auto 26rpx;
+  border-radius: 50%;
+  border: 2rpx solid rgba(184, 134, 11, 0.5);
+  color: #a8322a;
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 50rpx;
+  line-height: 110rpx;
+}
+
+.waiting-title {
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 38rpx;
+  font-weight: bold;
+  color: #3b2f22;
+}
+
+.waiting-desc {
+  margin: 14rpx 0 30rpx;
+  font-size: 24rpx;
+  line-height: 1.7;
+  color: #8a7658;
+}
+
+.room-code {
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 68rpx;
+  font-weight: bold;
+  letter-spacing: 12rpx;
+  color: #a8322a;
+}
+
+.copy-btn,
+.ghost-btn,
+.primary-btn {
+  margin-top: 34rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 999rpx;
+  font-size: 27rpx;
+  letter-spacing: 3rpx;
+}
+
+.copy-btn,
+.primary-btn {
+  background: linear-gradient(90deg, #8f2c22, #b8860b);
+  color: #fff6e2;
+}
+
+.ghost-btn {
+  background: #f3ecdb;
+  border: 1rpx solid rgba(184, 134, 11, 0.3);
+  color: #6b5738;
+}
+
+/* 顶部比分条 */
+.score-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 28rpx;
+}
+
+.score-side { flex: 1; display: flex; flex-direction: column; gap: 6rpx; }
+.score-side.right { align-items: flex-end; }
+
+.side-name {
+  font-size: 24rpx;
+  color: #8a7658;
+}
+
+.side-num {
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #a8322a;
+}
+
+.side-vs {
+  padding: 0 24rpx;
+  font-size: 26rpx;
+  letter-spacing: 2rpx;
+  color: #b8860b;
+}
+
+/* 题目卡片 */
+.q-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx dashed rgba(184, 134, 11, 0.28);
+}
+
+.q-index { font-size: 24rpx; color: #9a8258; }
+
+.q-tag {
+  padding: 6rpx 18rpx;
+  border-radius: 999rpx;
+  background: #f3ecdb;
+  color: #8a7658;
+  font-size: 21rpx;
+}
+
+.q-title {
+  margin: 30rpx 0 34rpx;
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 38rpx;
+  line-height: 1.7;
+  color: #3b2f22;
+}
+
+.q-options { display: flex; flex-direction: column; gap: 18rpx; }
+
+.q-option {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  min-height: 96rpx;
+  padding: 20rpx 24rpx;
+  box-sizing: border-box;
+  border-radius: 18rpx;
+  border: 1rpx solid rgba(184, 134, 11, 0.32);
+  background: #fbf6e9;
+}
+
+.opt-hover { background: #f3e4c4; }
+
+.opt-letter {
+  width: 48rpx;
+  height: 48rpx;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #8f2c22;
+  color: #fff6e2;
+  font-size: 24rpx;
+  line-height: 48rpx;
+  text-align: center;
+}
+
+.opt-text {
+  font-size: 28rpx;
+  line-height: 1.5;
+  color: #3b2f22;
+}
+
+.q-hint {
+  margin-top: 26rpx;
+  font-size: 21rpx;
+  color: #b3a487;
+  text-align: center;
+}
+
+/* 结算 */
+.result-card { text-align: center; padding: 48rpx 32rpx; }
+
+.result-badge {
+  display: inline-block;
+  padding: 12rpx 36rpx;
+  border-radius: 999rpx;
+  background: linear-gradient(90deg, #8f2c22, #b8860b);
+  color: #fff6e2;
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 32rpx;
+  letter-spacing: 3rpx;
+}
+
+.score-board {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 40rpx 0 20rpx;
+}
+
+.score-col { flex: 1; }
+
+.score-name {
+  font-size: 25rpx;
+  color: #8a7658;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.score-num {
+  margin: 8rpx 0;
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 72rpx;
+  font-weight: bold;
+  color: #a8322a;
+}
+
+.score-unit { font-size: 21rpx; color: #b3a487; }
+
+.score-vs {
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  color: #b8860b;
+}
+
+.result-tip {
+  margin-top: 12rpx;
+  font-size: 23rpx;
+  color: #9a8258;
+}

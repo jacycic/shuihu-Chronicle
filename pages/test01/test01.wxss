@@ -104,6 +104,11 @@ page{
   text-shadow: 0 0 4rpx rgba(0,0,0,0.4);
   margin-top:6rpx;
 }
+.battle-icon{
+  font-size:54rpx;
+  line-height:1;
+  color:#8f2c22;
+}
 .red-dot{
   position:absolute;
   top:-4rpx;

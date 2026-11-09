@@ -3,16 +3,18 @@ const { flushAchievementTips } = require('../../utils/tip.js')
 
 Page({
   /**
-   * achievementList：带 unlocked 状态的成就列表（规则与计算在服务层）
-   * unlockedCount / lockedCount：统计
-   * progress：解锁百分比
+   * achievementList：带 unlocked 状态与科普资料 lore 的成就列表
+   * progress：解锁百分比（0~100），进度条宽度用 {{progress}}%
+   * detail / detailVisible：成就详情面板
    */
   data: {
     achievementList: [],
     unlockedCount: 0,
     lockedCount: 0,
     total: 0,
-    progress: 0
+    progress: 0,
+    detailVisible: false,
+    detail: null
   },
 
   onLoad() {
@@ -38,16 +40,25 @@ Page({
     })
   },
 
-  /** 已解锁的成就点击展示说明 */
+  /** 仅已解锁的成就可以点开科普介绍，未解锁项保持禁用 */
   clickItem(e) {
     const index = e.currentTarget.dataset.index
     const item = this.data.achievementList[index]
-    if (item && item.unlocked) {
-      wx.showModal({
-        title: item.name,
-        content: item.desc,
-        showCancel: false
-      })
-    }
-  }
+    if (!item || !item.unlocked) return
+    this.setData({
+      detailVisible: true,
+      detail: {
+        name: item.name,
+        desc: item.desc,
+        unlocked: item.unlocked,
+        lore: item.lore || { intro: '', fact: '', source: '' }
+      }
+    })
+  },
+
+  closeDetail() {
+    this.setData({ detailVisible: false })
+  },
+
+  noop() {}
 })

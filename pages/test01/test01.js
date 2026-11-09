@@ -28,6 +28,7 @@ Page({
   goMans() { wx.navigateTo({ url: config.ROUTES.mans }) },
   goChart() { wx.navigateTo({ url: config.ROUTES.chart }) },
   goUser() { wx.navigateTo({ url: config.ROUTES.user }) },
+  goBattle() { wx.navigateTo({ url: config.ROUTES.battle }) },
   goQuizzes() { wx.navigateTo({ url: config.ROUTES.quizzes }) },
 
   openNoticePopup() { this.setData({ showNoticePopup: true }) },

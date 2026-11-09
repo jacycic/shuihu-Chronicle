@@ -16,7 +16,9 @@
     "comphonets/globaltips/globaltips",
     "pages/friends/friends",
     "pages/chat/chat",
-    "pages/quizzes/quizzes"
+    "pages/quizzes/quizzes",
+    "pages/battle/battle",
+    "pages/battle-room/battle-room"
     
   ],
   "window": {

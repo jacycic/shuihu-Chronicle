@@ -71,6 +71,8 @@ const ROUTES = {
   friends: '/pages/friends/friends',
   chat: '/pages/chat/chat',
   quizzes: '/pages/quizzes/quizzes',
+  battle: '/pages/battle/battle',
+  battleRoom: '/pages/battle-room/battle-room',
   logs: '/pages/logs/logs'
 }
 
@@ -98,7 +100,8 @@ const API = {
 const CLOUD = {
   enabled: true,
   env: 'cloud1-d5gfygc8z412eb684',              // 例：cloud1-d5gfygc8z412eb684
-  functionName: 'friend'
+  functionName: 'friend',
+  battleFunction: 'battle'                      // 联机对战云函数，见 README
 }
 
 const HERO_TOTAL = 108

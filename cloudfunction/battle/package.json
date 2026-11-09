@@ -1,0 +1,9 @@
+{
+  "name": "battle",
+  "version": "1.0.0",
+  "description": "水浒风云录趣味问答联机对战云函数",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

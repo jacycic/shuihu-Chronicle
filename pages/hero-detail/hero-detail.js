@@ -61,6 +61,7 @@ Page({
     // 准备该好汉的上下文，后续「好汉」页展示同一位好汉的五维
     heroService.setResult(hero)
     const seat = heroService.getSeatIndex(hero.name)
+    const quote = heroService.getQuote(hero.name)
     this.setData({
       statusBarHeight,
       notFound: false,
@@ -74,7 +75,8 @@ Page({
         totalScore: heroService.getTotalScore(hero),
         rank: heroService.getPowerRank(hero.name),
         scores,
-        scenes
+        scenes,
+        quote
       }
     })
   },

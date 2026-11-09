@@ -25,9 +25,9 @@
       </view>
     </view>
     <view class="progress-track">
-      <view class="progress-fill" style="width: {{progress}}%;"></view>
+      <view class="progress-fill" style="width: {{progress}}">%·</view>
     </view>
-    <view class="progress-caption">已达 {{progress}}% · 点击已解锁成就查看说明</view>
+    <view class="progress-caption">已达成 {{progress}}% · 点击已解锁成就查看科普介绍</view>
   </view>
 
   <!-- 成就网格 -->
@@ -38,7 +38,7 @@
       wx:key="name"
       bindtap="clickItem"
       data-index="{{index}}"
-      hover-class="achievement-item-hover"
+      hover-class="{{item.unlocked ? 'achievement-item-hover' : 'none'}}"
     >
       <view class="icon-area">
         <image wx:if="{{item.unlocked}}" src="{{item.icon}}" mode="aspectFit" />
@@ -46,6 +46,36 @@
       </view>
       <view class="text-area">{{item.unlocked ? item.name : '???'}}</view>
       <view wx:if="{{item.unlocked}}" class="unlocked-flag">✓</view>
+    </view>
+  </view>
+
+  <!-- 成就科普详情面板 -->
+  <view wx:if="{{detailVisible}}" class="detail-mask" catchtap="closeDetail">
+    <view class="detail-panel" catchtap="noop">
+      <view class="detail-head">
+        <view class="detail-title">{{detail.name}}</view>
+        <view class="detail-close" catchtap="closeDetail">×</view>
+      </view>
+      <view class="detail-status {{detail.unlocked ? 'status-ok' : 'status-lock'}}">
+        {{detail.unlocked ? '✓ 已解锁' : '尚未解锁'}}
+      </view>
+
+      <view class="detail-section">
+        <view class="detail-label">解 锁 条 件</view>
+        <view class="detail-desc">{{detail.desc}}</view>
+      </view>
+
+      <view class="detail-section" wx:if="{{detail.lore.intro}}">
+        <view class="detail-label">水 浒 小 课 堂</view>
+        <view class="detail-intro">{{detail.lore.intro}}</view>
+      </view>
+
+      <view class="detail-fact" wx:if="{{detail.lore.fact}}">
+        <view class="fact-mark">知</view>
+        <text>{{detail.lore.fact}}</text>
+      </view>
+
+      <view class="detail-source" wx:if="{{detail.lore.source}}">延伸阅读：{{detail.lore.source}}</view>
     </view>
   </view>
 </view>

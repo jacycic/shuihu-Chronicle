@@ -1,4 +1,10 @@
 <view class="ctrl">
+  <!-- 联机对战入口 -->
+  <view class="battle-entry" bindtap="goBattle" hover-class="battle-entry-hover">
+    <text class="battle-entry-title">⚔ 联 机 对 战</text>
+    <text class="battle-entry-sub">随机匹配 · 好友开房 · 十题论剑</text>
+  </view>
+
   <!-- 背景装饰元素 -->
   <view class="decor decor-1">水</view>
   <view class="decor decor-2">浒</view>

@@ -14,6 +14,36 @@
   overflow: hidden;
 }
 
+/* 联机对战入口 */
+.battle-entry{
+  position:absolute;
+  top:36rpx;
+  left:30rpx;
+  right:30rpx;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:22rpx 28rpx;
+  border-radius:20rpx;
+  background:linear-gradient(90deg,#1a7fb5,#1DACDB);
+  box-shadow:0 8rpx 22rpx rgba(26,172,219,0.32);
+  box-sizing:border-box;
+}
+.battle-entry-hover{
+  opacity:0.88;
+}
+.battle-entry-title{
+  font-size:32rpx;
+  font-weight:bold;
+  letter-spacing:3rpx;
+  color:#fff;
+}
+.battle-entry-sub{
+  font-size:22rpx;
+  color:rgba(255,255,255,0.88);
+}
+
 /* 大文字背景装饰（水浒大字，虚化水印） */
 .decor{
   position: absolute;

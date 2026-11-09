@@ -8,6 +8,12 @@
 const config = require('../config/index.js')
 const request = require('./request.js')
 const localHeroes = require('../data/heroes.js')
+const heroQuotes = require('../data/heroQuotes.js')
+
+/** 原著摘录：按姓名索引，切换到远程数据源时同样可用 */
+function getQuote(name) {
+  return heroQuotes[name] || null
+}
 
 let heroCache = localHeroes
 // 测试匹配结果属于跨页运行时状态，由服务层持有，不再塞进 globalData
@@ -127,5 +133,6 @@ module.exports = {
   getResult,
   getSeatIndex,
   getPowerRank,
+  getQuote,
   refreshFromRemote
 }

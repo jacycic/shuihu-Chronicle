@@ -1,0 +1,84 @@
+<view class="page">
+  <view class="top-bar">
+    <view class="top-back" bindtap="onBack" hover-class="btn-hover">←</view>
+    <view class="top-title">{{status == 'finished' ? '对 战 结 果' : '梁 山 论 剑'}}</view>
+    <view class="room-chip" bindtap="onCopyRoom" hover-class="btn-hover">{{roomId}}</view>
+  </view>
+
+  <view wx:if="{{error}}" class="error-bar" bindtap="poll">{{error}} · 点击重试</view>
+  <view wx:if="{{loading}}" class="loading-tip">正在进入房间…</view>
+
+  <!-- 等待对手 -->
+  <view wx:if="{{status == 'waiting'}}" class="card waiting-card">
+    <view class="waiting-mark">待</view>
+    <view class="waiting-title">等待对手入座…</view>
+    <view class="waiting-desc">把房间号告诉好友，对方在「好友对战」中输入即可加入</view>
+    <view class="room-code">{{roomId}}</view>
+    <view class="copy-btn" bindtap="onCopyRoom" hover-class="btn-hover">复 制 房 间 号</view>
+  </view>
+
+  <!-- 对手离开 -->
+  <view wx:elif="{{status == 'abandoned'}}" class="card waiting-card">
+    <view class="waiting-mark">散</view>
+    <view class="waiting-title">对手已离开</view>
+    <view class="waiting-desc">本局已结束，返回大厅可重新开房</view>
+    <view class="ghost-btn" bindtap="onBack" hover-class="btn-hover">返 回 大 厅</view>
+  </view>
+
+  <!-- 结算 -->
+  <view wx:elif="{{status == 'finished'}}" class="card result-card">
+    <view class="result-badge">{{resultText}}</view>
+    <view class="score-board">
+      <view class="score-col">
+        <view class="score-name">{{myName}}</view>
+        <view class="score-num">{{myScore}}</view>
+        <view class="score-unit">我方得分</view>
+      </view>
+      <view class="score-vs">VS</view>
+      <view class="score-col">
+        <view class="score-name">{{peerName}}</view>
+        <view class="score-num">{{peerScore}}</view>
+        <view class="score-unit">对手得分</view>
+      </view>
+    </view>
+    <view class="result-tip">共 {{total}} 题 · 每题 5 分 · 满分 {{fullScore}} 分</view>
+    <view class="primary-btn" bindtap="onAgain" hover-class="btn-hover">再 战 一 局</view>
+  </view>
+
+  <!-- 对战中 -->
+  <block wx:elif="{{status == 'playing'}}">
+    <view class="card score-bar">
+      <view class="score-side">
+        <text class="side-name">{{myName}}</text>
+        <text class="side-num">{{current > total ? total : current}}/{{total}}</text>
+      </view>
+      <view class="side-vs">VS</view>
+      <view class="score-side right">
+        <text class="side-name">{{peerName}}</text>
+        <text class="side-num">{{peerCount}}/{{total}}</text>
+      </view>
+    </view>
+
+    <view wx:if="{{current < total}}" class="card question-card">
+      <view class="q-head">
+        <text class="q-index">第 {{current + 1}} 题 / 共 {{total}} 题</text>
+        <text class="q-tag">{{questions[current].tag}}</text>
+      </view>
+      <view class="q-title">{{questions[current].title}}</view>
+      <view class="q-options">
+        <view wx:for="{{questions[current].opt}}" wx:for-item="opt" wx:key="*this"
+              class="q-option" data-idx="{{index}}" bindtap="onSelect" hover-class="opt-hover">
+          <text class="opt-letter">{{index == 0 ? 'A' : 'B'}}</text>
+          <text class="opt-text">{{opt}}</text>
+        </view>
+      </view>
+      <view class="q-hint">作答后自动进入下一题，对手进度实时同步</view>
+    </view>
+
+    <view wx:else class="card waiting-card">
+      <view class="waiting-mark">候</view>
+      <view class="waiting-title">你已答完，等待对手…</view>
+      <view class="waiting-desc">对手进度 {{peerCount}}/{{total}}，全部答完即出结果</view>
+    </view>
+  </block>
+</view>

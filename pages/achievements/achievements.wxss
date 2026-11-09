@@ -121,6 +121,7 @@ page {
 }
 
 .progress-fill {
+  width: 0;
   height: 100%;
   border-radius: 999rpx;
   background: linear-gradient(90deg, #a8322a, #d9a441);
@@ -231,4 +232,132 @@ page {
   line-height: 32rpx;
   text-align: center;
   box-shadow: 0 4rpx 10rpx rgba(168, 50, 42, 0.3);
+}
+
+/* 成就科普详情面板 */
+.detail-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  background: rgba(28, 22, 16, 0.55);
+}
+
+.detail-panel {
+  width: 100%;
+  max-height: 80vh;
+  box-sizing: border-box;
+  overflow-y: auto;
+  padding: 36rpx 36rpx calc(48rpx + env(safe-area-inset-bottom));
+  border-radius: 32rpx 32rpx 0 0;
+  background: #fffdf7;
+  box-shadow: 0 -12rpx 40rpx rgba(30, 22, 12, 0.25);
+}
+
+.detail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.detail-title {
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 42rpx;
+  font-weight: bold;
+  letter-spacing: 4rpx;
+  color: #3b2f22;
+}
+
+.detail-close {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  background: #f1ece0;
+  color: #8a7658;
+  font-size: 36rpx;
+  line-height: 52rpx;
+  text-align: center;
+}
+
+.detail-status {
+  display: inline-block;
+  margin-bottom: 26rpx;
+  padding: 8rpx 22rpx;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+}
+
+.status-ok {
+  background: #f6e3d0;
+  color: #a8322a;
+}
+
+.status-lock {
+  background: #eee9dc;
+  color: #8a7658;
+}
+
+.detail-section {
+  margin-bottom: 28rpx;
+}
+
+.detail-label {
+  margin-bottom: 12rpx;
+  padding-left: 16rpx;
+  border-left: 6rpx solid #a8322a;
+  font-size: 24rpx;
+  letter-spacing: 3rpx;
+  color: #9a8258;
+}
+
+.detail-desc {
+  font-size: 27rpx;
+  line-height: 1.7;
+  color: #3b2f22;
+}
+
+.detail-intro {
+  font-size: 27rpx;
+  line-height: 1.85;
+  text-align: justify;
+  color: #4a3c2c;
+}
+
+.detail-fact {
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+  padding: 20rpx 22rpx;
+  border-radius: 18rpx;
+  background: linear-gradient(135deg, #fbf1d8, #fffaf0);
+  font-size: 25rpx;
+  line-height: 1.7;
+  color: #6b5738;
+}
+
+.fact-mark {
+  width: 40rpx;
+  height: 40rpx;
+  flex-shrink: 0;
+  border-radius: 8rpx;
+  background: #a8322a;
+  color: #fff5e0;
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 24rpx;
+  line-height: 40rpx;
+  text-align: center;
+}
+
+.detail-source {
+  padding-top: 20rpx;
+  border-top: 1rpx dashed rgba(184, 134, 11, 0.3);
+  font-size: 22rpx;
+  line-height: 1.6;
+  color: #9a8258;
 }
