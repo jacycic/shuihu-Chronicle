@@ -13,6 +13,30 @@ const FINISH_ICON = config.asset(config.ASSETS.finishIcon)
 
 const rules = [
   {
+    name: "开卷有益",
+    desc: "在单人答题中读到第 1 条小知识",
+    heroes: [],
+    quiz: { key: "factsRead", min: 1 }
+  },
+  {
+    name: "博闻强识",
+    desc: "累计读到 8 条答题小知识",
+    heroes: [],
+    quiz: { key: "factsRead", min: 8 }
+  },
+  {
+    name: "大宋百事通",
+    desc: "累计答对 10 道宋代小知识题",
+    heroes: [],
+    quiz: { key: "songCorrect", min: 10 }
+  },
+  {
+    name: "梁山百事通",
+    desc: "单人答题拿到一次满分 100 分",
+    heroes: [],
+    quiz: { key: "bestScore", min: 100 }
+  },
+  {
     name: "以史为镜",
     desc: "完成水浒故事初识，开启梁山旅途",
     heroes: [],

@@ -40,7 +40,7 @@ function call(action, payload = {}) {
     const body = res && res.result
     if (!body) throw new Error('云函数没有返回内容')
     if (!body.ok) throw new Error(body.error || '操作失败')
-    if (body.version !== 2) throw new Error('BATTLE_CLOUD_OUTDATED')
+    if (body.version !== 3) throw new Error('BATTLE_CLOUD_OUTDATED')
     return body.data
   }).catch(err => {
     const raw = String((err && (err.errMsg || err.message)) || '')
@@ -58,6 +58,7 @@ module.exports = {
   createRoom: () => call('createRoom'),
   joinRoom: roomId => call('joinRoom', { roomId }),
   getState: roomId => call('getState', { roomId }),
-  submitAnswer: (roomId, index, answer) => call('submitAnswer', { roomId, index, answer }),
+  submitAnswer: (roomId, index, answer, costMs) =>
+    call('submitAnswer', { roomId, index, answer, costMs }),
   leave: roomId => call('leave', { roomId })
 }

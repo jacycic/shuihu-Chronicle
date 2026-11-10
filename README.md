@@ -18,8 +18,11 @@
   - `dialogService.js` 剧情脚本查询
   - `audioService.js` BGM 与音效
   - `friendService.js` 好友与私信云函数调用（需部署后启用）
+  - `aiService.js` AI 军师问答：云函数调用 + 本地知识库兜底
 - `cloudfunction/friend/` 好友 + 私信云函数（按登录账号隔离数据，身份由 openid 校验）
 - `cloudfunction/auth/` 账号云函数（注册/登录 + 进度云同步，需部署后启用）
+- `cloudfunction/ai/` AI 问答云函数（OpenAI 兼容大模型接口，密钥只存环境变量）
+- `pages/ai/` AI 军师问答页（聊天、快捷提问、回答来源标注）
 - `utils/tip.js` 把待提示成就交给页面上的 `globaltips` 组件依次弹出
 - `pages/` 视图层：只负责渲染与交互，不直接读写缓存、静态数据或网络
 
@@ -197,15 +200,27 @@ A 用户写入的内容 B 用户永远读不到，所以纯前端无法实现好
 - 头像只同步 http(s) 地址；`chooseAvatar` 的本地临时路径不可跨设备访问，
   此时前端用昵称首字圆形头像兜底
 
-## 联机对战（趣味问答）
+## 联机对战与单人答题（趣味问答）
 
-入口：首页「联机对战」（趣味问答上方）、问答页顶部按钮 → `pages/battle/battle`。
-大厅可选「随机匹配」或「好友对战」（创建房间 / 输入 6 位房间号），进入
-`pages/battle-room/battle-room` 后双方各答 10 题，进度实时同步，全部答完按总分
-判胜负，每题 5 分，同分平局。
+入口：首页「联机对战」→ `pages/battle/battle`。大厅从上到下是「题库总览」、
+「单人答题」（不依赖云端，任何时候都能玩）、「随机匹配」与「好友对战」
+（创建房间 / 输入 6 位房间号）。首页不再单独放「单人答题」入口，
+答题页原有的「联机对战」按钮也已移除，入口统一收在大厅。
+
+单人答题 20 题一局，每答 5 题穿插一张小知识卡，内容在 `data/quizFacts.js`
+（12 条，含宋代市井、古代通识与水浒典故，附出处）；同一批知识精简后写进
+`data/achievementLore.js`，用于「开卷有益 / 博闻强识 / 大宋百事通 /
+梁山百事通」四个成就的科普介绍。答题进度存 `config.STORAGE_KEYS.quizStats`，
+已登记进 `PROGRESS_KEYS`，按账号隔离并随云端进度同步；成就解锁提示复用
+`globaltips` 组件（答题页已挂 `#unlockTipRef` 并调用 `flushAchievementTips`）。
+
+联机对局进入 `pages/battle-room/battle-room` 后双方各答 10 题，每题限时 5 秒，进度实时同步。
+答对得 5 分，超时不得分且自动跳过；分数高者胜，同分时总用时少者胜，
+分数与用时都相同为平局。每题实际用时由前端上报、云端限制在 0~5 秒，
+超时按 5 秒计入总用时；非法或缺失的用时数据一律按 5 秒兜底。
 
 题库在 `data/quizBank.js`：80 道二选一题，分「水浒 / 宋代 / 古代」三类，
-由 `services/quizService.js` 统一抽题、按下标还原与计分，单机问答与联机对战共用。
+由 `services/quizService.js` 统一抽题、按下标还原与计分，单人答题与联机对战共用。
 云端房间**只存题目下标**，不存题目正文，所以题库只需维护这一份；
 对战双方需使用同一版本的小程序，否则下标对应的题目会不一致。
 
@@ -216,6 +231,9 @@ A 用户写入的内容 B 用户永远读不到，所以纯前端无法实现好
 2. 开发者工具右键 `cloudfunction/battle` →「上传并部署：云端安装依赖」；
    同时确认 `cloudfunction/auth` 已部署（对战按登录账号隔离，依赖 `sh_accounts`）。
    两个云函数的超时建议从 3 秒调到 10 秒。
+   **部署过旧版 `battle` 的项目必须重新上传**：5 秒限时、超时 `-1` 与 `costs`
+   用时结算都在云端完成，云函数版本为 `3`；前端会校验版本，未更新的云端会在
+   大厅直接提示「版本过旧」，避免进房后超时提交被旧云函数拒绝。
 3. `config/index.js` 中 `CLOUD.enabled = true`、`CLOUD.env` 与部署环境一致，
    `CLOUD.battleFunction` 保持 `battle`。
 4. 用账号密码登录后进入大厅。若显示「对战服务尚未就绪」，说明集合或云函数
@@ -226,3 +244,75 @@ A 用户写入的内容 B 用户永远读不到，所以纯前端无法实现好
 > `status = 'finished'` 或 `createdAt` 过期的文档。
 > 身份模型与好友功能一致：账号为 `u_<账号>`、游客为 `g_<openid 摘要>`，
 > 前端传的 `account` 会与 `sh_accounts.openid` 校验，防止冒充他人。
+
+## 人物摘要与剧情舆图
+
+人物详情页的「人物摘要」来自 `data/heroQuotes.js`，108 位好汉每人一条：
+优先摘录通行百回本中确可考的形貌 / 装束描写（45 位，逐字节引并标回目），
+摘要据此概述其长相气度；原著未单独描其形貌的，摘要改述绰号、本领、身份
+与性情，属本传白话整理，不冒充原文，卡片下方仍节引第七十一回石碣天文
+座次名录以存出处。另列「本传题名」（星宿 + 绰号 + 姓名）与三段本传行迹导读。
+
+`pages/playing/playing` 顶部的「北宋舆图」是纯 CSS 绘制的**示意图**：
+州府节点在 `data/songMap.js`，`services/mapService.js` 把 `sceneList[].name`
+按关键词归一到州府；当前场景高亮，走过的场景标为行迹，无法确证归属的
+场景标「暂标 · 地点待考」。点「放大」进入全屏舆图，默认 200%，可用单指
+拖动画布查看全部州府；＋ / － 在 120%~280% 间调整倍率，缩放不重置当前
+视区，打开时自动居中当前场景，收起后重新打开可再次定位。
+小图与放大图上的地名节点均可点击，弹出小窗列出地名性质、简介、原著戏份
+与「今地」对照；今地依通行地理沿革整理，小说地望与史实不必尽合。
+坐标为相对方位，不是实测经纬度，也不申请定位权限。
+
+## AI 军师问答
+
+首页左侧「AI 军师」进入 `pages/ai/ai`，可问某位好汉的形貌与行迹、梁山座次、
+成书背景、宋代小知识，也支持快捷问题与多轮对话。链路为
+`pages/ai` → `services/aiService.js` → `cloudfunction/ai` → 大模型：
+前端不接触 API Key，云函数只接收最近 10 轮、每轮 500 字以内的对话，
+系统提示词限定水浒科普范围并拒答无关话题，另有单实例轻量限流。
+
+### 接入真实大模型
+
+1. 开发者工具右键 `cloudfunction/ai` →「上传并部署：云端安装依赖」，
+   部署环境与 `config/index.js` 的 `CLOUD.env` 保持一致。
+2. 云开发控制台 → 云函数 `ai` → **版本配置** → 环境变量：
+
+   | 变量 | DeepSeek | 智谱 GLM |
+   | --- | --- | --- |
+   | `AI_BASE_URL` | `https://api.deepseek.com/v1` | `https://open.bigmodel.cn/api/paas/v4` |
+   | `AI_MODEL` | `deepseek-chat` | `glm-4-flash` |
+   | `AI_API_KEY` | `sk-...` | 智谱 API Key（必填，**勿写进代码库**） |
+
+   智谱地址是 **paas** 不是 `pass`；写成 `/api/pass/v4` 会 404/500，
+   云函数虽会自动纠正，仍建议直接填对。混元示例：
+   `https://api.hunyuan.cloud.tencent.com/v1` + `hunyuan-turbo`。
+   未填 `AI_MODEL` 时按地址推断：`deepseek` → `deepseek-chat`，
+   `bigmodel/zhipu` → `glm-4-flash`，`hunyuan` → `hunyuan-turbo`。
+   智谱老式 `id.secret` 形式密钥会自动签成 JWT，新版 API Key 直接透传。
+   **改过环境变量要创建新版本并发布**，否则云函数读到的仍是旧配置。
+3. 把该云函数执行超时调到 30 秒（函数内部 HTTP 超时 25 秒），
+   确认 `config.CLOUD.enabled = true`、`config.AI.enabled = true`。
+4. 重新编译，进问答页点右上「**自检**」，会显示云函数实际读到的地址、
+   接口路径、模型名、鉴权方式与连通结果；正常时顶部显示「在线 AI · 已接入大模型」。
+
+### 显示「AI 未开通 / 已用本地资料作答」时
+
+这个提示覆盖所有云端失败，不一定是地址错。按顺序查：
+
+- 点「自检」看「接口路径」：`/api/pass/v4/...` 或 404/500 → 地址写错，
+  智谱应为 `/api/paas/v4/chat/completions`；`无法调用 ai 云函数` → 没部署或环境不一致。
+- `API Key 无效` → 密钥填错、没权限，或智谱用了 `id.secret` 却还是旧版云函数；
+  `请求被拒：模型名…` → 模型名与厂商不匹配（如 DeepSeek 用 `hunyuan-turbo`）。
+- 上游报错详情会附在提示括号里，例如 `（Model Not Exist）`，可直接对照改。
+- 控制台「创建新版本」里的环境变量只属于那个版本，要确认版本已发布、
+  且调用指向该版本；`$LATEST` 需要单独配置。
+- 自检成功后，若之前失败过，点「清空」或再自检一次即可退出降级冷却。
+
+云函数返回 `{ ok, data: { text, model } }` 或 `{ ok:false, error, message }`，
+自检 action 返回带 `baseURL / endpoint / model / authMode / reachable / message` 的
+`data`，都不会回传密钥。未部署、未配置、超时或网络失败时 `aiService.ask()` 自动回退
+`localAnswer()`（108 位好汉档案、人物摘要与答题小知识），并把具体原因显示在
+模式条下方；云端失败后 5 分钟内直接用本地资料作答。
+
+换成自建后端时，只改 `services/aiService.js` 里的 `wx.cloud.callFunction`；
+`cloudfunction/ai/index.js` 的请求拼装与解析逻辑可直接搬到 Node 服务里复用。

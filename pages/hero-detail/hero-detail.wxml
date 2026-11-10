@@ -87,20 +87,32 @@
       </view>
     </view>
 
-    <!-- 原著摘录 -->
+    <!-- 人物摘要：优先形貌，无外貌原文者改述本传其他方面 -->
     <view class="card" wx:if="{{profile.quote}}">
       <view class="card-head">
-        <text class="card-title">原 著 摘 录</text>
-        <text class="card-sub">{{profile.quote.kind == 'verse' ? '人物赞诗 / 出场描写' : '石碣天文'}}</text>
+        <text class="card-title">人 物 摘 要</text>
+        <text class="card-sub">{{profile.quote.kindLabel}}</text>
       </view>
-      <view class="quote-mark">“</view>
-      <view class="quote-text">{{profile.quote.quote}}</view>
-      <view class="quote-source">—— {{profile.quote.source}}</view>
+      <view class="quote-title" wx:if="{{profile.quote.title}}">
+        <text class="quote-title-label">本 传 题 名</text>
+        <text class="quote-title-text">{{profile.quote.title}}</text>
+      </view>
+      <view class="summary-block">
+        <view class="summary-label">{{profile.quote.summaryLabel}}</view>
+        <view class="quote-mark">“</view>
+        <view class="summary-text">{{profile.quote.summary}}</view>
+      </view>
+      <view class="quote-source-block">
+        <view class="quote-label">{{profile.quote.quoteLabel}}</view>
+        <view class="quote-text">{{profile.quote.quote}}</view>
+        <view class="quote-source">—— {{profile.quote.source}}</view>
+        <view wx:if="{{profile.quote.kind == 'tablet'}}" class="quote-hint">原著未单独描其形貌，上方摘要据本传行迹与绰号整理；此处节引石碣天文以存出处。</view>
+      </view>
       <view class="quote-note">
-        <view class="quote-note-label">导 读</view>
+        <view class="quote-note-label">本 传 行 迹</view>
         <text>{{profile.quote.note}}</text>
       </view>
-      <view class="quote-disclaimer">引文据通行百回本节引 · 导读为白话整理</view>
+      <view class="quote-disclaimer">形貌摘引通行百回本 · 无外貌原文者以本传白话概述 · 题名出石碣天文</view>
     </view>
 
     <view class="seal">水 浒</view>

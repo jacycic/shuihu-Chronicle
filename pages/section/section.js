@@ -24,7 +24,10 @@ Page({
     },
     currentIndex: 0,
     currentQuestion: null,
-    inputHeroName:""
+    inputHeroName:"",
+    randomHero: null,      // 本次随机抽中的未解锁好汉
+    randomRemain: 0,       // 尚未解锁的好汉数量
+    randomAllDone: false   // 是否已全部集齐
   },
 
   /**
@@ -41,6 +44,57 @@ Page({
   onLoad(options) {
     this.initQuestion()
   },
+
+  /** 从好汉详情返回时刷新「未解锁剩余」，避免按钮状态停留在旧数据 */
+  onShow() {
+    const remain = this.getLockedHeroes().length
+    this.setData({ randomRemain: remain, randomAllDone: remain === 0 })
+  },
+
+  /** 尚未解锁的好汉档案：按当前账号的收集进度过滤 */
+  getLockedHeroes() {
+    const unlocked = progressService.getUnlockedHeroes()
+    return heroService.getAll().filter(hero => !unlocked.includes(hero.name))
+  },
+
+  /** 随机按钮：只在未解锁好汉中抽，不立即解锁，确认后再前往 */
+  randomPickHero() {
+    const locked = this.getLockedHeroes()
+    if (!locked.length) {
+      this.setData({ randomHero: null, randomRemain: 0, randomAllDone: true })
+      wx.showToast({ title: '好汉已全部解锁', icon: 'none' })
+      return
+    }
+    const hero = this.shuffle(locked)[0]
+    this.setData({
+      randomHero: { name: hero.name, nick: hero.nick || '', star: hero.star || '' },
+      randomRemain: locked.length,
+      randomAllDone: false
+    })
+  },
+
+  /** 确认前往：与手动输入、测试匹配的解锁流程保持一致 */
+  goRandomHero() {
+    const picked = this.data.randomHero
+    if (!picked) return
+    const hero = heroService.findByName(picked.name)
+    if (!hero) {
+      wx.showToast({ title: '该好汉不存在', icon: 'none' })
+      return
+    }
+    this.setData({ randomHero: null })
+    heroService.setResult(hero)
+    const isNewUnlock = progressService.unlockHero(picked.name)
+    wx.navigateTo({
+      url: `${config.ROUTES.main}?role=${encodeURIComponent(picked.name)}&isNewUnlock=${isNewUnlock}`
+    })
+  },
+
+  closeRandom() {
+    this.setData({ randomHero: null })
+  },
+
+  noop() {},
 
   /**
    * 初始化题目核心函数

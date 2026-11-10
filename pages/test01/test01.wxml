@@ -49,9 +49,15 @@
           <view class="red-dot"></view>
           <text>公告</text>
         </view>
+        <view class="func-item" bindtap="goAi">
+          <view class="func-icon-box" bind:tap="ClickSound">
+            <view class="ai-icon">智</view>
+          </view>
+          <text>AI 军师</text>
+        </view>
       </view>
 
-      <!-- 右侧功能：用户、趣味问答 -->
+      <!-- 右侧功能：用户、联机对战 -->
       <view class="func-right">
         <view class="func-item" bindtap="goUser">
           <view class="func-icon-box" bind:tap="ClickSound">
@@ -64,12 +70,6 @@
             <view class="battle-icon">⚔</view>
           </view>
           <text>联机对战</text>
-        </view>
-        <view class="func-item" bindtap="goQuizzes" >
-          <view class="func-icon-box" bind:tap="ClickSound">
-            <image class="func-img" src="https://shuihu2026.oss-cn-guangzhou.aliyuncs.com/img/other/quizzes.png" mode="aspectFit" />
-          </view>
-          <text>趣味问答</text>
         </view>
         <view class="func-item" bindtap="toggleBgm" >
           <view class="func-icon-box" bind:tap="ClickSound">

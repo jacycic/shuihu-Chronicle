@@ -91,6 +91,13 @@ page {
   color: #3b2f22;
 }
 
+.guide-note {
+  margin-top: 12rpx;
+  font-size: 23rpx;
+  line-height: 1.6;
+  color: #8a7658;
+}
+
 .guide-error {
   margin: 14rpx 0 0;
   padding: 14rpx 18rpx;
@@ -203,6 +210,16 @@ page {
 }
 
 .friend-mark { background: linear-gradient(135deg, #3b2f22, #7a6a4f); }
+
+/* 单人答题：不依赖云端，用青蓝色与联机模式区分 */
+.solo-card {
+  background: linear-gradient(120deg, #fffdf7, #eaf6fb);
+  border-color: rgba(26, 127, 181, 0.32);
+}
+.solo-mark { background: linear-gradient(135deg, #1a7fb5, #1DACDB); }
+.solo-card .mode-title { color: #155f80; }
+.solo-card .mode-sub { color: #5b8397; }
+.solo-card .mode-arrow { color: #1DACDB; }
 
 .mode-info { flex: 1; min-width: 0; }
 

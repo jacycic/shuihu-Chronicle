@@ -1,0 +1,37 @@
+<view class="ai-page">
+  <view class="ai-header">
+    <view>
+      <view class="ai-title">智 多 星 · AI 军 师</view>
+      <view class="ai-sub">水浒百问 · 有问必答</view>
+    </view>
+    <view class="ai-header-actions">
+      <view class="ai-clear" bindtap="checkConnection" hover-class="ai-clear-hover">{{checking ? '…' : '自 检'}}</view>
+      <view class="ai-clear" bindtap="clearChat" hover-class="ai-clear-hover">清 空</view>
+    </view>
+  </view>
+  <view class="ai-mode">{{modeText}}</view>
+  <view wx:if="{{lastError}}" class="ai-error">{{lastError}}</view>
+
+  <scroll-view class="ai-scroll" scroll-y scroll-into-view="{{scrollIntoView}}" scroll-with-animation>
+    <view class="ai-list">
+      <view wx:for="{{messages}}" wx:key="id" id="msg-{{item.id}}" class="ai-row {{item.role === 'user' ? 'mine' : ''}}">
+        <view class="ai-bubble {{item.role === 'user' ? 'mine' : ''}} {{item.source === 'pending' ? 'pending' : ''}}">
+          <text>{{item.text}}</text>
+          <view wx:if="{{item.role === 'assistant' && item.source !== 'pending' && item.source !== 'system'}}" class="ai-source">{{item.source === 'ai' ? 'AI 作答' : '本地资料'}}</view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <scroll-view class="ai-quick" scroll-x>
+    <view wx:for="{{quickList}}" wx:key="*this" class="ai-chip" data-q="{{item}}" bindtap="onQuickTap" hover-class="ai-chip-hover">{{item}}</view>
+  </scroll-view>
+
+  <view class="ai-input-bar">
+    <input class="ai-input" value="{{inputText}}" bindinput="onInput" bindconfirm="send"
+           placeholder="问问水浒里的人和事…" placeholder-class="ai-placeholder"
+           confirm-type="send" maxlength="500" />
+    <view class="ai-send {{canSend && !sending ? '' : 'disabled'}}" bindtap="send" hover-class="ai-send-hover">{{sending ? '…' : '发 送'}}</view>
+  </view>
+  <view class="ai-disclaimer">回答由 AI 或本地资料生成，仅供科普参考 · 不代表原著定论</view>
+</view>

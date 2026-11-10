@@ -1,3 +1,6 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "globaltips": "/comphonets/globaltips/globaltips"
+  },
+  "navigationBarTitleText": "单人答题"
 }

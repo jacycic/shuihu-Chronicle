@@ -3,6 +3,50 @@ const dialogService = require('../../services/dialogService.js')
 const heroService = require('../../services/heroService.js')
 const progressService = require('../../services/progressService.js')
 const audioService = require('../../services/audioService.js')
+const mapService = require('../../services/mapService.js')
+
+// 放大舆图：基础画布尺寸（rpx）与缩放档位
+const MAP_BASE_W = 640
+const MAP_BASE_H = 760
+const MAP_ZOOM_MIN = 1.2
+const MAP_ZOOM_MAX = 2.8
+const MAP_ZOOM_STEP = 0.4
+const MAP_ZOOM_DEFAULT = 2
+
+function zoomState(zoom) {
+  const z = Math.min(MAP_ZOOM_MAX, Math.max(MAP_ZOOM_MIN, Math.round(zoom * 10) / 10))
+  return {
+    mapZoom: z,
+    mapZoomText: Math.round(z * 100) + '%',
+    mapZoomW: Math.round(MAP_BASE_W * z),
+    mapZoomH: Math.round(MAP_BASE_H * z)
+  }
+}
+
+/**
+ * 只在打开放大层时算一次初始滚动位置，把当前州府放到视口中央。
+ * 之后不再写 scroll-left / scroll-top，用户手势滑动不会被拉回。
+ */
+function scrollState(zoom, place) {
+  let info = {}
+  try {
+    info = wx.getWindowInfo ? wx.getWindowInfo() : (wx.getSystemInfoSync ? wx.getSystemInfoSync() : {})
+  } catch (e) {
+    info = {}
+  }
+  const rpx = (Number(info.windowWidth) || 375) / 750
+  const viewW = 698 * rpx
+  const viewH = (Number(info.windowHeight) || 667) * 0.66
+  const canvasW = MAP_BASE_W * zoom * rpx
+  const canvasH = MAP_BASE_H * zoom * rpx
+  const targetX = place ? place.x / 100 * canvasW : canvasW / 2
+  const targetY = place ? place.y / 100 * canvasH : canvasH / 2
+  const clamp = (value, max) => Math.max(0, Math.min(Math.max(0, max), value))
+  return {
+    mapScrollLeft: Math.round(clamp(targetX - viewW / 2, canvasW - viewW)),
+    mapScrollTop: Math.round(clamp(targetY - viewH / 2, canvasH - viewH))
+  }
+}
 
 Page({
   /**
@@ -21,6 +65,8 @@ Page({
    * sceneDialog：当前场景对应的完整对话脚本数组
    * dialogStep：当前对话走到第几步
    * scrollTopVal：聊天区域滚动值，用于自动滚动到底部（新增）
+   * mapPlaces / mapCurrent / mapSceneName / mapApprox：北宋示意舆图的节点与当前定位
+   * mapZoomOpen / mapZoom / mapZoomW / mapZoomH / mapFocusId：放大舆图层状态
    */
   data: {
     role:"",
@@ -36,7 +82,19 @@ Page({
     lastChatId: "",
     sceneDialog: [],
     dialogStep: 0,
-    scrollTopVal:0
+    scrollTopVal:0,
+    mapPlaces: [],
+    mapCurrent: null,
+    mapSceneName: "",
+    mapApprox: false,
+    mapZoomOpen: false,
+    mapZoom: 1.6,
+    mapZoomText: "200%",
+    mapZoomW: 1280,
+    mapZoomH: 1520,
+    mapScrollLeft: 0,
+    mapScrollTop: 0,
+    placeInfo: null
   },
 
   onLoad(options) {
@@ -71,11 +129,30 @@ Page({
       sceneList: heroSceneList,
       unlockIndex: unlockIndex
     })
+    this.syncMap(unlockIndex)
+  },
+
+  /**
+   * 把指定下标的场景同步到北宋示意舆图：
+   * 当前节点高亮，之前走过的节点标为行迹。
+   */
+  syncMap(idx) {
+    const list = this.data.sceneList
+    if (!list || !list.length) return
+    const current = mapService.currentFor(list, idx)
+    this.setData({
+      mapPlaces: mapService.getPlaces(current.place.key, mapService.visitedFor(list, idx)),
+      mapCurrent: current.place,
+      mapSceneName: current.name,
+      mapApprox: current.approx
+    })
   },
 
   onReady() {
   },
   onShow() {
+    // 从其它页面返回时按最新进度刷新地图标记
+    if (this.data.sceneList.length) this.syncMap(this.data.unlockIndex)
   },
   onHide() {
   },
@@ -93,7 +170,8 @@ Page({
    *  点击事件，携带场景index下标
    */
   openSceneDialog(e){
-    const idx = e.currentTarget.dataset.index
+    // 统一转数字，避免部分基础库把 dataset.index 传成字符串导致下标判断失效
+    const idx = Number(e.currentTarget.dataset.index)
     // 校验：不能打开还未解锁的场景
     if(idx > this.data.unlockIndex){
       wx.showToast({title:"需要先完成上一场景",icon:"none"})
@@ -118,6 +196,8 @@ Page({
       heroAvatar: this.data.heroImg,
       scrollTopVal:0
     })
+    // 打开哪一场景，地图就指到哪一场景
+    this.syncMap(idx)
   },
 
   /**
@@ -134,15 +214,60 @@ Page({
         unlockIndex: newUnlock,
         showDialog:false
       })
+      this.syncMap(newUnlock)
     }else{
       this.setData({
         showDialog:false
       })
+      this.syncMap(this.data.unlockIndex)
     }
   },
 
   // 阻止事件冒泡
   stopBubble(){
+  },
+
+  /** 打开放大舆图：初始居中当前州府，之后滑动完全交给用户手势 */
+  openMapZoom(){
+    this.setData(Object.assign(
+      { mapZoomOpen: true },
+      zoomState(MAP_ZOOM_DEFAULT),
+      scrollState(MAP_ZOOM_DEFAULT, this.data.mapCurrent)
+    ))
+  },
+
+  closeMapZoom(){
+    // 归零滚动位置，保证下次打开时 scroll-left / scroll-top 的值发生变化
+    this.setData({ mapZoomOpen: false, mapScrollLeft: 0, mapScrollTop: 0 })
+  },
+
+  /** 缩放只改画布尺寸，不重置用户已经滑到的位置 */
+  zoomMapIn(){
+    this.setData(zoomState(this.data.mapZoom + MAP_ZOOM_STEP))
+  },
+
+  zoomMapOut(){
+    this.setData(zoomState(this.data.mapZoom - MAP_ZOOM_STEP))
+  },
+
+  /** 点击地图节点：弹出地名小窗（基本信息 + 今地对照） */
+  openPlaceInfo(e){
+    const key = e.currentTarget.dataset.key
+    const mark = (this.data.mapPlaces || []).find(p => p.key === key)
+    const detail = mapService.getPlaceDetail(key, mark)
+    if (!detail) return
+    this.setData({
+      placeInfo: Object.assign({}, detail, {
+        sceneName: detail.isCurrent ? this.data.mapSceneName : '',
+        approx: detail.isCurrent && this.data.mapApprox,
+        statusText: detail.isCurrent ? '当前场景' : (detail.isVisited ? '行迹所经' : '尚未到达'),
+        statusClass: detail.isCurrent ? 'current' : (detail.isVisited ? 'visited' : '')
+      })
+    })
+  },
+
+  closePlaceInfo(){
+    this.setData({ placeInfo: null })
   },
 
   /**

@@ -7,6 +7,7 @@
  */
 const config = require('../config/index.js')
 const progressService = require('./progressService.js')
+const quizProgressService = require('./quizProgressService.js')
 const rules = require('../data/achievementRules.js')
 
 function evaluate() {
@@ -14,6 +15,7 @@ function evaluate() {
   const count = unlockedHeroes.length
   const firstEnter = progressService.getFlag(config.STORAGE_KEYS.firstEnter)
   const customProfile = progressService.getFlag(config.STORAGE_KEYS.customProfile)
+  const quizStats = progressService.getQuizStats()
 
   return rules.map(rule => {
     let unlocked = false
@@ -25,6 +27,9 @@ function evaluate() {
       unlocked = count >= rule.total
     } else if (rule.heroes && rule.heroes.length > 0) {
       unlocked = rule.heroes.every(name => unlockedHeroes.includes(name))
+    } else if (rule.quiz) {
+      // 答题类成就：由单人答题累计进度判定，与好汉收集互不影响
+      unlocked = quizProgressService.statValue(quizStats, rule.quiz.key) >= rule.quiz.min
     }
     return { ...rule, unlocked }
   })

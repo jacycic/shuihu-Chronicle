@@ -61,7 +61,12 @@ Page({
     // 准备该好汉的上下文，后续「好汉」页展示同一位好汉的五维
     heroService.setResult(hero)
     const seat = heroService.getSeatIndex(hero.name)
-    const quote = heroService.getQuote(hero.name)
+    const rawQuote = heroService.getQuote(hero.name)
+    const quote = rawQuote ? Object.assign({}, rawQuote, {
+      kindLabel: rawQuote.kind === 'appearance' ? '原 著 形 貌' : (rawQuote.kind === 'verse' ? '人 物 赞 诗' : '本 传 整 理'),
+      summaryLabel: rawQuote.kind === 'appearance' ? '形 貌 概 述' : '本 传 概 述',
+      quoteLabel: rawQuote.kind === 'tablet' ? '原 文 出 处 · 石 碣 天 文' : '原 文 引 述'
+    }) : null
     this.setData({
       statusBarHeight,
       notFound: false,

@@ -18,7 +18,8 @@
     "pages/chat/chat",
     "pages/quizzes/quizzes",
     "pages/battle/battle",
-    "pages/battle-room/battle-room"
+    "pages/battle-room/battle-room",
+    "pages/ai/ai"
     
   ],
   "window": {

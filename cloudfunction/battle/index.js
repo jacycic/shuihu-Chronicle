@@ -5,7 +5,7 @@
  * 身份与好友功能一致：u_<账号> / g_<openid 摘要>，
  * 账号须通过 sh_accounts.openid 校验，防止伪造他人身份。
  *
- * 云端只保存「题目下标数组」与双方作答，题目正文来自小程序 data/quizBank.js，
+ * 云端只保存「题目下标数组」、双方作答与每题用时，题目正文来自小程序 data/quizBank.js，
  * 因此题库只需维护一份；同一版本的小程序双方按同一份题库还原题目。
  *
  * 前端只通过 services/battleService.js 调用，传 { action, account, ...params }。
@@ -20,8 +20,10 @@ const _ = db.command
 const COL = 'sh_battle_rooms'
 const AUTH_COL = 'sh_accounts'
 const QUESTION_COUNT = 10
+const QUESTION_MS = 5000
 const WAIT_MS = 5 * 60 * 1000
-const VERSION = 2
+// v3：每题 5 秒限时、超时 -1 与 costs 用时结算；旧版前端/云函数不可混用
+const VERSION = 3
 const ROOM_RE = /^[0-9A-F]{6}$/
 const now = () => Date.now()
 
@@ -74,6 +76,40 @@ function blankAnswers(userId, count) {
   return answers
 }
 
+function blankCosts(userId, count) {
+  const costs = {}
+  // 未记录用时的题一律按满额计，避免出现 0 秒的不公平数据
+  costs[userId] = new Array(count).fill(QUESTION_MS)
+  return costs
+}
+
+/** -1 表示超时未作答，同样算作本题已结束，但不得分 */
+function isValidAnswer(v) {
+  return v === 0 || v === 1 || v === -1
+}
+
+/** 只接受 0 / 1 / -1，避免 null、空串等被 Number 转成 0 混进来 */
+function parseAnswer(value) {
+  if (value === null || value === undefined || value === '' || typeof value === 'boolean') return NaN
+  const n = Number(value)
+  return isValidAnswer(n) ? n : NaN
+}
+
+/** 用时缺失或非法时按满额 5 秒计，防止客户端少报用时占便宜 */
+function normalizeCost(value) {
+  if (value === null || value === undefined || value === '') return QUESTION_MS
+  const n = Number(value)
+  if (!Number.isFinite(n) || n < 0) return QUESTION_MS
+  return Math.min(QUESTION_MS, Math.round(n))
+}
+
+/** 旧房间没有 costs 字段时按满额补齐，保证双方用时口径一致 */
+function costList(room, userId, size) {
+  const raw = (room.costs || {})[userId]
+  return Array.from({ length: size }, (_, i) =>
+    normalizeCost(Array.isArray(raw) ? raw[i] : undefined))
+}
+
 function isMember(room, me) {
   return room.hostId === me || (!!room.guestId && room.guestId === me)
 }
@@ -83,8 +119,7 @@ function peerOf(room, me) {
 }
 
 function isDone(list, size) {
-  return Array.isArray(list) && list.length === size &&
-    list.every(v => v === 0 || v === 1)
+  return Array.isArray(list) && list.length === size && list.every(isValidAnswer)
 }
 
 async function makeRoomId(col) {
@@ -111,6 +146,7 @@ async function openRoom(col, me, name, bankSize, mode) {
       guestName: '',
       questionIds,
       answers: blankAnswers(me, QUESTION_COUNT),
+      costs: blankCosts(me, QUESTION_COUNT),
       createdAt: now(),
       updatedAt: now()
     }
@@ -129,11 +165,13 @@ async function joinRoom(col, me, name, roomId) {
 
   const answers = Object.assign({}, room.answers || {})
   answers[me] = new Array(room.questionIds.length).fill(null)
+  const costs = Object.assign({}, room.costs || {})
+  costs[me] = new Array(room.questionIds.length).fill(QUESTION_MS)
   const upd = await col.where({ _id: roomId, status: 'waiting', guestId: '' })
     .update({
       data: {
         status: 'playing', guestId: me, guestName: name,
-        answers: _.set(answers), updatedAt: now()
+        answers: _.set(answers), costs: _.set(costs), updatedAt: now()
       }
     })
   if (!upd.stats || upd.stats.updated === 0) throw new Error('房间已被其它人加入，请重试')
@@ -184,8 +222,12 @@ async function getState(col, me, params) {
     guestName: room.guestName || '',
     questionIds: room.questionIds || [],
     myAnswers: mine,
-    peerCount: peerList.filter(v => v === 0 || v === 1).length,
-    peerAnswers: room.status === 'finished' ? peerList : null
+    myCosts: costList(room, me, (room.questionIds || []).length),
+    peerCount: peerList.filter(isValidAnswer).length,
+    peerAnswers: room.status === 'finished' ? peerList : null,
+    peerCosts: room.status === 'finished' && peer
+      ? costList(room, peer, (room.questionIds || []).length)
+      : null
   }
 }
 
@@ -201,21 +243,30 @@ async function submitAnswer(col, me, params) {
 
   const size = (room.questionIds || []).length
   const idx = Number(params.index)
-  const answer = Number(params.answer)
+  const answer = parseAnswer(params.answer)
   if (!Number.isInteger(idx) || idx < 0 || idx >= size) throw new Error('题目序号不正确')
-  if (answer !== 0 && answer !== 1) throw new Error('选项不正确')
+  if (Number.isNaN(answer)) throw new Error('选项不正确')
 
   const answers = Object.assign({}, room.answers || {})
   const mine = (answers[me] || new Array(size).fill(null)).slice()
-  if (mine[idx] === 0 || mine[idx] === 1) throw new Error('本题已作答')
+  while (mine.length < size) mine.push(null)
+  if (isValidAnswer(mine[idx])) throw new Error('本题已作答')
   mine[idx] = answer
   answers[me] = mine
+
+  // 超时固定按满额 5 秒计；正常作答取上报耗时，异常值按满额兜底
+  const costMs = answer === -1 ? QUESTION_MS : normalizeCost(params.costMs)
+  const costs = Object.assign({}, room.costs || {})
+  const mineCosts = costList(room, me, size)
+  mineCosts[idx] = costMs
+  costs[me] = mineCosts
 
   const peerList = answers[peerOf(room, me)] || []
   const finished = isDone(mine, size) && isDone(peerList, size)
   await doc.update({
     data: {
       answers: _.set(answers),
+      costs: _.set(costs),
       status: finished ? 'finished' : 'playing',
       updatedAt: now()
     }

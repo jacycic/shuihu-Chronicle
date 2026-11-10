@@ -33,6 +33,7 @@ const STORAGE_KEYS = {
   shownAchievements: 'shownAchievements', // 已弹过解锁提示的成就名
   firstEnter: 'ach_yswj',
   customProfile: 'ach_privateCustom',
+  quizStats: 'quizStats', // 单人答题累计进度（答题数、答对数、已读小知识）
   avatar: 'userAvatar',
   nickname: 'userNickname',
   logs: 'logs',
@@ -73,7 +74,8 @@ const ROUTES = {
   quizzes: '/pages/quizzes/quizzes',
   battle: '/pages/battle/battle',
   battleRoom: '/pages/battle-room/battle-room',
-  logs: '/pages/logs/logs'
+  logs: '/pages/logs/logs',
+  ai: '/pages/ai/ai'
 }
 
 /**
@@ -104,6 +106,19 @@ const CLOUD = {
   battleFunction: 'battle'                      // 联机对战云函数，见 README
 }
 
+/**
+ * AI 军师问答。
+ * 页面 → services/aiService.js → cloudfunction/ai → 大模型；
+ * 云函数未部署 / 未配置密钥时自动回退本地知识库，入口始终可用。
+ * 部署与环境变量说明见 README「AI 军师问答」。
+ */
+const AI = {
+  enabled: true,
+  functionName: 'ai',
+  maxHistory: 10,
+  maxInput: 500
+}
+
 const HERO_TOTAL = 108
 const SCORE_FIELDS = ['ren', 'yi', 'li', 'zhi', 'xin']
 
@@ -120,6 +135,7 @@ module.exports = {
   API,
   CLOUD,
   AUTH,
+  AI,
   HERO_TOTAL,
   SCORE_FIELDS,
   asset

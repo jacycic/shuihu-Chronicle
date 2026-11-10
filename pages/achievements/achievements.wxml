@@ -25,7 +25,7 @@
       </view>
     </view>
     <view class="progress-track">
-      <view class="progress-fill" style="width: {{progress}}">%·</view>
+      <view class="progress-fill" style="width: {{progress}}%;"></view>
     </view>
     <view class="progress-caption">已达成 {{progress}}% · 点击已解锁成就查看科普介绍</view>
   </view>

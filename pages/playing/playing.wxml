@@ -1,4 +1,103 @@
 <view class="page-wrap">
+  <!-- 北宋示意舆图：标出当前场景所在州府 -->
+  <view class="map-card">
+    <view class="map-head">
+      <view class="map-head-left">
+        <view class="map-title">北 宋 舆 图</view>
+        <view class="map-sub">当前场景 · {{mapSceneName || '—'}}</view>
+      </view>
+      <view class="map-zoom-entry" bindtap="openMapZoom" hover-class="map-zoom-entry-hover">放 大 ⤢</view>
+    </view>
+    <view class="map-canvas">
+      <view class="map-river map-river-huang"></view>
+      <view class="map-river map-river-chang"></view>
+      <text class="map-compass">北</text>
+      <text class="map-river-note">黄河</text>
+      <text class="map-river-note map-river-note-south">大江</text>
+      <view wx:for="{{mapPlaces}}" wx:key="key"
+            class="map-point {{item.active ? 'active' : ''}} {{item.visited ? 'visited' : ''}}"
+            style="left: {{item.x}}%; top: {{item.y}}%;"
+            bindtap="openPlaceInfo" data-key="{{item.key}}" hover-class="map-point-hover">
+        <view class="map-dot"></view>
+        <text wx:if="{{item.major || item.active}}" class="map-name">{{item.name}}</text>
+      </view>
+    </view>
+    <view class="map-foot" wx:if="{{mapCurrent}}">
+      <text class="map-foot-mark">◉</text>
+      <text>{{mapCurrent.name}}{{mapApprox ? '（暂标 · 地点待考）' : ''}} · {{mapCurrent.brief}}</text>
+    </view>
+    <view class="map-disclaimer">示意舆图 · 州府为相对方位，非实测经纬度</view>
+  </view>
+
+  <!-- 舆图放大层：可拖动查看全部州府，并缩放倍率 -->
+  <view wx:if="{{mapZoomOpen}}" class="map-zoom-mask" catchtap="closeMapZoom">
+    <view class="map-zoom-panel" catchtap="stopBubble">
+      <view class="map-zoom-head">
+        <view class="map-zoom-head-left">
+          <view class="map-zoom-title">北 宋 舆 图 · 放 大</view>
+          <view class="map-zoom-sub">{{mapSceneName || '—'}} · {{mapCurrent ? mapCurrent.name : '—'}}{{mapApprox ? '（暂标）' : ''}}</view>
+        </view>
+        <view class="map-zoom-close" catchtap="closeMapZoom">×</view>
+      </view>
+
+      <scroll-view class="map-zoom-scroll" scroll-x scroll-y scroll-left="{{mapScrollLeft}}" scroll-top="{{mapScrollTop}}">
+        <view class="map-zoom-canvas" style="width:{{mapZoomW}}rpx;height:{{mapZoomH}}rpx;">
+          <view class="map-river map-river-huang"></view>
+          <view class="map-river map-river-chang"></view>
+          <text class="map-compass">北</text>
+          <text class="map-river-note">黄河</text>
+          <text class="map-river-note map-river-note-south">大江</text>
+          <view wx:for="{{mapPlaces}}" wx:key="key"
+                class="map-point {{item.active ? 'active' : ''}} {{item.visited ? 'visited' : ''}}"
+                style="left: {{item.x}}%; top: {{item.y}}%;"
+                bindtap="openPlaceInfo" data-key="{{item.key}}" hover-class="map-point-hover">
+            <view class="map-dot"></view>
+            <text class="map-name">{{item.name}}</text>
+          </view>
+        </view>
+      </scroll-view>
+
+      <view class="map-zoom-tip">单指拖动画布查看全图 · 点地名看简介与今地 · 红点当前场景 / 金色行迹</view>
+      <view class="map-zoom-tools">
+        <view class="map-zoom-btn" catchtap="zoomMapOut">－</view>
+        <text class="map-zoom-level">{{mapZoomText}}</text>
+        <view class="map-zoom-btn" catchtap="zoomMapIn">＋</view>
+        <view class="map-zoom-done" catchtap="closeMapZoom">收 起</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 地名小窗：基本信息 + 今地对照 -->
+  <view wx:if="{{placeInfo}}" class="place-mask" catchtap="closePlaceInfo">
+    <view class="place-pop" catchtap="stopBubble">
+      <view class="place-pop-head">
+        <view>
+          <view class="place-pop-title">{{placeInfo.name}}</view>
+          <view class="place-pop-type">{{placeInfo.type}}</view>
+        </view>
+        <view class="place-pop-close" catchtap="closePlaceInfo">×</view>
+      </view>
+      <view class="place-row">
+        <text class="place-label">今 地</text>
+        <text class="place-value strong">{{placeInfo.modern}}</text>
+      </view>
+      <view class="place-row">
+        <text class="place-label">地 名 简 介</text>
+        <text class="place-value">{{placeInfo.intro}}</text>
+      </view>
+      <view class="place-row">
+        <text class="place-label">原 著 戏 份</text>
+        <text class="place-value">{{placeInfo.brief}}</text>
+      </view>
+      <view wx:if="{{placeInfo.note}}" class="place-note">{{placeInfo.note}}</view>
+      <view class="place-status">
+        <text class="place-tag {{placeInfo.statusClass}}">{{placeInfo.statusText}}</text>
+        <text wx:if="{{placeInfo.sceneName}}" class="place-scene">{{placeInfo.sceneName}}{{placeInfo.approx ? ' · 暂标' : ''}}</text>
+      </view>
+      <view class="place-disclaimer">今地依通行地理沿革整理 · 小说地望与史实不必尽合</view>
+    </view>
+  </view>
+
   <view class="scene" bind:tap="ClicknSound">
     <view wx:for="{{sceneList}}" wx:key="name"
           class="scene-item {{index > unlockIndex ? 'scene-item-disabled' : ''}}"

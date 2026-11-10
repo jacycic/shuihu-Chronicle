@@ -41,7 +41,12 @@
         <view class="score-unit">对手得分</view>
       </view>
     </view>
-    <view class="result-tip">共 {{total}} 题 · 每题 5 分 · 满分 {{fullScore}} 分</view>
+    <view class="time-board">
+      <text>我方用时 {{myTimeText}}</text>
+      <text class="time-sep">·</text>
+      <text>对手用时 {{peerTimeText}}</text>
+    </view>
+    <view class="result-tip">共 {{total}} 题 · 每题 5 秒 · 满分 {{fullScore}} 分</view>
     <view class="primary-btn" bindtap="onAgain" hover-class="btn-hover">再 战 一 局</view>
   </view>
 
@@ -64,6 +69,12 @@
         <text class="q-index">第 {{current + 1}} 题 / 共 {{total}} 题</text>
         <text class="q-tag">{{questions[current].tag}}</text>
       </view>
+      <view class="timer-bar">
+        <view class="timer-track">
+          <view class="timer-fill {{urgent ? 'danger' : ''}}" style="width: {{timerPercent}}%;"></view>
+        </view>
+        <text class="timer-num {{urgent ? 'danger' : ''}}">{{timeLeftText}}s</text>
+      </view>
       <view class="q-title">{{questions[current].title}}</view>
       <view class="q-options">
         <view wx:for="{{questions[current].opt}}" wx:for-item="opt" wx:key="*this"
@@ -72,7 +83,7 @@
           <text class="opt-text">{{opt}}</text>
         </view>
       </view>
-      <view class="q-hint">作答后自动进入下一题，对手进度实时同步</view>
+      <view class="q-hint">5 秒内作答，超时本题不得分并自动跳过</view>
     </view>
 
     <view wx:else class="card waiting-card">

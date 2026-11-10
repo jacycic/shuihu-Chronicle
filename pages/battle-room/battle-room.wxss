@@ -288,3 +288,53 @@ page {
   font-size: 23rpx;
   color: #9a8258;
 }
+
+/* 每题 5 秒倒计时 */
+.timer-bar {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+  margin: 24rpx 0 6rpx;
+}
+
+.timer-track {
+  flex: 1;
+  height: 12rpx;
+  border-radius: 999rpx;
+  background: #ede4cf;
+  overflow: hidden;
+}
+
+.timer-fill {
+  height: 100%;
+  border-radius: 999rpx;
+  background: linear-gradient(90deg, #a8322a, #d9a441);
+  transition: width 0.1s linear;
+}
+
+.timer-fill.danger { background: #c0392b; }
+
+.timer-num {
+  width: 76rpx;
+  flex-shrink: 0;
+  text-align: right;
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #a8322a;
+}
+
+.timer-num.danger { color: #c0392b; }
+
+/* 结算用时 */
+.time-board {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16rpx;
+  margin-top: 18rpx;
+  font-size: 23rpx;
+  color: #8a7658;
+}
+
+.time-sep { color: #b8860b; }

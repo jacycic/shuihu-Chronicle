@@ -125,3 +125,80 @@ page{
 .answer-item:active{
   opacity:0.75;
 }
+
+/* 底部随机按钮：短胶囊居中，与屏幕底边留白 */
+.random-bar{
+  flex-shrink:0;
+  display:flex;
+  justify-content:center;
+  padding:16rpx 30rpx 80rpx;
+}
+.random-btn{
+  width:220rpx;
+  height:76rpx;
+  line-height:76rpx;
+  text-align:center;
+  border-radius:999rpx;
+  background:linear-gradient(90deg,#8f2c22,#b8860b);
+  color:#fff6e2;
+  font-size:28rpx;
+  letter-spacing:4rpx;
+  box-shadow:0 6rpx 18rpx rgba(90,70,40,0.22);
+}
+.random-btn.done{ background:#9a8258; opacity:0.8; }
+.random-btn-hover{ opacity:0.85; }
+
+.random-mask{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:90;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:48rpx;
+  box-sizing:border-box;
+  background:rgba(28,20,12,0.6);
+}
+.random-card{
+  width:100%;
+  padding:48rpx 36rpx 36rpx;
+  border-radius:28rpx;
+  background:#fffdf7;
+  border:2rpx solid rgba(184,134,11,0.4);
+  box-shadow:0 20rpx 60rpx rgba(40,28,12,0.35);
+  text-align:center;
+  box-sizing:border-box;
+}
+.random-title{ font-size:26rpx; letter-spacing:6rpx; color:#9a8258; }
+.random-star{ margin-top:18rpx; font-size:24rpx; color:#b8860b; }
+.random-name{
+  margin-top:10rpx;
+  font-size:72rpx;
+  font-weight:bold;
+  color:#8f2c22;
+  font-family:"KaiTi",serif;
+}
+.random-nick{ margin-top:8rpx; font-size:28rpx; color:#3b2f22; }
+.random-remain{ margin-top:26rpx; font-size:24rpx; color:#8a7658; }
+.random-actions{ display:flex; gap:20rpx; margin-top:40rpx; }
+.random-again,
+.random-go{
+  flex:1;
+  height:84rpx;
+  line-height:84rpx;
+  border-radius:999rpx;
+  font-size:28rpx;
+  letter-spacing:2rpx;
+}
+.random-again{
+  background:#f3ecdb;
+  color:#6b5738;
+  border:1rpx solid rgba(184,134,11,0.3);
+}
+.random-go{ background:linear-gradient(90deg,#8f2c22,#b8860b); color:#fff6e2; }
+.random-again:active,
+.random-go:active{ opacity:0.85; }
+.random-close{ margin-top:28rpx; font-size:24rpx; color:#b3a487; }

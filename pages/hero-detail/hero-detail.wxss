@@ -374,29 +374,87 @@ page {
 }
 
 /* 原著摘录 */
-.quote-mark {
-  height: 46rpx;
-  font-family: "kaiTi", "STKaiti", serif;
-  font-size: 88rpx;
-  line-height: 1;
-  color: rgba(168, 50, 42, 0.3);
+.quote-title {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin: 4rpx 0 18rpx;
+  padding: 16rpx 20rpx;
+  border-radius: 14rpx;
+  background: #f3ecdb;
+  border: 1rpx dashed rgba(184, 134, 11, 0.35);
 }
-
-.quote-text {
-  margin: 6rpx 0 20rpx;
+.quote-title-label {
+  flex-shrink: 0;
+  font-size: 20rpx;
+  letter-spacing: 2rpx;
+  color: #9a8258;
+}
+.quote-title-text {
   font-family: "kaiTi", "STKaiti", serif;
-  font-size: 31rpx;
-  line-height: 1.95;
+  font-size: 28rpx;
+  color: #8f2c22;
+}
+.quote-note text { flex: 1; min-width: 0; }
+
+/* 人物摘要（主展示） */
+.summary-block {
+  padding-bottom: 26rpx;
+  border-bottom: 1rpx dashed rgba(184, 134, 11, 0.3);
+}
+.summary-label {
+  display: inline-block;
+  padding: 4rpx 14rpx;
+  border-radius: 8rpx;
+  background: #a8322a;
+  color: #fff5e0;
+  font-size: 21rpx;
+  letter-spacing: 2rpx;
+}
+.quote-mark {
+  height: 36rpx;
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 64rpx;
+  line-height: 1;
+  color: rgba(168, 50, 42, 0.28);
+}
+.summary-text {
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 33rpx;
+  line-height: 1.9;
   letter-spacing: 1rpx;
   text-align: justify;
   color: #3b2f22;
 }
 
+/* 原文引述（次级佐证） */
+.quote-source-block { margin-top: 22rpx; }
+.quote-label {
+  font-size: 21rpx;
+  letter-spacing: 2rpx;
+  color: #9a8258;
+  margin-bottom: 10rpx;
+}
+.quote-text {
+  margin: 0 0 12rpx;
+  font-family: "kaiTi", "STKaiti", serif;
+  font-size: 27rpx;
+  line-height: 1.85;
+  letter-spacing: 1rpx;
+  text-align: justify;
+  color: #5a4a33;
+}
 .quote-source {
   text-align: right;
   font-size: 23rpx;
   line-height: 1.6;
   color: #9a8258;
+}
+.quote-hint {
+  margin-top: 12rpx;
+  font-size: 21rpx;
+  line-height: 1.6;
+  color: #a08d6c;
 }
 
 .quote-note {

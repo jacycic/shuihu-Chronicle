@@ -28,3 +28,28 @@
     </view>
   </view>
 </view>
+
+<!-- 底部随机入口：只留一枚短按钮，与输入框分开 -->
+<view class="random-bar">
+  <view bind:tap="ClicknSound">
+    <view class="random-btn {{randomAllDone ? 'done' : ''}}" bindtap="randomPickHero" hover-class="random-btn-hover">
+      {{randomAllDone ? '已集齐' : '随机'}}
+    </view>
+  </view>
+</view>
+
+<!-- 随机抽取：只从未解锁好汉中抽，确认后才解锁并跳转 -->
+<view wx:if="{{randomHero}}" class="random-mask" catchtap="closeRandom">
+  <view class="random-card" catchtap="noop">
+    <view class="random-title">随 机 抽 中</view>
+    <view class="random-star">{{randomHero.star}}</view>
+    <view class="random-name">{{randomHero.name}}</view>
+    <view class="random-nick">绰号 · {{randomHero.nick}}</view>
+    <view class="random-remain">未解锁好汉还剩 {{randomRemain}} 位</view>
+    <view class="random-actions">
+      <view class="random-again" bindtap="randomPickHero">再 抽 一 次</view>
+      <view class="random-go" bindtap="goRandomHero">前 往 结 识</view>
+    </view>
+    <view class="random-close" bindtap="closeRandom">关 闭</view>
+  </view>
+</view>

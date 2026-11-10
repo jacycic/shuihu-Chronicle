@@ -1,9 +1,5 @@
 <view class="ctrl">
-  <!-- 联机对战入口 -->
-  <view class="battle-entry" bindtap="goBattle" hover-class="battle-entry-hover">
-    <text class="battle-entry-title">⚔ 联 机 对 战</text>
-    <text class="battle-entry-sub">随机匹配 · 好友开房 · 十题论剑</text>
-  </view>
+  <globaltips id="unlockTipRef"></globaltips>
 
   <!-- 背景装饰元素 -->
   <view class="decor decor-1">水</view>
@@ -25,6 +21,7 @@
         {{questionList[current].opt[1]}}
       </view>
     </view>
+    <view class="quiz-foot">小知识 {{factReadCount}}/{{factTotal}} · 每答 5 题读到一条，可解锁成就</view>
   </view>
 
   <!-- 答题结束 得分页 -->
@@ -33,6 +30,26 @@
     <view class="result-text">你的得分：<text class="score">{{score}}</text> 分</view>
     <view class="tip">满分：{{fullScore}}分</view>
     <view class="evaluate">{{evaluateText}}</view>
+    <view wx:if="{{unlockedText}}" class="unlock-text">{{unlockedText}}</view>
     <view class="restart-btn" bindtap="restartQuiz">重新答题</view>
+  </view>
+
+  <!-- 答题中途的小知识卡 -->
+  <view wx:if="{{factVisible && fact}}" class="fact-mask" catchtap="noop">
+    <view class="fact-card" catchtap="noop">
+      <view class="fact-head">
+        <text class="fact-tag">{{fact.tag}}小知识</text>
+        <text class="fact-count">{{factIndex}}/{{factTotal}}</text>
+      </view>
+      <view class="fact-title">{{fact.title}}</view>
+      <view class="fact-text">{{fact.text}}</view>
+      <view class="fact-line">
+        <text class="fact-label">知</text>
+        <text class="fact-line-text">{{fact.fact}}</text>
+      </view>
+      <view class="fact-source">出处：{{fact.source}}</view>
+      <view class="fact-hint">{{factHint}}</view>
+      <view class="fact-btn" bindtap="closeFact">继 续 答 题</view>
+    </view>
   </view>
 </view>

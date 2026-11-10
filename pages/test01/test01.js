@@ -29,7 +29,7 @@ Page({
   goChart() { wx.navigateTo({ url: config.ROUTES.chart }) },
   goUser() { wx.navigateTo({ url: config.ROUTES.user }) },
   goBattle() { wx.navigateTo({ url: config.ROUTES.battle }) },
-  goQuizzes() { wx.navigateTo({ url: config.ROUTES.quizzes }) },
+  goAi() { wx.navigateTo({ url: config.ROUTES.ai }) },
 
   openNoticePopup() { this.setData({ showNoticePopup: true }) },
   closeNoticePopup() { this.setData({ showNoticePopup: false }) },

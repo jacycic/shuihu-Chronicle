@@ -1,14 +1,37 @@
 <view class="page">
   <view class="page-header">
     <view class="header-title">梁 山 论 剑</view>
-    <view class="header-sub">联 机 对 战 · 十 题 定 胜 负</view>
+    <view class="header-sub">单 人 答 题 · 联 机 对 战</view>
     <view class="header-ornament"><view class="ornament-line"></view><view class="ornament-dot"></view><view class="ornament-line reverse"></view></view>
+  </view>
+
+  <!-- 题库总览：不受云端状态影响，始终排在模式选择之前 -->
+  <view class="card bank-card">
+    <view class="bank-row">
+      <view>
+        <view class="bank-label">题 库 总 览</view>
+        <view class="bank-tags">{{tagsText}}</view>
+      </view>
+      <view class="bank-num">{{bankSize}}<text class="bank-unit"> 题</text></view>
+    </view>
+    <view wx:if="{{identityText}}" class="identity-text">{{identityText}}</view>
+  </view>
+
+  <!-- 单人答题：不依赖云端，任何时候都能进入 -->
+  <view class="card mode-card solo-card" bindtap="onSolo" hover-class="card-hover">
+    <view class="mode-mark solo-mark">单</view>
+    <view class="mode-info">
+      <view class="mode-title">单 人 答 题</view>
+      <view class="mode-sub">不用联网 · 20 道趣味题 · 每 5 题读 1 条（共 {{factTotal}} 条小知识），可解锁成就</view>
+    </view>
+    <view class="mode-arrow">›</view>
   </view>
 
   <!-- 云端未就绪时的部署引导 -->
   <view wx:if="{{checking || !available || !cloudReady}}" class="card guide-card">
     <view class="guide-mark">战</view>
     <view class="guide-title">{{checking ? '正在连接云端…' : '对战服务尚未就绪'}}</view>
+    <view class="guide-note">仅联机模式需要云端，上方「单人答题」随时可玩</view>
     <view wx:if="{{error}}" class="guide-error">{{error}}</view>
     <view class="guide-desc">按 README「联机对战部署」操作：</view>
     <view class="guide-step"><text class="step-no">1</text><text>开通云开发，核对 config.CLOUD.env 环境 ID</text></view>
@@ -19,17 +42,6 @@
   </view>
 
   <block wx:else>
-    <view class="card bank-card">
-      <view class="bank-row">
-        <view>
-          <view class="bank-label">题 库 总 览</view>
-          <view class="bank-tags">{{tagsText}}</view>
-        </view>
-        <view class="bank-num">{{bankSize}}<text class="bank-unit"> 题</text></view>
-      </view>
-      <view class="identity-text">{{identityText}}</view>
-    </view>
-
     <view class="card mode-card" bindtap="onMatch" hover-class="card-hover">
       <view class="mode-mark">⚔</view>
       <view class="mode-info">
@@ -64,9 +76,10 @@
 
     <view class="rule-card">
       <view class="rule-title">对 战 规 则</view>
-      <view class="rule-line">· 每局 10 题，每题 5 分，满分 50 分</view>
-      <view class="rule-line">· 双方各自作答，进度实时同步，互不看到对方答案</view>
-      <view class="rule-line">· 双方答完后比总分，同分为平局</view>
+      <view class="rule-line">· 单人答题无需云端：20 题一局，每 5 题一张小知识卡，可解锁成就</view>
+      <view class="rule-line">· 每局 10 题，每题限时 5 秒，答对得 5 分</view>
+      <view class="rule-line">· 超时不得分，自动进入下一题</view>
+      <view class="rule-line">· 分数高者胜；同分则总用时少者胜，完全相同为平局</view>
     </view>
   </block>
 </view>

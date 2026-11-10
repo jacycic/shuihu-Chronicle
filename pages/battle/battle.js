@@ -1,6 +1,7 @@
 const config = require('../../config/index.js')
 const battleService = require('../../services/battleService.js')
 const quizService = require('../../services/quizService.js')
+const quizFacts = require('../../data/quizFacts.js')
 
 const ROOM_RE = /^[0-9A-F]{6}$/
 
@@ -14,6 +15,7 @@ Page({
     showFriend: false,
     roomInput: '',
     bankSize: 0,
+    factTotal: 0,
     tagsText: '',
     identityText: ''
   },
@@ -22,6 +24,7 @@ Page({
     this.setData({
       available: battleService.isAvailable(),
       bankSize: quizService.getBankSize(),
+      factTotal: quizFacts.length,
       tagsText: quizService.getTags().join(' · ')
     })
   },
@@ -60,9 +63,14 @@ Page({
     if (code === 'BATTLE_CLOUD_DISABLED') {
       text = '云开发未开启：请在 config/index.js 打开 CLOUD.enabled 并填写 env'
     } else if (code === 'BATTLE_CLOUD_OUTDATED') {
-      text = '对战云函数未部署：请创建 sh_battle_rooms 集合并上传部署 cloudfunction/battle'
+      text = '对战云函数未部署或版本过旧：请重新上传部署 cloudfunction/battle（需支持 5 秒限时），并确认 sh_battle_rooms 集合已创建'
     }
     this.setData({ checking: false, cloudReady: false, busy: false, error: text || '连接失败' })
+  },
+
+  /** 单人答题不依赖云端，随时可玩 */
+  onSolo() {
+    wx.navigateTo({ url: config.ROUTES.quizzes })
   },
 
   goRoom(data) {

@@ -15,7 +15,7 @@ const GLOBAL_KEYS = [K.loginState, K.accounts]
 // 属于「一份进度」的键：注册继承与云端同步都以这组为准
 const PROGRESS_KEYS = [
   K.unlockHero, K.sceneUnlock, K.achievements, K.shownAchievements,
-  K.firstEnter, K.customProfile, K.avatar, K.nickname, K.logs
+  K.firstEnter, K.customProfile, K.quizStats, K.avatar, K.nickname, K.logs
 ]
 
 let accountScope = ''
@@ -178,6 +178,25 @@ function setAchievements(list) {
   write(K.achievements, list)
 }
 
+/** 单人答题累计进度：局数、答题数、答对数、宋代题答对数、最高分、已读小知识 */
+function getQuizStats() {
+  const value = read(K.quizStats, {})
+  const data = value && typeof value === 'object' ? value : {}
+  const num = key => Number(data[key]) || 0
+  return {
+    rounds: num('rounds'),
+    answered: num('answered'),
+    correct: num('correct'),
+    songCorrect: num('songCorrect'),
+    bestScore: num('bestScore'),
+    factsRead: Array.isArray(data.factsRead) ? data.factsRead.slice() : []
+  }
+}
+
+function saveQuizStats(stats) {
+  write(K.quizStats, stats && typeof stats === 'object' ? stats : {})
+}
+
 /** 已经弹过解锁提示的成就名，避免重复弹或漏弹 */
 function getShownAchievements() {
   const list = read(K.shownAchievements, [])
@@ -255,6 +274,8 @@ module.exports = {
   setSceneUnlock,
   getAchievements,
   setAchievements,
+  getQuizStats,
+  saveQuizStats,
   getShownAchievements,
   setShownAchievements,
   getFlag,
